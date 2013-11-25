@@ -1,7 +1,7 @@
 {
   "name": "robocop.js",
   "description": "Object inspector and schema validator for Node.js and the browser.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "homepage": "https://github.com/jmdobry/robocop.js",
   "repository": {
     "type": "git",
@@ -47,7 +47,8 @@
     "browserify": "~2.35.4",
     "grunt-browserify": "~1.2.11",
     "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-uglify": "~0.2.7"
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-mocha-test": "~0.7.0"
   },
   "bugs": {
     "url": "https://github.com/jmdobry/robocop.js/issues",

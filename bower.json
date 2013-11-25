@@ -2,7 +2,7 @@
   "author": "Jason Dobry",
   "name": "robocop.js",
   "description": "Object inspector and schema validator for Node.js and the browser.",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "homepage": "http://jmdobry.github.io/robocop.js",
   "repository": {
     "type": "git",
