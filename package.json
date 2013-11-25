@@ -1,7 +1,7 @@
 {
   "name": "robocop.js",
   "description": "Object inspector and schema validator for Node.js and the browser.",
-  "version": "0.0.1-SNAPSHOT",
+  "version": "0.4.0",
   "homepage": "https://github.com/jmdobry/robocop.js",
   "repository": {
     "type": "git",
