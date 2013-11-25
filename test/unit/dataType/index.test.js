@@ -1,6 +1,6 @@
 'use strict';
 
-var dataTypes = require('../../lib/dataTypes');
+var dataTypes = require('../../../lib/dataType');
 
 describe('dataTypes', function () {
 

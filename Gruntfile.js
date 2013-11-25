@@ -37,7 +37,7 @@ module.exports = function (grunt) {
             '* @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>\n' +
             '* @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>\n' +
             '*\n' +
-            '* @overview robocop.js is a very useful replacement for Angular\'s $cacheFactory.\n' +
+            '* @overview Object inspector and schema validator for Node.js and the browser.\n' +
             '*/\n'
         },
         files: {
@@ -73,7 +73,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test-unit', ['shell:unit']);
   grunt.registerTask('test', ['test-unit']);
-  grunt.registerTask('build', ['jshint', 'test']);
+  grunt.registerTask('build', ['clean', 'jshint', 'test', 'browserify', 'uglify']);
 
 //	grunt.registerTask('test-load', ['shell:load']);
 

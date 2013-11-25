@@ -1,6 +1,6 @@
 'use strict';
 
-var coercions = require('../../lib/coercions');
+var coercions = require('../../../lib/coerce');
 
 describe('coercions', function () {
 

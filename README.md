@@ -1,4 +1,3 @@
 robocop.js
 ==========
-
-Object inspector and schema validator for node.js and the browser.
+Object inspector and schema validator for Node.js and the browser.
