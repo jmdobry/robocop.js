@@ -1,0 +1,31 @@
+{
+  "author": "Jason Dobry",
+  "name": "robocop.js",
+  "description": "Object inspector and schema validator for node.js and the browser.",
+  "version": "0.0.1-SNAPSHOT",
+  "homepage": "http://jmdobry.github.io/robocop.js/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jmdobry/robocop.js.git"
+  },
+  "main": "./dist/robocop.js.min.js",
+  "ignore": [
+    ".idea/",
+    ".bowerrc",
+    "*.iml",
+    "src/",
+    "coverage/",
+    ".jshintrc",
+    "demo/",
+    ".jslintrc",
+    "Gruntfile.js",
+    "CONTRIBUTING.md",
+    "TRANSITION.md",
+    "node_modules/",
+    "test/",
+    "karma.conf.js",
+    "libpeerconnection.log",
+    ".gitignore",
+    ".travis.yml"
+  ]
+}
