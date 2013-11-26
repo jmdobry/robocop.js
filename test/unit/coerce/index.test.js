@@ -40,7 +40,6 @@ describe('coercions', function () {
 			assert.strictEqual(coercions.number('99.1'), 99.1, 'Should coerce "99.1" to 99.1.');
 			assert.strictEqual(coercions.number('99.9'), 99.9, 'Should coerce "99.9" to 99.9.');
 			assert.strictEqual(coercions.number('100'), 100, 'Should coerce "100" to 100.');
-			assert.strictEqual(coercions.number(new Date(1985, 6, 23)), 490946400000, 'Should coerce a date to 490946400000.');
 			done();
 		});
 
