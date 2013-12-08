@@ -1,13 +1,3 @@
-/**
- * @author Jason Dobry <jason.dobry@gmail.com>
- * @file robocop.js
- * @version 0.4.1 - Homepage <http://jmdobry.github.io/robocop.js/>
- * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
- * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
- *
- * @overview Object inspector and schema validator for Node.js and the browser.
- */
-
 !function(o){"object"==typeof exports?module.exports=o():"function"==typeof define&&define.amd?define(o):"undefined"!=typeof window?window.robocop=o():"undefined"!=typeof global?global.robocop=o():"undefined"!=typeof self&&(self.robocop=o())}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
@@ -32,6 +22,16 @@ module.exports = {
 },{"mout/lang":19,"mout/number/toInt":50}],2:[function(require,module,exports){
 'use strict';
 
+/**
+ * @author Jason Dobry <jason.dobry@gmail.com>
+ * @file robocop.js
+ * @version 0.4.1 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
+ * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
+ *
+ * @overview Object inspector and schema validator for Node.js and the browser.
+ */
+
 module.exports = require('./robocop');
 },{"./robocop":4}],3:[function(require,module,exports){
 'use strict';
@@ -49,23 +49,23 @@ module.exports = {
 			throw new Error('robocop.defineDataType(name, typeDefinition): name: Must be a string!');
 		}
 		if (dataTypes[name]) {
-			throw new Error('robocop.defineDataType(name, typeDefinition): name: Name already is use!');
+			throw new Error('robocop.defineDataType(name, typeDefinition): name: Name already in use!');
 		}
-		dataTypes[name] = typeDefinition.typeFunc;
+		dataTypes[name] = typeDefinition;
 	},
 
 	hasDataType: function hasDataType(name) {
 		if (!isString(name)) {
 			throw new Error('robocop.hasDataType(name): name: Must be a string!');
 		}
-		return !!dataTypes[name];
+		return !!(dataTypes[name] || defaultDataTypes[name]);
 	},
 
 	getDataType: function getDataType(name) {
 		if (!isString(name)) {
 			throw new Error('robocop.getDataType(name): name: Must be a string!');
 		}
-		return dataTypes[name];
+		return dataTypes[name] || defaultDataTypes[name];
 	},
 
 	availableDataTypes: function availableDataTypes() {
@@ -75,12 +75,13 @@ module.exports = {
 	testDataType: function testDataType(name, value) {
 		if (!isString(name)) {
 			throw new Error('robocop.testDataType(name, value): name: Must be a string!');
-		} else if (!dataTypes[name] && !defaultDataTypes[name]) {
+		} else if (!(dataTypes[name] || defaultDataTypes[name])) {
 			throw new Error('robocop.testDataType(name, value): name: No dataType with that name exists!');
 		}
 		return dataTypes[name] ? dataTypes[name](value) : defaultDataTypes[name](value);
 	}
 };
+
 },{"../dataType":1,"mout/lang/isString":42,"mout/object/keys":69}],4:[function(require,module,exports){
 'use strict';
 
@@ -152,7 +153,6 @@ module.exports = {
 			throw new Error('robocop.defineSchema(name, schema): name: Name already in use!');
 		}
 		schemas[name] = new Schema(name, schema);
-
 		return schemas[name];
 	},
 
@@ -174,17 +174,18 @@ module.exports = {
 		return keys(schemas);
 	},
 
-	testSchema: function testSchema(name, obj) {
-		if (!isString(name)) {
-			throw new Error('robocop.validate(name, obj): name: Must be a string!');
-		} else if (!isObject(obj)) {
-			throw new Error('robocop.validate(name, obj): obj: Must be an object!');
-		} else if (!schemas[name]) {
-			throw new Error('robocop.validate(name, obj): name: No schema with that name exists!');
+	testSchema: function testSchema(attrs, options) {
+		if (!isObject(attrs)) {
+			throw new Error('robocop.testSchema(attrs, options, cb): attrs: Must be an object!');
+		} else if (!isObject(options)) {
+			throw new Error('robocop.testSchema(attrs, options, cb): options: Must be an object!');
+		} else if (!schemas[options.name]) {
+			throw new Error('robocop.testSchema(attrs, options, cb): options.name: No schema with that name exists!');
 		}
-		return schemas[name].validate(obj);
+		return schemas[options.name].validate(attrs, options);
 	}
 };
+
 },{"../schema":8,"mout/lang/isObject":39,"mout/lang/isString":42,"mout/object/keys":69}],7:[function(require,module,exports){
 'use strict';
 
@@ -268,7 +269,7 @@ var Schema = module.exports = function Schema(name, schema) {
 	this.schema = schema;
 };
 
-function _validate(targetKey, attrs, cb) {
+function _validate(targetKey, attrs) {
 	var errors = {};
 	var _this = this;
 	object.forOwn(attrs, function (value, key) {
@@ -294,21 +295,22 @@ function _validate(targetKey, attrs, cb) {
 		}
 	});
 	if (object.keys(errors).length > 0) {
-		cb(errors);
+		return errors;
 	} else {
-		cb();
+		return null;
 	}
 }
 
-Schema.prototype.validate = function validate(attrs, cb) {
-	_validate.apply(this, ['', attrs, function (errors) {
-		if (errors && object.keys(errors).length > 0) {
-			cb(errors);
-		} else {
-			cb();
-		}
-	}]);
+Schema.prototype.validate = function (attrs, options) {
+	options = options || {};
+	if (!lang.isObject(attrs)) {
+		throw new Error('Schema.validate(attrs, options, cb): attrs: Must be an object!');
+	} else if (!lang.isObject(options)) {
+		throw new Error('Schema.validate(attrs, options, cb): options: Must be an object!');
+	}
+	return _validate.apply(this, ['', attrs]);
 };
+
 },{"../rule":7,"mout/lang":19,"mout/object":51}],9:[function(require,module,exports){
 var findIndex = require('./findIndex');
 

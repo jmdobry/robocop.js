@@ -386,4 +386,161 @@ describe('robocop', function () {
 			done();
 		});
 	});
+
+	/******** robocop RULE methods *********/
+	describe('robocop.defineDataType(name, typeDefinition)', function () {
+		it('should register a new datatype', function (done) {
+			var typeDef = function () {
+			};
+			robocop.defineDataType('test', typeDef);
+			assert.deepEqual(robocop.getDataType('test'), typeDef);
+			done();
+		});
+		it('should throw an error if name is not a string', function (done) {
+			mout.collection.forEach(TYPES_EXCEPT_STRING, function (val) {
+				try {
+					robocop.defineDataType(val);
+					fail('should fail on ' + val);
+				} catch (err) {
+					assert.equal(err.message, 'robocop.defineDataType(name, typeDefinition): name: Must be a string!');
+				}
+			});
+			try {
+				robocop.defineDataType('test', function () {
+				});
+			} catch (err) {
+				fail('should not fail on a string.');
+			}
+			done();
+		});
+		it('should throw an error if the datatype already exists', function (done) {
+			robocop.defineDataType('test', function () {
+			});
+			try {
+				robocop.defineDataType('test', function () {
+				});
+				fail('should not reach this!');
+			} catch (err) {
+				assert.equal(err.message, 'robocop.defineDataType(name, typeDefinition): name: Name already in use!');
+				return done();
+			}
+			fail('should not reach this!');
+		});
+	});
+
+	describe('robocop.hasDataType(name)', function () {
+		it('should return whether a datatype is in the registry', function (done) {
+			assert.isFalse(robocop.hasDataType('test'));
+			robocop.defineDataType('test', function () {
+			});
+			assert.isTrue(robocop.hasDataType('test'));
+			done();
+		});
+		it('should throw an error if name is not a string', function (done) {
+			mout.collection.forEach(TYPES_EXCEPT_STRING, function (val) {
+				try {
+					robocop.hasDataType(val);
+					fail('should fail on ' + val);
+				} catch (err) {
+					assert.equal(err.message, 'robocop.hasDataType(name): name: Must be a string!');
+				}
+			});
+			try {
+				robocop.hasDataType('test');
+			} catch (err) {
+				fail('should not fail on a string.');
+			}
+			done();
+		});
+	});
+
+	describe('robocop.getDataType(name)', function () {
+		it('should return a datatype from the registry', function (done) {
+			var typeDef = function () {
+			};
+			robocop.defineDataType('test', typeDef);
+			assert.deepEqual(robocop.getDataType('test'), typeDef);
+			done();
+		});
+		it('should throw an error if name is not a string', function (done) {
+			mout.collection.forEach(TYPES_EXCEPT_STRING, function (val) {
+				try {
+					robocop.getDataType(val);
+					fail('should fail on ' + val);
+				} catch (err) {
+					assert.equal(err.message, 'robocop.getDataType(name): name: Must be a string!');
+				}
+			});
+			try {
+				robocop.getDataType('test');
+			} catch (err) {
+				fail('should not fail on a string.');
+			}
+			done();
+		});
+	});
+
+	describe('robocop.availableDataTypes()', function () {
+		it('should return a list of available datatypes', function (done) {
+			var typeDef = function () {
+			};
+			assert.equal(robocop.availableDataTypes().length, 8);
+			assert.deepEqual(robocop.availableDataTypes(), [
+				'string',
+				'number',
+				'integer',
+				'float',
+				'array',
+				'object',
+				'boolean',
+				'date'
+			]);
+			robocop.defineDataType('test', typeDef);
+			assert.equal(robocop.availableDataTypes().length, 9);
+			assert.deepEqual(robocop.availableDataTypes(), [
+				'test',
+				'string',
+				'number',
+				'integer',
+				'float',
+				'array',
+				'object',
+				'boolean',
+				'date'
+			]);
+			done();
+		});
+	});
+
+	describe('robocop.testDataType(name, value)', function () {
+		it('should throw an error if name is not a string', function (done) {
+			robocop.defineDataType('test', function () {
+			});
+			mout.collection.forEach(TYPES_EXCEPT_STRING, function (val) {
+				try {
+					robocop.testDataType(val);
+					fail('should fail on ' + val);
+				} catch (err) {
+					assert.equal(err.message, 'robocop.testDataType(name, value): name: Must be a string!');
+				}
+			});
+			try {
+				robocop.testDataType('test');
+			} catch (err) {
+				fail('should not fail on a string.');
+			}
+			done();
+		});
+		it('should test a value against a datatype', function (done) {
+			var typeDef = sinon.stub().returns(true);
+			var typeDef2 = sinon.stub().returns(false);
+			robocop.defineDataType('test', typeDef);
+			robocop.defineDataType('test2', typeDef2);
+			assert.isTrue(robocop.testDataType('test'));
+			assert.equal(typeDef.callCount, 1);
+			assert.isFalse(robocop.testDataType('test2'));
+			assert.equal(typeDef2.callCount, 1);
+			done();
+		});
+	});
 });
