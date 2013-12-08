@@ -12,7 +12,6 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		config: config,
 		pkg: grunt.file.readJSON('package.json'),
-		// these folders will no longer be checked into development branches
 		clean: {
 			pre: ['dist/']
 		},
@@ -37,7 +36,7 @@ module.exports = function (grunt) {
 						'* @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>\n' +
 						'* @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>\n' +
 						'*\n' +
-						'* @overview Object inspector and schema validator for Node.js and the browser.\n' +
+						'* @overview Define and validate rules, datatypes and schemata in Node and in the browser.\n' +
 						'*/\n'
 				},
 				files: {

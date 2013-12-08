@@ -1,8 +1,8 @@
 {
   "author": "Jason Dobry",
   "name": "robocop.js",
-  "description": "Object inspector and schema validator for Node.js and the browser.",
-  "version": "0.4.1",
+  "description": "Define and validate rules, datatypes and schemata in Node and in the browser.",
+  "version": "0.6.0",
   "homepage": "http://jmdobry.github.io/robocop.js",
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
     "node_modules/",
     "test/",
     ".gitignore",
-    ".travis.yml"
+    ".travis.yml",
+    "package.json"
   ]
 }

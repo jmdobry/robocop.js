@@ -1,8 +1,8 @@
 ## robocop.js
 
-__Version:__ 0.0.1-SNAPSHOT
+__Version:__ 0.6.0
 
-__Object inspector and schema validator for Node.js and the browser.__
+__Define and validate rules, datatypes and schemata in Node and in the browser.__
 
 [![Build Status](https://travis-ci.org/jmdobry/robocop.js.png?branch=master)](https://travis-ci.org/jmdobry/robocop.js)
 [![Dependency Status](https://gemnasium.com/jmdobry/robocop.js.png)](https://gemnasium.com/jmdobry/robocop.js)
