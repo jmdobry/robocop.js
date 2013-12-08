@@ -1,7 +1,7 @@
 /**
  * @author Jason Dobry <jason.dobry@gmail.com>
  * @file robocop.js
- * @version 0.6.0 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @version 0.8.0 - Homepage <http://jmdobry.github.io/robocop.js/>
  * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
  * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
  *
@@ -32,6 +32,7 @@ module.exports = {
 'use strict';
 
 module.exports = require('./robocop');
+
 },{"./robocop":4}],3:[function(require,module,exports){
 'use strict';
 
