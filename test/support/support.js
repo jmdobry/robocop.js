@@ -2,7 +2,8 @@
 'use strict';
 
 var assert = require('chai').assert,
-	mocha = require('mocha');
+	mocha = require('mocha'),
+	sinon = require('sinon');
 
 var globals = module.exports = {
 	fail: function (msg) {
@@ -34,7 +35,8 @@ var globals = module.exports = {
 		storageImpl: null,
 		verifyIntegrity: true
 	},
-	assert: assert
+	assert: assert,
+	sinon: sinon
 };
 
 var test = new mocha();

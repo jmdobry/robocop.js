@@ -1,9 +1,33 @@
 'use strict';
 
-var Schema = require('../../../lib/schema'),
+// Mock rules
+var rules = {
+	succeedTest: function () {
+		return true;
+	},
+	failTest: function () {
+		return false;
+	}
+};
+
+var SandboxedModule = require('sandboxed-module'),
+	Schema = SandboxedModule.require('../../../lib/schema', {
+		requires: {
+			'mout/lang': require('mout/lang'), // Real dependency
+			'mout/object': require('mout/object'), // Real dependency
+			'../rule': rules // Mock dependency
+		}
+	}),
 	mout = require('mout');
 
 describe('Schema', function () {
+
+	// Reset the stubs/spies for each test
+	beforeEach(function (done) {
+		rules.succeedTest = sinon.stub().returns(true);
+		rules.failTest = sinon.stub().returns(false);
+		done();
+	});
 
 	describe('Schema constructor', function () {
 		it('should validate name', function (done) {
@@ -47,6 +71,151 @@ describe('Schema', function () {
 			}
 			assert.isDefined(schema);
 
+			done();
+		});
+	});
+
+	describe('Schema.validate(attrs, cb)', function () {
+		it('should execute applicable validation rules', function (done) {
+			var schema = new Schema('test', {
+				shouldSucceed: {
+					succeedTest: true
+				},
+				shouldFail: {
+					failTest: true
+				}
+			});
+
+			var errors = schema.validate({
+				shouldSucceed: true,
+				shouldFail: true
+			});
+			assert.equal(rules.succeedTest.callCount, 1, 'succeedTest should have been called once');
+			assert.isTrue(rules.succeedTest.calledWith(true, true), 'succeedTest should have been called with [true, true]');
+			assert.equal(rules.failTest.callCount, 1, 'failTest should have been called once');
+			assert.isTrue(rules.failTest.calledWith(true, true), 'failTest should have been called with [true, true]');
+			assert.deepEqual(errors, {
+				shouldFail: {
+					errors: [ 'failTest' ]
+				}
+			}, 'errors should be defined when the test fails');
+			done();
+		});
+
+		it('should execute applicable validation rules', function (done) {
+			var schema = new Schema('test', {
+				shouldSucceed: {
+					succeedTest: true
+				}
+			});
+
+			var errors = schema.validate({
+				shouldSucceed: true
+			});
+			assert.equal(rules.succeedTest.callCount, 1, 'succeedTest should have been called once');
+			assert.isTrue(rules.succeedTest.calledWith(true, true), 'succeedTest should have been called with [true, true]');
+			assert.equal(rules.failTest.callCount, 0, 'failTest should not have been called');
+			assert.isNull(errors, 'errors should be undefined when the test succeeds');
+			done();
+		});
+
+		it('should execute applicable validation rules', function (done) {
+			var schema = new Schema('test', {
+				shouldFail: {
+					failTest: true
+				}
+			});
+
+			var errors = schema.validate({
+				shouldFail: true
+			});
+			assert.equal(rules.succeedTest.callCount, 0, 'succeedTest should not have been called');
+			assert.equal(rules.failTest.callCount, 1, 'failTest should have been called once');
+			assert.isTrue(rules.failTest.calledWith(true, true), 'failTest should have been called with [true, true]');
+			assert.deepEqual(errors, {
+				shouldFail: {
+					errors: [ 'failTest' ]
+				}
+			}, 'err should be defined when the test fails');
+			done();
+		});
+
+		it('should execute applicable validation rules', function (done) {
+			var schema = new Schema('test', {
+				shouldSucceed: {
+					succeedTest: false
+				},
+				shouldFail: {
+					failTest: false
+				}
+			});
+
+			var errors = schema.validate({
+				shouldSucceed: false,
+				shouldFail: false
+			});
+			assert.equal(rules.succeedTest.callCount, 1, 'succeedTest should have been called once');
+			assert.isTrue(rules.succeedTest.calledWith(false, false), 'succeedTest should have been called with [false, false]');
+			assert.equal(rules.failTest.callCount, 1, 'failTest should have been called once');
+			assert.isTrue(rules.failTest.calledWith(false, false), 'failTest should have been called with [false, false]');
+			assert.deepEqual(errors, {
+				shouldFail: {
+					errors: [ 'failTest' ]
+				}
+			}, 'errors should be defined when the test fails');
+			done();
+		});
+
+		it('should execute applicable validation rules', function (done) {
+			var schema = new Schema('test', {
+				shouldSucceed: {
+					succeedTest: true
+				},
+				shouldFail: {
+					failTest: true
+				}
+			});
+
+			var errors = schema.validate({
+				shouldSucceed: false,
+				shouldFail: false
+			});
+			assert.equal(rules.succeedTest.callCount, 1, 'succeedTest should have been called once');
+			assert.isTrue(rules.succeedTest.calledWith(false, true), 'succeedTest should have been called with [false, true]');
+			assert.equal(rules.failTest.callCount, 1, 'failTest should have been called once');
+			assert.isTrue(rules.failTest.calledWith(false, true), 'failTest should have been called with [false, true]');
+			assert.deepEqual(errors, {
+				shouldFail: {
+					errors: [ 'failTest' ]
+				}
+			}, 'errors should be defined when the test fails');
+			done();
+		});
+
+		it('should execute applicable validation rules', function (done) {
+			var schema = new Schema('test', {
+				shouldSucceed: {
+					succeedTest: false
+				},
+				shouldFail: {
+					failTest: false
+				}
+			});
+
+			var errors = schema.validate({
+				shouldSucceed: true,
+				shouldFail: true
+			});
+
+			assert.equal(rules.succeedTest.callCount, 1, 'succeedTest should have been called once');
+			assert.isTrue(rules.succeedTest.calledWith(true, false), 'succeedTest should have been called with [true, false]');
+			assert.equal(rules.failTest.callCount, 1, 'failTest should have been called once');
+			assert.isTrue(rules.failTest.calledWith(true, false), 'failTest should have been called with [true, false]');
+			assert.deepEqual(errors, {
+				shouldFail: {
+					errors: [ 'failTest' ]
+				}
+			}, 'errors should be defined when the test fails');
 			done();
 		});
 	});
