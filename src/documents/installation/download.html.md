@@ -6,25 +6,43 @@ gfm: true
 index: 1
 ---
 
-## With Bower
-Angular-cache is registered in the Bower package repository. With Bower you can install angular-cache and manage your app's dependency on angular-cache.
+## With Bower (for browser use)
+robocop.js is registered in the Bower package repository. With Bower you can install robocop.js and manage your frontend app's dependency on robocop.js.
 
 <br>
-To install angular-cache, open a terminal in your project's directory and enter the command:
+To install robocop.js, open a terminal in your project's directory and enter the command:
 
-`bower install angular-cache --save`
+`bower install robocop.js --save`
 
-This command will install the latest stable version of angular-cache.
+This command will install the latest stable version of robocop.js.
 
 <br>
 Enter the following command to install a specific version:
 
-`bower install angular-cache#x.x.x --save`
+`bower install robocop.js#x.x.x --save`
 
-where `x.x.x` is the version of angular-cache you want to install.
+where `x.x.x` is the version of robocop.js you want to install.
 
-## Download Manually
-Download angular-cache manually here: [Downloads](https://github.com/jmdobry/angular-cache/releases).
+## With NPM (for use with Node)
+robocop.js is registered in the NPM package repository. With NPM you can install robocop.js and manage your Node app's dependency on robocop.js.
 
 <br>
-Each release has a development version of angular-cache and a minified version.
+To install robocop.js, open a terminal in your project's directory and enter the command:
+
+`npm install robocop.js --save`
+
+This command will install the latest stable version of robocop.js.
+
+<br>
+Enter the following command to install a specific version:
+
+`npm install robocop.js@x.x.x --save`
+
+where `x.x.x` is the version of robocop.js you want to install.
+
+
+## Download Manually
+Download robocop.js manually here: [Downloads](https://github.com/jmdobry/robocop.js/releases).
+
+<br>
+Each release has a development version of robocop.js and a minified version.

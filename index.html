@@ -38,6 +38,7 @@
                     <li class="">
                         <a href="installation.html">Installation</a>
                     </li>
+                    <!--
                     <li class="">
                         <a href="guide.html">Guide</a>
                     </li>
@@ -47,6 +48,7 @@
                     <li class="">
                         <a href="api.html">API</a>
                     </li>
+                    -->
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -117,59 +119,67 @@
 				        <section id="introduction">
                             <div class="page-header"><h1>Introduction</h1></div>
                             <h2 id="what-is-robocop-js-">What is robocop.js?</h2>
-<p>Angular-cache is a library that allows you to define and validate rules, datatypes and schemata in Node and in the browser.</p>
-<h2 id="-cachefactory-vs-angularcachefactory">$cacheFactory vs $angularCacheFactory</h2>
-<h5 id="-cachefactory">$cacheFactory</h5>
-<pre class="highlighted"><code class="javascript"><span class="comment">// Angular's $cacheFactory</span>
-app.service(<span class="string">'myService'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($cacheFactory)</span> {</span>
-
-    <span class="comment">// This is the extent of $cacheFactory's configuration</span>
-    $cacheFactory(<span class="string">'myNewCache'</span>, {
-
-        <span class="comment">// This cache can hold 1000 items</span>
-        capacity: <span class="number">1000</span>
-    });
-
+<p>Angular-cache is a library that allows you to define and validate rules, datatypes and schemata in Node and in the browser. Check it out:</p>
+<h4 id="define-a-rule">Define a rule</h4>
+<pre class="highlighted"><code class="javascript">robocop.defineRule(<span class="string">'noBadWords'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(value, options)</span> {</span>
+    <span class="comment">// This function should return true if value satisfies the rule,</span>
+    <span class="comment">// otherwise return false</span>
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">'string'</span>) {
+        <span class="keyword">return</span> value.indexOf(<span class="string">'bad word'</span>) === -<span class="number">1</span>;
+    }
+    <span class="keyword">return</span> <span class="literal">true</span>;
 });</code></pre>
-<h5 id="-angularcachefactory">$angularCacheFactory</h5>
-<pre class="highlighted"><code class="javascript"><span class="comment">// Smarter caching with $angularCacheFactory</span>
-app.service(<span class="string">'myService'</span>, <span class="function"><span class="keyword">function</span> <span class="params">($angularCacheFactory)</span> {</span>
-
-    $angularCacheFactory(<span class="string">'myNewCache'</span>, {
-
-        <span class="comment">// This cache can hold 1000 items</span>
-        capacity: <span class="number">1000</span>,
-
-        <span class="comment">// Items added to this cache expire after 15 minutes</span>
-        maxAge: <span class="number">900000</span>,
-
-        <span class="comment">// Items will be actively deleted when they expire</span>
-        deleteOnExpire: <span class="string">'aggressive'</span>,
-
-        <span class="comment">// This cache will check for expired items every minute</span>
-        recycleFreq: <span class="number">60000</span>,
-
-        <span class="comment">// This cache will clear itself every hour</span>
-        cacheFlushInterval: <span class="number">3600000</span>,
-
-        <span class="comment">// This cache will sync itself with localStorage</span>
-        storageMode: <span class="string">'localStorage'</span>,
-
-        <span class="comment">// Custom implementation of localStorage</span>
-        storageImpl: myLocalStoragePolyfill,
-
-        <span class="comment">// Full synchronization with localStorage on every operation</span>
-        verifyIntegrity: <span class="literal">true</span>,
-
-        <span class="comment">// This callback is executed when the item specified by "key" expires.</span>
-        <span class="comment">// At this point you could retrieve a fresh value for "key"</span>
-        <span class="comment">// from the server and re-insert it into the cache.</span>
-        onExpire: <span class="function"><span class="keyword">function</span> <span class="params">(key, value)</span> {</span>
-
-        }
-     });
-
+<h4 id="define-a-schema">Define a schema</h4>
+<pre class="highlighted"><code class="javascript">robocop.defineSchema(<span class="string">'post'</span>, {
+    id: {
+        type: <span class="string">'string'</span>
+    },
+    content: {
+        type: <span class="string">'string'</span>,
+        maxLength: <span class="number">5000</span>,
+        noBadWords: <span class="literal">true</span> <span class="comment">// Our custom rule</span>
+    },
+    title: {
+        type: <span class="string">'string'</span>,
+        required: <span class="literal">true</span>,
+        minLength: <span class="number">3</span>,
+        maxLength: <span class="number">255</span>
+    },
+    author: {
+        type: <span class="string">'string'</span>,
+        required: <span class="literal">true</span>,
+        maxLength: <span class="number">255</span>
+    },
+    tags: {
+        type: <span class="string">'array'</span>
+    }
 });</code></pre>
+<h4 id="validate-an-object-against-a-schema">Validate an object against a schema</h4>
+<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> result = robocop.testSchema({
+    id: <span class="number">34</span>,
+    content: <span class="string">'With great power comes great responsibility.'</span>,
+    title: <span class="string">'A trustworthy government'</span>,
+    author: <span class="string">'Concerned citizen'</span>,
+    tags: [
+        <span class="string">'freedom'</span>
+    ]
+}, {
+    name: <span class="string">'post'</span> <span class="comment">// the name of the schema to use in the test</span>
+});
+
+console.log(result); <span class="comment">// null (null is good)</span></code></pre>
+<h4 id="get-an-error-object-when-the-test-fails">Get an error object when the test fails</h4>
+<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> result = robocop.testSchema({
+    id: <span class="number">35</span>,
+    content: <span class="string">'Here is a bad word.'</span>,
+    title: <span class="string">'A likely post'</span>,
+    author: <span class="string">'gordan fooman'</span>,
+    tags: <span class="string">'oops'</span>
+}, {
+    name: <span class="string">'post'</span> <span class="comment">// the name of the schema to use in the test</span>
+});
+
+console.log(result); <span class="comment">// { content: ['noBadWords'], tags: ['type'] } (an error object)</span></code></pre>
 
                         </section>
                     

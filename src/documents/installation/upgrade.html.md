@@ -6,33 +6,54 @@ gfm: true
 index: 3
 ---
 ## Transition Details
-See [TRANSITION.md](https://github.com/jmdobry/angular-cache/blob/master/TRANSITION.md) for details on breaking changes between versions.
+See [TRANSITION.md](https://github.com/jmdobry/robocop.js/blob/master/TRANSITION.md) for details on breaking changes between versions.
 
 ## Upgrade with Bower
-After installing angular-cache with Bower, your `bower.json` file lists angular-cache as a dependency.
+After installing robocop.js with Bower, your `bower.json` file lists robocop.js as a dependency.
 
 ```javascript
 "dependencies": {
-    "angular-cache": "~1.2.1"
+    "robocop.js": "~0.6.0"
 }
 ```
 
 <br>
 The command:
 
-`bower install angular-cache -F --save`
+`bower install robocop.js -F --save`
 
-will install the latest stable version of angular-cache and save the change to your `bower.json`.
+will install the latest stable version of robocop.js and save the change to your `bower.json`.
 
 <br>
 Alternatively, you can specify the new version you want to install, for example:
 
-`bower install angular-cache#2.1.0 --save`.
+`bower install robocop.js#2.1.0 --save`.
 
 <br>
-`bower prune` will remove the old installation of angular-cache.
+`bower prune` will remove the old installation of robocop.js.
+
+## Upgrade with NPM
+After installing robocop.js with NPM, your `package.json` file lists robocop.js as a dependency.
+
+```javascript
+"dependencies": {
+    "robocop.js": "~0.6.0"
+}
+```
+
+<br>
+The command:
+
+`npm update robocop.js --save`
+
+will install the latest stable version of robocop.js and save the change to your `package.json`.
+
+<br>
+Alternatively, you can specify the new version you want to install, for example:
+
+`npm install robocop.js@0.6.0 --save`.
 
 ## Upgrade Manually
-Download the version of angular-cache you want as specified in the [Download](#download) section.
+Download the version of robocop.js you want as specified in the [Download](#download) section.
 
-Remember to update your references to angular-cache.
+Remember to update your references to robocop.js.

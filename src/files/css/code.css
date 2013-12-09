@@ -1,7 +1,13 @@
+/*
+
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+
+*/
+
 pre code {
     display: block; padding: 0.5em;
-    color: #DDD;
-    background: #444
+    color: #333;
+    background: #f8f8ff
 }
 
 pre .comment,
@@ -20,28 +26,28 @@ pre .nginx .title,
 pre .subst,
 pre .request,
 pre .status {
-    color: #fff;
+    color: #333;
     font-weight: bold
 }
 
 pre .number,
 pre .hexcolor,
 pre .ruby .constant {
-    color: #A6E22E;
+    color: #099;
 }
 
 pre .string,
 pre .tag .value,
 pre .phpdoc,
 pre .tex .formula {
-    color: #D88;
+    color: #d14
 }
 
 pre .title,
 pre .id,
 pre .coffeescript .params,
 pre .scss .preprocessor {
-    color: #DD6936;
+    color: #900;
     font-weight: bold
 }
 
