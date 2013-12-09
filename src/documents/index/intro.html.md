@@ -6,7 +6,7 @@ gfm: true
 index: 1
 ---
 ## What is robocop.js?
-Angular-cache is a library that allows you to define and validate rules, datatypes and schemata in Node and in the browser. Check it out:
+robocop.js is a library that allows you to define and validate rules, datatypes and schemata in Node and in the browser. Check it out:
 
 #### Define a rule
 ```javascript
