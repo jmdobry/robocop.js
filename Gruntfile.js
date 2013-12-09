@@ -1,90 +1,80 @@
-'use strict';
 module.exports = function (grunt) {
 
-	require('load-grunt-tasks')(grunt);
-	require('time-grunt')(grunt);
+    require('load-grunt-tasks')(grunt);
 
-	var config = {
-		lib: 'lib',
-		test: 'test'
-	};
+    // Project configuration.
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        clean: {
+            pre: [
+                'css/',
+                'fonts/',
+                'js/',
+                'img/',
+                '*.html',
+                'out/css/styles.min.css',
+                'out/js/scripts.js'
+            ],
+            mid: [
+                'out/css/bootstrap.css',
+                'out/css/code.css',
+                'out/css/robocop.css',
+                'out/css/main.css',
+                'out/css/styles.css',
+                'out/js/bootstrap.min.js',
+                'out/js/jquery.min.js',
+                'out/api/',
+                'out/configuration/',
+                'out/guide/',
+                'out/index/',
+                'out/installation/'
+            ],
+            post: ['out/']
+        },
+        cssmin: {
+            combine: {
+                files: {
+                    'out/css/styles.css': [
+                        'src/files/css/main.css'
+                    ]
+                }
+            },
+            minify: {
+                expand: true,
+                cwd: 'out/css/',
+                src: ['styles.css'],
+                dest: 'out/css/',
+                ext: '.min.css'
+            }
+        },
+        concat: {
+            default: {
+                files: {
+                    'out/js/scripts.js': ['src/files/js/jquery.min.js', 'src/files/js/bootstrap.min.js']
+                }
+            }
+        },
+        copy: {
+            default: {
+                expand: true,
+                cwd: 'out/',
+                src: '**/*',
+                dest: './'
+            }
+        },
+        shell: {
+            default: {
+                options: {
+                    stdout: true,
+                    stderr: true,
+                    failOnError: true
+                },
+                command: 'node node_modules/docpad/bin/docpad-compile generate'
+            }
+        }
+    });
 
-	grunt.initConfig({
-		config: config,
-		pkg: grunt.file.readJSON('package.json'),
-		clean: {
-			pre: ['dist/']
-		},
-		jshint: {
-			options: {
-				jshintrc: '.jshintrc'
-			},
-			all: [
-				'Gruntfile.js',
-				'<%= config.lib %>/{,*/}*.js',
-				'<%= config.test %>/{,*/}*.js'
-			]
-		},
+    grunt.registerTask('default', ['clean:pre', 'cssmin', 'concat', 'clean:mid', 'copy', 'clean:post']);
 
-		uglify: {
-			second: {
-				options: {
-					banner: '/**\n' +
-						'* @author Jason Dobry <jason.dobry@gmail.com>\n' +
-						'* @file robocop.min.js\n' +
-						'* @version <%= pkg.version %> - Homepage <http://jmdobry.github.io/robocop.js/>\n' +
-						'* @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>\n' +
-						'* @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>\n' +
-						'*\n' +
-						'* @overview Define and validate rules, datatypes and schemata in Node and in the browser.\n' +
-						'*/\n'
-				},
-				files: {
-					'dist/robocop.min.js': ['dist/robocop.js']
-				}
-			}
-		},
-
-		shell: {
-			unit: {
-				options: {
-					stdout: true,
-					stderr: true,
-					failOnError: true,
-					execOptions: {
-						env: {
-							NODE_ENV: 'test'
-						}
-					}
-				},
-				command: 'node test/unit/runner.js'
-			}
-		},
-
-		mochaTest: {
-			unit: {
-				options: {
-					reporter: 'dot'
-				},
-				src: ['test/support/support.js', 'test/unit/**/*.js']
-			}
-		},
-
-		browserify: {
-			dist: {
-				options: {
-					standalone: 'robocop'
-				},
-				files: {
-					'dist/robocop.js': ['lib/index.js']
-				}
-			}
-		}
-	});
-
-	grunt.registerTask('test-unit', ['mochaTest:unit']);
-	grunt.registerTask('test', ['test-unit']);
-	grunt.registerTask('build', ['clean', 'jshint', 'test', 'browserify', 'uglify']);
-
-	grunt.registerTask('default', ['build']);
+    grunt.registerTask('build', ['shell', 'default']);
 };

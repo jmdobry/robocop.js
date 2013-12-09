@@ -1,0 +1,7 @@
+---
+layout: "default"
+pageName: playground
+displayName: Playground
+description: Try robocop.js.
+sections: 'playground'
+---
