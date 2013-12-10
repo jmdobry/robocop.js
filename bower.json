@@ -1,0 +1,22 @@
+{
+  "name": "robocop.js",
+  "version": "0.6.0",
+  "homepage": "http://jmdobry.github.io/robocop.js",
+  "authors": [
+    "Jason Dobry <jason.dobry@gmail.com>"
+  ],
+  "description": "Define and validate rules, datatypes and schemata in Node and in the browser.",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ace-builds": "~1.1.1",
+    "robocop.js": "~0.6.0"
+  }
+}

@@ -20,6 +20,12 @@ code {
     color: #333333;
 }
 
+.row .row {
+    margin: 0;
+}
+#schema-editor, #data-editor {
+    height: 300px;
+}
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
     background-color: #fff;
     border-color: #DA2C28;

@@ -60,7 +60,18 @@ module.exports = function (grunt) {
                 cwd: 'out/',
                 src: '**/*',
                 dest: './'
-            }
+            },
+	        'js-ace': {
+		        expand: true,
+		        flatten: true,
+		        cwd: 'src/files/js/bower_components/ace-builds/src-noconflict/',
+		        src: ['*'],
+		        dest: 'js/'
+	        },
+	        'js-robocop': {
+		        src: ['src/files/js/bower_components/robocop.js/dist/robocop.min.js'],
+		        dest: 'js/robocop.min.js'
+	        }
         },
         shell: {
             default: {

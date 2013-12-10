@@ -42,9 +42,11 @@
                     <li class="">
                         <a href="guide.html">Guide</a>
                     </li>
+                    -->
                     <li class="">
                         <a href="playground.html">Playground</a>
                     </li>
+                    <!--
                     <li class="">
                         <a href="api.html">API</a>
                     </li>
@@ -90,7 +92,7 @@
 		<!-- Docs nav
 		================================================== -->
 		<div class="row">
-			<div class="col-md-3" id="sidebar">
+			<div class="col-md-3" id="sidebar" >
 				<ul class="list-group nav" id="sidenav">
 				    
                         
@@ -203,7 +205,7 @@ Alternatively, you can specify the new version you want to install, for example:
 			</div>
 		</div>
 		<div class="row">
-		    <div class="col-md-3"></div>
+		    <div class="col-md-3"  ></div>
 		    <div class="col-md-9">
                 <div id="disqus_thread"></div>
                 <script type="text/javascript">
@@ -252,10 +254,11 @@ Alternatively, you can specify the new version you want to install, for example:
 			})
 		});
 	</script>
+	
 	<script type="text/javascript">
-      var analytics=analytics||[];(function(){var e=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],t=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var n=0;n<e.length;n++)analytics[e[n]]=t(e[n])})(),analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)};
-      analytics.load("5e2vnbkf6h");
-      analytics.page();
+      window.analytics||(window.analytics=[]),window.analytics.methods=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var method=window.analytics.methods[i];window.analytics[method]=window.analytics.factory(method)}window.analytics.load=function(t){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)},window.analytics.SNIPPET_VERSION="2.0.8",
+      window.analytics.load("5e2vnbkf6h");
+      window.analytics.page();
     </script>
 </body>
 </html>

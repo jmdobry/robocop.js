@@ -42,9 +42,11 @@
                     <li class="<%= "active" if @document.basename=='guide' %>">
                         <a href="guide.html">Guide</a>
                     </li>
-                    <li class="<%= "active" if @document.basename=='configuration' %>">
+                    -->
+                    <li class="<%= "active" if @document.basename=='playground' %>">
                         <a href="playground.html">Playground</a>
                     </li>
+                    <!--
                     <li class="<%= "active" if @document.basename=='api' %>">
                         <a href="api.html">API</a>
                     </li>
@@ -84,7 +86,7 @@
 		<!-- Docs nav
 		================================================== -->
 		<div class="row">
-			<div class="col-md-3" id="sidebar">
+			<div class="col-md-3" id="sidebar" <%= "style='display:none;'" if @document.basename=='playground' %>>
 				<ul class="list-group nav" id="sidenav">
 				    <% for file in theseFiles: %>
                         <% if file.meta.sectionName: %>
@@ -95,7 +97,7 @@
                     <% end %>
 				</ul>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-<%= "12" if @document.basename=='playground' %><%= "9" if @document.basename!='playground' %>">
 				<% for file in theseFiles: %>
 				    <% if file.meta.sectionName: %>
 				        <section id="<%= file.meta.sectionLinkName %>">
@@ -107,8 +109,8 @@
 			</div>
 		</div>
 		<div class="row">
-		    <div class="col-md-3"></div>
-		    <div class="col-md-9">
+		    <div class="col-md-3" <%= "style='display:none;'" if @document.basename=='playground' %> ></div>
+		    <div class="col-md-<%= "12" if @document.basename=='playground' %><%= "9" if @document.basename!='playground' %>">
                 <div id="disqus_thread"></div>
                 <script type="text/javascript">
                     /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
@@ -156,10 +158,52 @@
 			})
 		});
 	</script>
+	<% if @document.basename=='playground': %>
+		<script src="js/robocop.min.js"></script>
+		<script src="js/ace.js"></script>
+		<script>
+			ace.config.set('basePath', '/js/');
+			function output(o) {
+				console.log(o);
+				$('.row .row .highlighted code').html(JSON.stringify(o, null, 2));
+			}
+			var editor = ace.edit('schema-editor');
+			editor.renderer.setShowGutter(false);
+            editor.setTheme('ace/theme/clouds');
+            editor.getSession().setMode('ace/mode/javascript');
+
+            // EVENTS
+            editor.getSession().on('change', function (e) {
+                try {
+                    window.roboschema = new robocop.Schema('test', JSON.parse(editor.getSession().getValue()));
+                    output(window.roboschema.validate(JSON.parse(editor2.getSession().getValue())));
+                } catch (err) {
+					output(err.message);
+                }
+            });
+            editor.getSession().setValue('{\n\t"name": {\n\t\t"type": "string"\n\t}\n}');
+
+            var editor2 = ace.edit('data-editor');
+			editor2.renderer.setShowGutter(false);
+            editor2.setTheme('ace/theme/clouds');
+            editor2.getSession().setMode('ace/mode/javascript');
+
+            // EVENTS
+            editor2.getSession().on('change', function (e) {
+                try {
+                    output(window.roboschema.validate(JSON.parse(editor2.getSession().getValue())));
+                } catch (err) {
+					output(err.message);
+                }
+            });
+            editor2.getSession().setValue('{\n\t"name": "John Smith"\n}');
+            $('.row .row .highlighted').addClass('col-md-4');
+		</script>
+	<% end %>
 	<script type="text/javascript">
-      var analytics=analytics||[];(function(){var e=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],t=function(e){return function(){analytics.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var n=0;n<e.length;n++)analytics[e[n]]=t(e[n])})(),analytics.load=function(e){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+e+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(t,n)};
-      analytics.load("5e2vnbkf6h");
-      analytics.page();
+      window.analytics||(window.analytics=[]),window.analytics.methods=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var method=window.analytics.methods[i];window.analytics[method]=window.analytics.factory(method)}window.analytics.load=function(t){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)},window.analytics.SNIPPET_VERSION="2.0.8",
+      window.analytics.load("5e2vnbkf6h");
+      window.analytics.page();
     </script>
 </body>
 </html>

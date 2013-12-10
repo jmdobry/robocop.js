@@ -1,3 +1,3 @@
 module.exports = {
-	ignoreCustomPatterns: /draft_/
+	ignoreCustomPatterns: /draft_|bower_components/
 };
