@@ -45,22 +45,6 @@ module.exports = function (grunt) {
 			}
 		},
 
-		shell: {
-			unit: {
-				options: {
-					stdout: true,
-					stderr: true,
-					failOnError: true,
-					execOptions: {
-						env: {
-							NODE_ENV: 'test'
-						}
-					}
-				},
-				command: 'node test/unit/runner.js'
-			}
-		},
-
 		mochaTest: {
 			unit: {
 				options: {
