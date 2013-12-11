@@ -196,7 +196,7 @@ describe('robocop', function () {
 			}
 			done();
 		});
-		it('should throw an error if attrs is not an object', function (done) {
+		it('should throw an error if options is not an object', function (done) {
 			robocop.defineSchema('test', {
 				shouldSucceed: {
 					succeedTest: true
@@ -255,6 +255,36 @@ describe('robocop', function () {
 			});
 			assert.isUndefined(errors);
 			assert.equal(newSchema.validate.callCount, 1, 'Validate should have been called once.');
+			done();
+		});
+	});
+
+	describe('robocop.removeSchema()', function () {
+		it('should throw an error if name is not a string', function (done) {
+			mout.collection.forEach(TYPES_EXCEPT_STRING, function (val) {
+				try {
+					robocop.removeSchema(val);
+					fail('should fail on ' + val);
+				} catch (err) {
+					assert.equal(err.message, 'robocop.removeSchema(name): name: Must be a string!');
+				}
+			});
+			try {
+				robocop.removeSchema('a string');
+			} catch (err) {
+				fail('should not fail on a string.');
+			}
+			done();
+		});
+		it('should remove a schema if it exists', function (done) {
+			var newSchema = robocop.defineSchema('test', {
+				shouldSucceed: {
+					succeedTest: true
+				}
+			});
+			assert.deepEqual(robocop.getSchema('test'), newSchema);
+			robocop.removeSchema('test');
+			assert.isUndefined(robocop.getSchema('test'));
 			done();
 		});
 	});
@@ -387,7 +417,34 @@ describe('robocop', function () {
 		});
 	});
 
-	/******** robocop RULE methods *********/
+	describe('robocop.removeRule()', function () {
+		it('should throw an error if name is not a string', function (done) {
+			mout.collection.forEach(TYPES_EXCEPT_STRING, function (val) {
+				try {
+					robocop.removeRule(val);
+					fail('should fail on ' + val);
+				} catch (err) {
+					assert.equal(err.message, 'robocop.removeRule(name): name: Must be a string!');
+				}
+			});
+			try {
+				robocop.removeRule('a string');
+			} catch (err) {
+				fail('should not fail on a string.');
+			}
+			done();
+		});
+		it('should remove a schema if it exists', function (done) {
+			var ruleFunc = function () {};
+			robocop.defineRule('test', ruleFunc);
+			assert.deepEqual(robocop.getRule('test'), ruleFunc);
+			robocop.removeRule('test');
+			assert.isUndefined(robocop.getRule('test'));
+			done();
+		});
+	});
+
+	/******** robocop DATATYPE methods *********/
 	describe('robocop.defineDataType(name, typeDefinition)', function () {
 		it('should register a new datatype', function (done) {
 			var typeDef = function () {
@@ -540,6 +597,33 @@ describe('robocop', function () {
 			assert.equal(typeDef.callCount, 1);
 			assert.isFalse(robocop.testDataType('test2'));
 			assert.equal(typeDef2.callCount, 1);
+			done();
+		});
+	});
+
+	describe('robocop.removeDataType()', function () {
+		it('should throw an error if name is not a string', function (done) {
+			mout.collection.forEach(TYPES_EXCEPT_STRING, function (val) {
+				try {
+					robocop.removeDataType(val);
+					fail('should fail on ' + val);
+				} catch (err) {
+					assert.equal(err.message, 'robocop.removeDataType(name): name: Must be a string!');
+				}
+			});
+			try {
+				robocop.removeDataType('a string');
+			} catch (err) {
+				fail('should not fail on a string.');
+			}
+			done();
+		});
+		it('should remove a schema if it exists', function (done) {
+			var typeDef = function () {};
+			robocop.defineDataType('test', typeDef);
+			assert.deepEqual(robocop.getDataType('test'), typeDef);
+			robocop.removeDataType('test');
+			assert.isUndefined(robocop.getDataType('test'));
 			done();
 		});
 	});
