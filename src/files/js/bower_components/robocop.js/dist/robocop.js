@@ -1,7 +1,7 @@
 /**
  * @author Jason Dobry <jason.dobry@gmail.com>
  * @file robocop.js
- * @version 0.6.0 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @version 0.8.0 - Homepage <http://jmdobry.github.io/robocop.js/>
  * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
  * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
  *
@@ -32,6 +32,7 @@ module.exports = {
 'use strict';
 
 module.exports = require('./robocop');
+
 },{"./robocop":4}],3:[function(require,module,exports){
 'use strict';
 
@@ -43,7 +44,7 @@ var defaultDataTypes = require('../dataType');
 var dataTypes = {};
 
 module.exports = {
-	defineDataType: function defineDataType(name, typeDefinition) {
+	defineDataType: function (name, typeDefinition) {
 		if (!isString(name)) {
 			throw new Error('robocop.defineDataType(name, typeDefinition): name: Must be a string!');
 		}
@@ -53,31 +54,40 @@ module.exports = {
 		dataTypes[name] = typeDefinition;
 	},
 
-	hasDataType: function hasDataType(name) {
+	hasDataType: function (name) {
 		if (!isString(name)) {
 			throw new Error('robocop.hasDataType(name): name: Must be a string!');
 		}
 		return !!(dataTypes[name] || defaultDataTypes[name]);
 	},
 
-	getDataType: function getDataType(name) {
+	getDataType: function (name) {
 		if (!isString(name)) {
 			throw new Error('robocop.getDataType(name): name: Must be a string!');
 		}
 		return dataTypes[name] || defaultDataTypes[name];
 	},
 
-	availableDataTypes: function availableDataTypes() {
+	availableDataTypes: function () {
 		return keys(dataTypes).concat(keys(defaultDataTypes));
 	},
 
-	testDataType: function testDataType(name, value) {
+	testDataType: function (name, value) {
 		if (!isString(name)) {
 			throw new Error('robocop.testDataType(name, value): name: Must be a string!');
 		} else if (!(dataTypes[name] || defaultDataTypes[name])) {
 			throw new Error('robocop.testDataType(name, value): name: No dataType with that name exists!');
 		}
 		return dataTypes[name] ? dataTypes[name](value) : defaultDataTypes[name](value);
+	},
+
+	removeDataType: function (name) {
+		if (!isString(name)) {
+			throw new Error('robocop.removeDataType(name): name: Must be a string!');
+		}
+		if (dataTypes[name]) {
+			delete dataTypes[name];
+		}
 	}
 };
 
@@ -86,12 +96,17 @@ module.exports = {
 
 var deepMixIn = require('mout/object/deepMixIn');
 
-var robocop = module.exports = {};
+var robocop = module.exports = {
+	Schema: require('../schema'),
+	defaultRules: require('../rule'),
+	defaultDataTypes: require('../dataType')
+};
 
 deepMixIn(robocop, require('./schema'));
 deepMixIn(robocop, require('./rule'));
 deepMixIn(robocop, require('./dataType'));
-},{"./dataType":3,"./rule":5,"./schema":6,"mout/object/deepMixIn":57}],5:[function(require,module,exports){
+
+},{"../dataType":1,"../rule":7,"../schema":8,"./dataType":3,"./rule":5,"./schema":6,"mout/object/deepMixIn":57}],5:[function(require,module,exports){
 'use strict';
 
 var isString = require('mout/lang/isString'),
@@ -102,40 +117,50 @@ var defaultRules = require('../rule');
 var rules = {};
 
 module.exports = {
-	defineRule: function defineRule(name, ruleFunc) {
+	defineRule: function (name, ruleFunc) {
 		if (rules[name]) {
 			throw new Error('robocop.defineRule(name, ruleFunc): name: Name already in use!');
 		}
 		rules[name] = ruleFunc;
 	},
 
-	hasRule: function hasRule(name) {
+	hasRule: function (name) {
 		if (!isString(name)) {
 			throw new Error('robocop.hasRule(name): name: Must be a string!');
 		}
 		return !!rules[name];
 	},
 
-	getRule: function getRule(name) {
+	getRule: function (name) {
 		if (!isString(name)) {
 			throw new Error('robocop.getRule(name): name: Must be a string!');
 		}
 		return rules[name];
 	},
 
-	availableRules: function availableRules() {
+	availableRules: function () {
 		return keys(rules).concat(keys(defaultRules));
 	},
 
-	testRule: function testRule(name, value, options) {
+	testRule: function (name, value, options) {
 		if (!isString(name)) {
 			throw new Error('robocop.testRule(name, value, options): name: Must be a string!');
 		} else if (!rules[name] && !defaultRules[name]) {
 			throw new Error('robocop.testRule(name, value, options): name: No rule with that name exists!');
 		}
 		return rules[name] ? rules[name](value, options) : defaultRules[name](value, options);
+	},
+
+	removeRule: function (name) {
+		if (!isString(name)) {
+			throw new Error('robocop.removeRule(name): name: Must be a string!');
+		}
+		if (rules[name]) {
+			delete rules[name];
+		}
 	}
 };
+
 },{"../rule":7,"mout/lang/isString":42,"mout/object/keys":69}],6:[function(require,module,exports){
 'use strict';
 
@@ -147,7 +172,7 @@ var isString = require('mout/lang/isString'),
 var schemas = {};
 
 module.exports = {
-	defineSchema: function definedSchema(name, schema) {
+	defineSchema: function (name, schema) {
 		if (schemas[name]) {
 			throw new Error('robocop.defineSchema(name, schema): name: Name already in use!');
 		}
@@ -155,25 +180,25 @@ module.exports = {
 		return schemas[name];
 	},
 
-	hasSchema: function hasSchema(name) {
+	hasSchema: function (name) {
 		if (!isString(name)) {
 			throw new Error('robocop.hasSchema(name): name: Must be a string!');
 		}
 		return !!schemas[name];
 	},
 
-	getSchema: function getSchema(name) {
+	getSchema: function (name) {
 		if (!isString(name)) {
 			throw new Error('robocop.getSchema(name): name: Must be a string!');
 		}
 		return schemas[name];
 	},
 
-	availableSchemas: function availableSchemas() {
+	availableSchemas: function () {
 		return keys(schemas);
 	},
 
-	testSchema: function testSchema(attrs, options) {
+	testSchema: function (attrs, options) {
 		if (!isObject(attrs)) {
 			throw new Error('robocop.testSchema(attrs, options, cb): attrs: Must be an object!');
 		} else if (!isObject(options)) {
@@ -182,6 +207,15 @@ module.exports = {
 			throw new Error('robocop.testSchema(attrs, options, cb): options.name: No schema with that name exists!');
 		}
 		return schemas[options.name].validate(attrs, options);
+	},
+
+	removeSchema: function (name) {
+		if (!isString(name)) {
+			throw new Error('robocop.removeSchema(name): name: Must be a string!');
+		}
+		if (schemas[name]) {
+			delete schemas[name];
+		}
 	}
 };
 
