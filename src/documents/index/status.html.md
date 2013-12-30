@@ -15,7 +15,7 @@ index: 2
 <tbody>
 <tr>
 <td>Version</td>
-<td>[0.10.0](https://github.com/jmdobry/robocop.js/releases/tag/0.10.0)</td>
+<td>[0.10.1](https://github.com/jmdobry/robocop.js/releases/tag/0.10.1)</td>
 </tr>
 <tr>
 <td>Source</td>

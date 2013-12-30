@@ -1,6 +1,6 @@
 ## robocop.js
 
-__Version:__ 0.10.0
+__Version:__ 0.10.1
 
 __Define and validate rules, datatypes and schemata in Node and in the browser.__
 
