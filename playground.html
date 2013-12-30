@@ -193,7 +193,7 @@
             editor.getSession().on('change', function (e) {
                 try {
                     window.roboschema = new robocop.Schema('test', JSON.parse(editor.getSession().getValue()));
-                    output(window.roboschema.validate(JSON.parse(editor2.getSession().getValue())));
+                    output(window.roboschema.validateSync(JSON.parse(editor2.getSession().getValue())));
                 } catch (err) {
 					output(err.message);
                 }
@@ -208,7 +208,7 @@
             // EVENTS
             editor2.getSession().on('change', function (e) {
                 try {
-                    output(window.roboschema.validate(JSON.parse(editor2.getSession().getValue())));
+                    output(window.roboschema.validateSync(JSON.parse(editor2.getSession().getValue())));
                 } catch (err) {
 					output(err.message);
                 }
