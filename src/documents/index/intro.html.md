@@ -11,12 +11,12 @@ robocop.js is a library that allows you to define and validate rules, datatypes 
 #### Define a rule
 ```javascript
 robocop.defineRule('noBadWords', function (value, options) {
-	// This function should return true if value satisfies the rule,
-	// otherwise return false
+	// This function should return null if value satisfies the rule,
+	// otherwise the return value will be the error message
 	if (typeof value === 'string') {
 		return value.indexOf('bad word') === -1;
 	}
-	return true;
+	return null;
 });
 ```
 
@@ -62,7 +62,7 @@ var result = robocop.testSchema({
 	name: 'post' // the name of the schema to use in the test
 });
 
-console.log(result); // null (null is good)
+result; // null (null is good)
 ```
 
 #### Get an error object when the test fails
@@ -77,5 +77,5 @@ var result = robocop.testSchema({
 	name: 'post' // the name of the schema to use in the test
 });
 
-console.log(result); // { content: ['noBadWords'], tags: ['type'] } (an error object)
+result; //  { content: { errors: [10] } }
 ```
