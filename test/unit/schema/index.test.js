@@ -3,10 +3,10 @@
 // Mock rules
 var rules = {
 	succeedTest: function () {
-		return true;
+		return null;
 	},
 	failTest: function () {
-		return false;
+		return 'fail';
 	}
 };
 
@@ -25,8 +25,8 @@ describe('Schema', function () {
 
 	// Reset the stubs/spies for each test
 	beforeEach(function (done) {
-		rules.succeedTest = sinon.stub().returns(true);
-		rules.failTest = sinon.stub().returns(false);
+		rules.succeedTest = sinon.stub().returns(null);
+		rules.failTest = sinon.stub().returns('fail');
 		done();
 	});
 
@@ -97,7 +97,7 @@ describe('Schema', function () {
 				assert.isTrue(rules.failTest.calledWith(true, true), 'failTest should have been called with [true, true]');
 				assert.deepEqual(errors, {
 					shouldFail: {
-						errors: [ 'failTest' ]
+						errors: [ 'fail' ]
 					}
 				}, 'errors should be defined when the test fails');
 			});
@@ -137,7 +137,7 @@ describe('Schema', function () {
 				assert.isTrue(rules.failTest.calledWith(true, true), 'failTest should have been called with [true, true]');
 				assert.deepEqual(errors, {
 					shouldFail: {
-						errors: [ 'failTest' ]
+						errors: [ 'fail' ]
 					}
 				}, 'err should be defined when the test fails');
 				done();
@@ -164,7 +164,7 @@ describe('Schema', function () {
 				assert.isTrue(rules.failTest.calledWith(false, false), 'failTest should have been called with [false, false]');
 				assert.deepEqual(errors, {
 					shouldFail: {
-						errors: [ 'failTest' ]
+						errors: [ 'fail' ]
 					}
 				}, 'errors should be defined when the test fails');
 				done();
@@ -191,7 +191,7 @@ describe('Schema', function () {
 				assert.isTrue(rules.failTest.calledWith(false, true), 'failTest should have been called with [false, true]');
 				assert.deepEqual(errors, {
 					shouldFail: {
-						errors: [ 'failTest' ]
+						errors: [ 'fail' ]
 					}
 				}, 'errors should be defined when the test fails');
 				done();
@@ -218,7 +218,7 @@ describe('Schema', function () {
 				assert.isTrue(rules.failTest.calledWith(true, false), 'failTest should have been called with [true, false]');
 				assert.deepEqual(errors, {
 					shouldFail: {
-						errors: [ 'failTest' ]
+						errors: [ 'fail' ]
 					}
 				}, 'errors should be defined when the test fails');
 				done();
@@ -247,7 +247,7 @@ describe('Schema', function () {
 			assert.isTrue(rules.failTest.calledWith(true, true), 'failTest should have been called with [true, true]');
 			assert.deepEqual(errors, {
 				shouldFail: {
-					errors: [ 'failTest' ]
+					errors: [ 'fail' ]
 				}
 			}, 'errors should be defined when the test fails');
 			done();
@@ -285,7 +285,7 @@ describe('Schema', function () {
 			assert.isTrue(rules.failTest.calledWith(true, true), 'failTest should have been called with [true, true]');
 			assert.deepEqual(errors, {
 				shouldFail: {
-					errors: [ 'failTest' ]
+					errors: [ 'fail' ]
 				}
 			}, 'err should be defined when the test fails');
 			done();
@@ -311,7 +311,7 @@ describe('Schema', function () {
 			assert.isTrue(rules.failTest.calledWith(false, false), 'failTest should have been called with [false, false]');
 			assert.deepEqual(errors, {
 				shouldFail: {
-					errors: [ 'failTest' ]
+					errors: [ 'fail' ]
 				}
 			}, 'errors should be defined when the test fails');
 			done();
@@ -337,7 +337,7 @@ describe('Schema', function () {
 			assert.isTrue(rules.failTest.calledWith(false, true), 'failTest should have been called with [false, true]');
 			assert.deepEqual(errors, {
 				shouldFail: {
-					errors: [ 'failTest' ]
+					errors: [ 'fail' ]
 				}
 			}, 'errors should be defined when the test fails');
 			done();
@@ -364,7 +364,7 @@ describe('Schema', function () {
 			assert.isTrue(rules.failTest.calledWith(true, false), 'failTest should have been called with [true, false]');
 			assert.deepEqual(errors, {
 				shouldFail: {
-					errors: [ 'failTest' ]
+					errors: [ 'fail' ]
 				}
 			}, 'errors should be defined when the test fails');
 			done();

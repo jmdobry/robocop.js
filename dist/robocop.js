@@ -1,7 +1,7 @@
 /**
  * @author Jason Dobry <jason.dobry@gmail.com>
  * @file robocop.js
- * @version 0.9.0 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @version 0.10.0 - Homepage <http://jmdobry.github.io/robocop.js/>
  * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
  * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
  *
@@ -10,25 +10,106 @@
 !function(o){"object"==typeof exports?module.exports=o():"function"==typeof define&&define.amd?define(o):"undefined"!=typeof window?window.robocop=o():"undefined"!=typeof global?global.robocop=o():"undefined"!=typeof self&&(self.robocop=o())}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var lang = require('mout/lang'),
-	toInt = require('mout/number/toInt');
+var utils = require('../support/utils');
 
 module.exports = {
-	'string': lang.isString,
-	'number': lang.isNumber,
-	'integer': function (x) {
-		if (!lang.isNumber(x)) {
-			return false;
+	string: function (x) {
+		if (utils.isString(x)) {
+			return null;
+		} else {
+			return {
+				rule: 'type',
+				actual: typeof x,
+				expected: 'string'
+			};
 		}
-		return Math.abs(x) - Math.abs(toInt(x)) === 0;
 	},
-	'float': lang.isNumber,
-	'array': lang.isArray,
-	'object': lang.isObject,
-	'boolean': lang.isBoolean,
-	'date': lang.isDate
+	number: function (x) {
+		if (utils.isNumber(x)) {
+			return null;
+		} else {
+			return {
+				rule: 'type',
+				actual: typeof x,
+				expected: 'number'
+			};
+		}
+	},
+	integer: function (x) {
+		if (!utils.isNumber(x)) {
+			return {
+				rule: 'type',
+				actual: typeof x,
+				expected: 'integer'
+			};
+		} else if (Math.abs(x) - Math.abs(utils.toInt(x)) !== 0) {
+			return {
+				rule: 'type',
+				actual: 'real',
+				expected: 'integer'
+			};
+		} else {
+			return null;
+		}
+	},
+	float: function (x) {
+		if (utils.isNumber(x)) {
+			return null;
+		} else {
+			return {
+				rule: 'type',
+				actual: typeof x,
+				expected: 'float'
+			};
+		}
+	},
+	array: function (x) {
+		if (utils.isArray(x)) {
+			return null;
+		} else {
+			return {
+				rule: 'type',
+				actual: typeof x,
+				expected: 'array'
+			};
+		}
+	},
+	object: function (x) {
+		if (utils.isObject(x)) {
+			return null;
+		} else {
+			return {
+				rule: 'type',
+				actual: typeof x,
+				expected: 'object'
+			};
+		}
+	},
+	boolean: function (x) {
+		if (utils.isBoolean(x)) {
+			return null;
+		} else {
+			return {
+				rule: 'type',
+				actual: typeof x,
+				expected: 'boolean'
+			};
+		}
+	},
+	date: function (x) {
+		if (utils.isDate(x)) {
+			return null;
+		} else {
+			return {
+				rule: 'type',
+				actual: typeof x,
+				expected: 'date'
+			};
+		}
+	}
 };
-},{"mout/lang":21,"mout/number/toInt":52}],2:[function(require,module,exports){
+
+},{"../support/utils":9}],2:[function(require,module,exports){
 'use strict';
 
 module.exports = require('./robocop');
@@ -91,7 +172,7 @@ module.exports = {
 	}
 };
 
-},{"../dataType":1,"mout/lang/isString":44,"mout/object/keys":71}],4:[function(require,module,exports){
+},{"../dataType":1,"mout/lang/isString":26,"mout/object/keys":39}],4:[function(require,module,exports){
 'use strict';
 
 var deepMixIn = require('mout/object/deepMixIn');
@@ -106,7 +187,7 @@ deepMixIn(robocop, require('./schema'));
 deepMixIn(robocop, require('./rule'));
 deepMixIn(robocop, require('./dataType'));
 
-},{"../dataType":1,"../rule":7,"../schema":8,"./dataType":3,"./rule":5,"./schema":6,"mout/object/deepMixIn":59}],5:[function(require,module,exports){
+},{"../dataType":1,"../rule":7,"../schema":8,"./dataType":3,"./rule":5,"./schema":6,"mout/object/deepMixIn":31}],5:[function(require,module,exports){
 'use strict';
 
 var isString = require('mout/lang/isString'),
@@ -161,7 +242,7 @@ module.exports = {
 	}
 };
 
-},{"../rule":7,"mout/lang/isString":44,"mout/object/keys":71}],6:[function(require,module,exports){
+},{"../rule":7,"mout/lang/isString":26,"mout/object/keys":39}],6:[function(require,module,exports){
 'use strict';
 
 var isString = require('mout/lang/isString'),
@@ -219,82 +300,93 @@ module.exports = {
 	}
 };
 
-},{"../schema":8,"mout/lang/isObject":41,"mout/lang/isString":44,"mout/object/keys":71}],7:[function(require,module,exports){
+},{"../schema":8,"mout/lang/isObject":24,"mout/lang/isString":26,"mout/object/keys":39}],7:[function(require,module,exports){
 'use strict';
 
-var lang = require('mout/lang'),
+var utils = require('../support/utils'),
 	dataTypes = require('../dataType');
 
 module.exports = {
-	'canBeEmpty': function (x, options) {
-		if (lang.isDate(x)) {
-			return true;
+	nullable: function (x, nullable) {
+		if ((x === null || x === undefined) && !nullable) {
+			return {
+				rule: 'nullable',
+				actual: 'x === ' + x + '',
+				expected: 'x !== null && x !== undefined'
+			};
+		} else {
+			return null;
 		}
-		return options ? true : !lang.isEmpty(x);
 	},
-	'nullable': function (x, options) {
-		return options ? true : x !== null;
-	},
-	'required': function (x, options) {
-		if (options) {
-			if (x === false || x === 0) {
-				return true;
-			} else if (lang.isString(x)) {
-				return !lang.isEmpty(x);
-			} else {
-				return !!x;
-			}
+	max: function (x, max) {
+		if (utils.isNumber(x) && utils.isNumber(max) && x > max) {
+			return {
+				rule: 'max',
+				actual: '' + x + ' > ' + max,
+				expected: '' + x + ' <= ' + max
+			};
+		} else {
+			return null;
 		}
-		return true;
 	},
-	'max': function (x, options) {
-		if (lang.isNumber(x)) {
-			return x <= options;
+	min: function (x, min) {
+		if (utils.isNumber(x) && utils.isNumber(min) && x < min) {
+			return {
+				rule: 'min',
+				actual: '' + x + ' < ' + min,
+				expected: '' + x + ' >= ' + min
+			};
+		} else {
+			return null;
 		}
-		return null;
 	},
-	'min': function (x, options) {
-		if (lang.isNumber(x)) {
-			return x >= options;
+	maxLength: function (x, maxLength) {
+		if ((utils.isString(x) || utils.isArray(x)) && utils.isNumber(maxLength) && x.length > maxLength) {
+			return {
+				rule: 'maxLength',
+				actual: '' + x.length + '  > ' + maxLength,
+				expected: '' + x.length + ' <= ' + maxLength
+			};
+		} else {
+			return null;
 		}
-		return null;
 	},
-	'maxLength': function (x, options) {
-		if (lang.isString(x) || lang.isArray(x)) {
-			return x.length <= options;
+	minLength: function (x, minLength) {
+		if ((utils.isString(x) || utils.isArray(x)) && utils.isNumber(minLength) && x.length < minLength) {
+			return {
+				rule: 'minLength',
+				actual: '' + x.length + ' < ' + minLength,
+				expected: '' + x.length + ' >= ' + minLength
+			};
+		} else {
+			return null;
 		}
-		return null;
 	},
-	'minLength': function (x, options) {
-		if (lang.isString(x) || lang.isArray(x)) {
-			return x.length >= options;
-		}
-		return null;
-	},
-	'type': function (x, options, customType) {
+	type: function (x, type, customType) {
 		if (customType) {
 			return customType(x);
+		} else {
+			return dataTypes[type] ? dataTypes[type](x) : null;
 		}
-		return dataTypes[options] ? dataTypes[options](x) : false;
 	}
 };
-},{"../dataType":1,"mout/lang":21}],8:[function(require,module,exports){
+
+},{"../dataType":1,"../support/utils":9}],8:[function(require,module,exports){
 'use strict';
 
-var lang = require('mout/lang'),
-	object = require('mout/object'),
+var utils = require('../support/utils'),
 	rules = require('../rule'),
 	async = require('async');
 
 function validateSchema(schema) {
-	if (!lang.isObject(schema)) {
+	if (!utils.isObject(schema)) {
 		throw new Error('Schema(name, schema): schema: Must be an object!');
 	}
 }
 
 var Schema = module.exports = function Schema(name, schema) {
 
-	if (!lang.isString(name)) {
+	if (!utils.isString(name)) {
 		throw new Error('Schema(name, schema): name: Must be a string!');
 	}
 	this.name = name;
@@ -309,29 +401,29 @@ var Schema = module.exports = function Schema(name, schema) {
 function _validateSync(targetKey, attrs) {
 	var errors = {};
 	var _this = this;
-	object.forOwn(attrs, function (value, key) {
+	utils.forOwn(attrs, function (value, key) {
 		var nestedKey = targetKey + (targetKey.length ? '.' : '') + key;
-		if (lang.isObject(value)) {
-			_validateSync.apply(_this, [nestedKey, value, function (err) {
-				if (err) {
-					errors[key] = err;
-				}
-			}]);
+		if (utils.isObject(value)) {
+			var err = _validateSync.apply(_this, [nestedKey, value]);
+			if (err) {
+				errors[key] = err;
+			}
 		} else {
-			var schemaRules = object.get(_this.schema, nestedKey);
-			object.forOwn(schemaRules, function (ruleValue, ruleKey) {
-				if (!rules[ruleKey](value, ruleValue)) {
+			var schemaRules = utils.get(_this.schema, nestedKey);
+			utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
+				var err = rules[ruleKey](value, ruleValue);
+				if (err) {
 					if (!errors[key]) {
 						errors[key] = {
 							errors: []
 						};
 					}
-					errors[key].errors.push(ruleKey);
+					errors[key].errors.push(err);
 				}
 			});
 		}
 	});
-	if (object.keys(errors).length > 0) {
+	if (utils.keys(errors).length > 0) {
 		return errors;
 	} else {
 		return null;
@@ -350,9 +442,9 @@ function _validate(targetKey, attrs, options, cb) {
 
 	delete options.first;
 
-	object.forOwn(attrs, function (value, key) {
+	utils.forOwn(attrs, function (value, key) {
 		var nestedKey = prefix + key;
-		if (lang.isObject(value)) {
+		if (utils.isObject(value)) {
 			// Recursive down into nested attributes
 			queue[key] = (function (nK, val) {
 				return function (next) {
@@ -361,45 +453,43 @@ function _validate(targetKey, attrs, options, cb) {
 			})(nestedKey, value);
 		} else {
 			// Test the rule for this attribute
-			var schemaRules = object.get(_this.schema, nestedKey);
-			object.forOwn(schemaRules, function (ruleValue, ruleKey) {
-				if (!rules[ruleKey](value, ruleValue)) {
+			var schemaRules = utils.get(_this.schema, nestedKey);
+			utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
+				var err = rules[ruleKey](value, ruleValue);
+				if (err) {
 					if (!errors[key]) {
 						errors[key] = {
 							errors: []
 						};
 					}
-					errors[key].errors.push(ruleKey);
+					errors[key].errors.push(err);
 				}
 			});
 		}
 	});
-	if (object.keys(queue).length > 0) {
+	if (utils.keys(queue).length > 0) {
 		async.parallel(queue, function (err, results) {
 
 			// Merge results back up the recursion tree
 			if (results) {
-				results = object.filter(results, function (x) {
+				results = utils.filter(results, function (x) {
 					return x !== undefined && x !== null;
 				});
-				object.deepMixIn(errors, results);
+				utils.deepMixIn(errors, results);
 			}
 
-			if (object.keys(errors).length > 0) {
+			if (utils.keys(errors).length > 0) {
 				first ? cb(errors) : cb(null, errors);
 			} else {
 				cb(null);
 			}
 		});
 	} else {
-		if (object.keys(errors).length > 0) {
+		if (utils.keys(errors).length > 0) {
 			first ? cb(errors) : cb(null, errors);
 		} else {
 			cb(null);
 		}
-	}
-	if (!options.ignoreMissing) {
-		// TODO: throw errors for missing attributes that are set to `nullable: false`
 	}
 }
 
@@ -415,10 +505,10 @@ function _validate(targetKey, attrs, options, cb) {
  */
 Schema.prototype.validateSync = function (attrs, options) {
 	options = options ? (options === true ? { ignoreMissing: true } : options) : {};
-	if (!lang.isObject(attrs)) {
-		throw new Error('Schema#validate(attrs[, options]): attrs: Must be an object!');
-	} else if (!lang.isObject(options)) {
-		throw new Error('Schema#validate(attrs[, options]): options: Must be an object!');
+	if (!utils.isObject(attrs)) {
+		throw new Error('Schema#validateSync(attrs[, options]): attrs: Must be an object!');
+	} else if (!utils.isObject(options)) {
+		throw new Error('Schema#validateSync(attrs[, options]): options: Must be an object!');
 	}
 	return _validateSync.apply(this, ['', attrs, options]);
 };
@@ -436,30 +526,74 @@ Schema.prototype.validateSync = function (attrs, options) {
  */
 Schema.prototype.validate = function (attrs, options, cb) {
 	options = options ? (options === true ? { ignoreMissing: true } : options) : {};
-	if (lang.isFunction(options)) {
+	if (utils.isFunction(options)) {
 		cb = options;
 		options = {};
 	}
-	if (!lang.isFunction(cb)) {
+	if (!utils.isFunction(cb)) {
 		throw new Error('Schema#validate(attrs[, options], cb): cb: Must be a function!');
-	} else if (!lang.isObject(attrs)) {
-		cb(new Error('Schema#validate(attrs[, options], cb): attrs: Must be an object!'));
-	} else if (!lang.isObject(options)) {
-		cb(new Error('Schema#validate(attrs[, options], cb): options: Must be an object!'));
+	} else if (!utils.isObject(attrs)) {
+		return cb(new Error('Schema#validate(attrs[, options], cb): attrs: Must be an object!'));
+	} else if (!utils.isObject(options)) {
+		return cb(new Error('Schema#validate(attrs[, options], cb): options: Must be an object!'));
 	}
 	options.first = true;
 	_validate.apply(this, ['', attrs, options, cb]);
 };
 
-Schema.prototype.coerce = function (attrs) {
-	return attrs;
+/**
+ * @method Schema#coerce
+ * @desc Attempt to coerce the values in an object to their proper data types as specified by any "type" rules in this
+ * Schema.
+ * @param {object} attrs The values to coerce.
+ * @returns {object} The values coerced to their proper data types.
+ */
+Schema.prototype.coerce = function () {
+	throw new Error('Unsupported Operation!');
 };
 
-Schema.prototype.addDefaults = function (attrs) {
-	return attrs;
+/**
+ * @method Schema#addDefaults
+ * @desc Add default values for those values that are missing, as specified by this Schema.
+ * @param {object} attrs The values to coerce.
+ * @returns {object} The values, with defaults added in.
+ */
+Schema.prototype.addDefaults = function () {
+	throw new Error('Unsupported Operation!');
 };
 
-},{"../rule":7,"async":9,"mout/lang":21,"mout/object":53}],9:[function(require,module,exports){
+},{"../rule":7,"../support/utils":9,"async":10}],9:[function(require,module,exports){
+module.exports = {
+	forEach: require('mout/array/forEach'),
+
+	isString: require('mout/lang/isString'),
+	isBoolean: require('mout/lang/isBoolean'),
+	isNumber: require('mout/lang/isNumber'),
+	isObject: require('mout/lang/isObject'),
+	isDate: require('mout/lang/isDate'),
+	isFunction: require('mout/lang/isFunction'),
+	isArray: require('mout/lang/isArray'),
+	isEmpty: require('mout/lang/isEmpty'),
+	clone: require('mout/lang/clone'),
+
+	functions: require('mout/object/functions'),
+	get: require('mout/object/get'),
+	set: require('mout/object/set'),
+	unset: require('mout/object/unset'),
+	has: require('mout/object/has'),
+	hasOwn: require('mout/object/hasOwn'),
+	deepMixIn: require('mout/object/deepMixIn'),
+	forOwn: require('mout/object/forOwn'),
+	keys: require('mout/object/keys'),
+	filter: require('mout/object/filter'),
+
+	escapeHtml: require('mout/string/escapeHtml'),
+	uppercase: require('mout/string/uppercase'),
+
+	toInt: require('mout/number/toInt')
+};
+
+},{"mout/array/forEach":12,"mout/lang/clone":16,"mout/lang/isArray":17,"mout/lang/isBoolean":18,"mout/lang/isDate":19,"mout/lang/isEmpty":20,"mout/lang/isFunction":21,"mout/lang/isNumber":23,"mout/lang/isObject":24,"mout/lang/isString":26,"mout/number/toInt":29,"mout/object/deepMixIn":31,"mout/object/filter":32,"mout/object/forOwn":34,"mout/object/functions":35,"mout/object/get":36,"mout/object/has":37,"mout/object/hasOwn":38,"mout/object/keys":39,"mout/object/set":42,"mout/object/unset":43,"mout/string/escapeHtml":44,"mout/string/uppercase":45}],10:[function(require,module,exports){
 var process=require("__browserify_process");/*global setImmediate: false, setTimeout: false, console: false */
 (function () {
 
@@ -1416,7 +1550,7 @@ var process=require("__browserify_process");/*global setImmediate: false, setTim
 
 }());
 
-},{"__browserify_process":10}],10:[function(require,module,exports){
+},{"__browserify_process":11}],11:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -1470,47 +1604,7 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 
-},{}],11:[function(require,module,exports){
-var findIndex = require('./findIndex');
-
-    /**
-     * Returns first item that matches criteria
-     */
-    function find(arr, iterator, thisObj){
-        var idx = findIndex(arr, iterator, thisObj);
-        return idx >= 0? arr[idx] : void(0);
-    }
-
-    module.exports = find;
-
-
-
-},{"./findIndex":12}],12:[function(require,module,exports){
-var makeIterator = require('../function/makeIterator_');
-
-    /**
-     * Returns the index of the first item that matches criteria
-     */
-    function findIndex(arr, iterator, thisObj){
-        iterator = makeIterator(iterator, thisObj);
-        if (arr == null) {
-            return -1;
-        }
-
-        var i = -1, len = arr.length;
-        while (++i < len) {
-            if (iterator(arr[i], i, arr)) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    module.exports = findIndex;
-
-
-},{"../function/makeIterator_":19}],13:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 
 
     /**
@@ -1535,116 +1629,7 @@ var makeIterator = require('../function/makeIterator_');
 
 
 
-},{}],14:[function(require,module,exports){
-var makeIterator = require('../function/makeIterator_');
-
-    /**
-     * Return maximum value inside array
-     */
-    function max(arr, iterator, thisObj){
-        if (arr == null || !arr.length) {
-            return Infinity;
-        } else if (arr.length && !iterator) {
-            return Math.max.apply(Math, arr);
-        } else {
-            iterator = makeIterator(iterator, thisObj);
-            var result,
-                compare = -Infinity,
-                value,
-                temp;
-
-            var i = -1, len = arr.length;
-            while (++i < len) {
-                value = arr[i];
-                temp = iterator(value, i, arr);
-                if (temp > compare) {
-                    compare = temp;
-                    result = value;
-                }
-            }
-
-            return result;
-        }
-    }
-
-    module.exports = max;
-
-
-
-},{"../function/makeIterator_":19}],15:[function(require,module,exports){
-var makeIterator = require('../function/makeIterator_');
-
-    /**
-     * Return minimum value inside array
-     */
-    function min(arr, iterator, thisObj){
-        if (arr == null || !arr.length) {
-            return -Infinity;
-        } else if (arr.length && !iterator) {
-            return Math.min.apply(Math, arr);
-        } else {
-            iterator = makeIterator(iterator, thisObj);
-            var result,
-                compare = Infinity,
-                value,
-                temp;
-
-            var i = -1, len = arr.length;
-            while (++i < len) {
-                value = arr[i];
-                temp = iterator(value, i, arr);
-                if (temp < compare) {
-                    compare = temp;
-                    result = value;
-                }
-            }
-
-            return result;
-        }
-    }
-
-    module.exports = min;
-
-
-
-},{"../function/makeIterator_":19}],16:[function(require,module,exports){
-
-
-    var arrSlice = Array.prototype.slice;
-
-    /**
-     * Create slice of source array or array-like object
-     */
-    function slice(arr, start, end){
-        return arrSlice.call(arr, start, end);
-    }
-
-    module.exports = slice;
-
-
-
-},{}],17:[function(require,module,exports){
-var slice = require('../array/slice');
-
-    /**
-     * Return a function that will execute in the given context, optionally adding any additional supplied parameters to the beginning of the arguments collection.
-     * @param {Function} fn  Function.
-     * @param {object} context   Execution context.
-     * @param {rest} args    Arguments (0...n arguments).
-     * @return {Function} Wrapped Function.
-     */
-    function bind(fn, context, args){
-        var argsArr = slice(arguments, 2); //curried args
-        return function(){
-            return fn.apply(context, argsArr.concat(slice(arguments)));
-        };
-    }
-
-    module.exports = bind;
-
-
-
-},{"../array/slice":16}],18:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 
 
     /**
@@ -1658,7 +1643,7 @@ var slice = require('../array/slice');
 
 
 
-},{}],19:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var identity = require('./identity');
 var prop = require('./prop');
 var deepMatches = require('../object/deepMatches');
@@ -1694,7 +1679,7 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{"../object/deepMatches":58,"./identity":18,"./prop":20}],20:[function(require,module,exports){
+},{"../object/deepMatches":30,"./identity":13,"./prop":15}],15:[function(require,module,exports){
 
 
     /**
@@ -1710,46 +1695,7 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{}],21:[function(require,module,exports){
-
-
-//automatically generated, do not edit!
-//run `node build` instead
-module.exports = {
-    'clone' : require('./lang/clone'),
-    'createObject' : require('./lang/createObject'),
-    'ctorApply' : require('./lang/ctorApply'),
-    'deepClone' : require('./lang/deepClone'),
-    'defaults' : require('./lang/defaults'),
-    'inheritPrototype' : require('./lang/inheritPrototype'),
-    'is' : require('./lang/is'),
-    'isArguments' : require('./lang/isArguments'),
-    'isArray' : require('./lang/isArray'),
-    'isBoolean' : require('./lang/isBoolean'),
-    'isDate' : require('./lang/isDate'),
-    'isEmpty' : require('./lang/isEmpty'),
-    'isFinite' : require('./lang/isFinite'),
-    'isFunction' : require('./lang/isFunction'),
-    'isInteger' : require('./lang/isInteger'),
-    'isKind' : require('./lang/isKind'),
-    'isNaN' : require('./lang/isNaN'),
-    'isNull' : require('./lang/isNull'),
-    'isNumber' : require('./lang/isNumber'),
-    'isObject' : require('./lang/isObject'),
-    'isPlainObject' : require('./lang/isPlainObject'),
-    'isRegExp' : require('./lang/isRegExp'),
-    'isString' : require('./lang/isString'),
-    'isUndefined' : require('./lang/isUndefined'),
-    'isnt' : require('./lang/isnt'),
-    'kindOf' : require('./lang/kindOf'),
-    'toArray' : require('./lang/toArray'),
-    'toNumber' : require('./lang/toNumber'),
-    'toString' : require('./lang/toString')
-};
-
-
-
-},{"./lang/clone":22,"./lang/createObject":23,"./lang/ctorApply":24,"./lang/deepClone":25,"./lang/defaults":26,"./lang/inheritPrototype":27,"./lang/is":28,"./lang/isArguments":29,"./lang/isArray":30,"./lang/isBoolean":31,"./lang/isDate":32,"./lang/isEmpty":33,"./lang/isFinite":34,"./lang/isFunction":35,"./lang/isInteger":36,"./lang/isKind":37,"./lang/isNaN":38,"./lang/isNull":39,"./lang/isNumber":40,"./lang/isObject":41,"./lang/isPlainObject":42,"./lang/isRegExp":43,"./lang/isString":44,"./lang/isUndefined":45,"./lang/isnt":46,"./lang/kindOf":47,"./lang/toArray":48,"./lang/toNumber":49,"./lang/toString":50}],22:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var kindOf = require('./kindOf');
 var isPlainObject = require('./isPlainObject');
 var mixIn = require('../object/mixIn');
@@ -1800,176 +1746,7 @@ var mixIn = require('../object/mixIn');
 
 
 
-},{"../object/mixIn":77,"./isPlainObject":42,"./kindOf":47}],23:[function(require,module,exports){
-var mixIn = require('../object/mixIn');
-
-    /**
-     * Create Object using prototypal inheritance and setting custom properties.
-     * - Mix between Douglas Crockford Prototypal Inheritance <http://javascript.crockford.com/prototypal.html> and the EcmaScript 5 `Object.create()` method.
-     * @param {object} parent    Parent Object.
-     * @param {object} [props] Object properties.
-     * @return {object} Created object.
-     */
-    function createObject(parent, props){
-        function F(){}
-        F.prototype = parent;
-        return mixIn(new F(), props);
-
-    }
-    module.exports = createObject;
-
-
-
-},{"../object/mixIn":77}],24:[function(require,module,exports){
-
-
-    function F(){}
-
-    /**
-     * Do fn.apply on a constructor.
-     */
-    function ctorApply(ctor, args) {
-        F.prototype = ctor.prototype;
-        var instance = new F();
-        ctor.apply(instance, args);
-        return instance;
-    }
-
-    module.exports = ctorApply;
-
-
-
-},{}],25:[function(require,module,exports){
-var clone = require('./clone');
-var forOwn = require('../object/forOwn');
-var kindOf = require('./kindOf');
-var isPlainObject = require('./isPlainObject');
-
-    /**
-     * Recursively clone native types.
-     */
-    function deepClone(val, instanceClone) {
-        switch ( kindOf(val) ) {
-            case 'Object':
-                return cloneObject(val, instanceClone);
-            case 'Array':
-                return cloneArray(val, instanceClone);
-            default:
-                return clone(val);
-        }
-    }
-
-    function cloneObject(source, instanceClone) {
-        if (isPlainObject(source)) {
-            var out = {};
-            forOwn(source, function(val, key) {
-                this[key] = deepClone(val, instanceClone);
-            }, out);
-            return out;
-        } else if (instanceClone) {
-            return instanceClone(source);
-        } else {
-            return source;
-        }
-    }
-
-    function cloneArray(arr, instanceClone) {
-        var out = [],
-            i = -1,
-            n = arr.length,
-            val;
-        while (++i < n) {
-            out[i] = deepClone(arr[i], instanceClone);
-        }
-        return out;
-    }
-
-    module.exports = deepClone;
-
-
-
-
-},{"../object/forOwn":66,"./clone":22,"./isPlainObject":42,"./kindOf":47}],26:[function(require,module,exports){
-var toArray = require('./toArray');
-var find = require('../array/find');
-
-    /**
-     * Return first non void argument
-     */
-    function defaults(var_args){
-        return find(toArray(arguments), nonVoid);
-    }
-
-    function nonVoid(val){
-        return val != null;
-    }
-
-    module.exports = defaults;
-
-
-
-},{"../array/find":11,"./toArray":48}],27:[function(require,module,exports){
-var createObject = require('./createObject');
-
-    /**
-    * Inherit prototype from another Object.
-    * - inspired by Nicholas Zackas <http://nczonline.net> Solution
-    * @param {object} child Child object
-    * @param {object} parent    Parent Object
-    */
-    function inheritPrototype(child, parent){
-        var p = createObject(parent.prototype);
-        p.constructor = child;
-        child.prototype = p;
-        child.super_ = parent;
-    }
-
-    module.exports = inheritPrototype;
-
-
-},{"./createObject":23}],28:[function(require,module,exports){
-
-
-    /**
-     * Check if both arguments are egal.
-     */
-    function is(x, y){
-        // implementation borrowed from harmony:egal spec
-        if (x === y) {
-          // 0 === -0, but they are not identical
-          return x !== 0 || 1 / x === 1 / y;
-        }
-
-        // NaN !== NaN, but they are identical.
-        // NaNs are the only non-reflexive value, i.e., if x !== x,
-        // then x is a NaN.
-        // isNaN is broken: it converts its argument to number, so
-        // isNaN("foo") => true
-        return x !== x && y !== y;
-    }
-
-    module.exports = is;
-
-
-
-},{}],29:[function(require,module,exports){
-var isKind = require('./isKind');
-
-    /**
-     */
-    var isArgs = isKind(arguments, 'Arguments')?
-            function(val){
-                return isKind(val, 'Arguments');
-            } :
-            function(val){
-                // Arguments is an Object on IE7
-                return !!(val && Object.prototype.hasOwnProperty.call(val, 'callee'));
-            };
-
-    module.exports = isArgs;
-
-
-},{"./isKind":37}],30:[function(require,module,exports){
+},{"../object/mixIn":40,"./isPlainObject":25,"./kindOf":27}],17:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1979,7 +1756,7 @@ var isKind = require('./isKind');
     module.exports = isArray;
 
 
-},{"./isKind":37}],31:[function(require,module,exports){
+},{"./isKind":22}],18:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1989,7 +1766,7 @@ var isKind = require('./isKind');
     module.exports = isBoolean;
 
 
-},{"./isKind":37}],32:[function(require,module,exports){
+},{"./isKind":22}],19:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1999,7 +1776,7 @@ var isKind = require('./isKind');
     module.exports = isDate;
 
 
-},{"./isKind":37}],33:[function(require,module,exports){
+},{"./isKind":22}],20:[function(require,module,exports){
 var forOwn = require('../object/forOwn');
 var isArray = require('./isArray');
 
@@ -2025,30 +1802,7 @@ var isArray = require('./isArray');
 
 
 
-},{"../object/forOwn":66,"./isArray":30}],34:[function(require,module,exports){
-var isNumber = require('./isNumber');
-
-    var global = this;
-
-    /**
-     * Check if value is finite
-     */
-    function isFinite(val){
-        var is = false;
-        if (typeof val === 'string' && val !== '') {
-            is = global.isFinite( parseFloat(val) );
-        } else if (isNumber(val)){
-            // need to use isNumber because of Number constructor
-            is = global.isFinite( val );
-        }
-        return is;
-    }
-
-    module.exports = isFinite;
-
-
-
-},{"./isNumber":40}],35:[function(require,module,exports){
+},{"../object/forOwn":34,"./isArray":17}],21:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -2058,21 +1812,7 @@ var isKind = require('./isKind');
     module.exports = isFunction;
 
 
-},{"./isKind":37}],36:[function(require,module,exports){
-var isNumber = require('./isNumber');
-
-    /**
-     * Check if value is an integer
-     */
-    function isInteger(val){
-        return isNumber(val) && (val % 1 === 0);
-    }
-
-    module.exports = isInteger;
-
-
-
-},{"./isNumber":40}],37:[function(require,module,exports){
+},{"./isKind":22}],22:[function(require,module,exports){
 var kindOf = require('./kindOf');
     /**
      * Check if value is from a specific "kind".
@@ -2083,36 +1823,7 @@ var kindOf = require('./kindOf');
     module.exports = isKind;
 
 
-},{"./kindOf":47}],38:[function(require,module,exports){
-var isNumber = require('./isNumber');
-var $isNaN = require('../number/isNaN');
-
-    /**
-     * Check if value is NaN for realz
-     */
-    function isNaN(val){
-        // based on the fact that NaN !== NaN
-        // need to check if it's a number to avoid conflicts with host objects
-        // also need to coerce ToNumber to avoid edge case `new Number(NaN)`
-        return !isNumber(val) || $isNaN(Number(val));
-    }
-
-    module.exports = isNaN;
-
-
-
-},{"../number/isNaN":51,"./isNumber":40}],39:[function(require,module,exports){
-
-    /**
-     */
-    function isNull(val){
-        return val === null;
-    }
-    module.exports = isNull;
-
-
-
-},{}],40:[function(require,module,exports){
+},{"./kindOf":27}],23:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -2122,7 +1833,7 @@ var isKind = require('./isKind');
     module.exports = isNumber;
 
 
-},{"./isKind":37}],41:[function(require,module,exports){
+},{"./isKind":22}],24:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -2132,7 +1843,7 @@ var isKind = require('./isKind');
     module.exports = isObject;
 
 
-},{"./isKind":37}],42:[function(require,module,exports){
+},{"./isKind":22}],25:[function(require,module,exports){
 
 
     /**
@@ -2147,17 +1858,7 @@ var isKind = require('./isKind');
 
 
 
-},{}],43:[function(require,module,exports){
-var isKind = require('./isKind');
-    /**
-     */
-    function isRegExp(val) {
-        return isKind(val, 'RegExp');
-    }
-    module.exports = isRegExp;
-
-
-},{"./isKind":37}],44:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -2167,33 +1868,7 @@ var isKind = require('./isKind');
     module.exports = isString;
 
 
-},{"./isKind":37}],45:[function(require,module,exports){
-
-    var UNDEF;
-
-    /**
-     */
-    function isUndef(val){
-        return val === UNDEF;
-    }
-    module.exports = isUndef;
-
-
-},{}],46:[function(require,module,exports){
-var is = require('./is');
-
-    /**
-     * Check if both values are not identical/egal
-     */
-    function isnt(x, y){
-        return !is(x, y);
-    }
-
-    module.exports = isnt;
-
-
-
-},{"./is":28}],47:[function(require,module,exports){
+},{"./isKind":22}],27:[function(require,module,exports){
 
 
     var _rKind = /^\[object (.*)\]$/,
@@ -2215,62 +1890,7 @@ var is = require('./is');
     module.exports = kindOf;
 
 
-},{}],48:[function(require,module,exports){
-var kindOf = require('./kindOf');
-
-    var _win = this;
-
-    /**
-     * Convert array-like object into array
-     */
-    function toArray(val){
-        var ret = [],
-            kind = kindOf(val),
-            n;
-
-        if (val != null) {
-            if ( val.length == null || kind === 'String' || kind === 'Function' || kind === 'RegExp' || val === _win ) {
-                //string, regexp, function have .length but user probably just want
-                //to wrap value into an array..
-                ret[ret.length] = val;
-            } else {
-                //window returns true on isObject in IE7 and may have length
-                //property. `typeof NodeList` returns `function` on Safari so
-                //we can't use it (#58)
-                n = val.length;
-                while (n--) {
-                    ret[n] = val[n];
-                }
-            }
-        }
-        return ret;
-    }
-    module.exports = toArray;
-
-
-},{"./kindOf":47}],49:[function(require,module,exports){
-var isArray = require('./isArray');
-
-    /**
-     * covert value into number if numeric
-     */
-    function toNumber(val){
-        // numberic values should come first because of -0
-        if (typeof val === 'number') return val;
-        // we want all falsy values (besides -0) to return zero to avoid
-        // headaches
-        if (!val) return 0;
-        if (typeof val === 'string') return parseFloat(val);
-        // arrays are edge cases. `Number([4]) === 4`
-        if (isArray(val)) return NaN;
-        return Number(val);
-    }
-
-    module.exports = toNumber;
-
-
-
-},{"./isArray":30}],50:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 
 
     /**
@@ -2285,23 +1905,7 @@ var isArray = require('./isArray');
 
 
 
-},{}],51:[function(require,module,exports){
-
-
-    /**
-     * ES6 Number.isNaN
-     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN
-     */
-    function isNaN(val){
-        // jshint eqeqeq:false
-        return typeof val === 'number' && val != val;
-    }
-
-    module.exports = isNaN;
-
-
-
-},{}],52:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 
 
     /**
@@ -2320,151 +1924,7 @@ var isArray = require('./isArray');
 
 
 
-},{}],53:[function(require,module,exports){
-
-
-//automatically generated, do not edit!
-//run `node build` instead
-module.exports = {
-    'bindAll' : require('./object/bindAll'),
-    'contains' : require('./object/contains'),
-    'deepEquals' : require('./object/deepEquals'),
-    'deepFillIn' : require('./object/deepFillIn'),
-    'deepMatches' : require('./object/deepMatches'),
-    'deepMixIn' : require('./object/deepMixIn'),
-    'equals' : require('./object/equals'),
-    'every' : require('./object/every'),
-    'fillIn' : require('./object/fillIn'),
-    'filter' : require('./object/filter'),
-    'find' : require('./object/find'),
-    'forIn' : require('./object/forIn'),
-    'forOwn' : require('./object/forOwn'),
-    'functions' : require('./object/functions'),
-    'get' : require('./object/get'),
-    'has' : require('./object/has'),
-    'hasOwn' : require('./object/hasOwn'),
-    'keys' : require('./object/keys'),
-    'map' : require('./object/map'),
-    'matches' : require('./object/matches'),
-    'max' : require('./object/max'),
-    'merge' : require('./object/merge'),
-    'min' : require('./object/min'),
-    'mixIn' : require('./object/mixIn'),
-    'namespace' : require('./object/namespace'),
-    'pick' : require('./object/pick'),
-    'pluck' : require('./object/pluck'),
-    'reduce' : require('./object/reduce'),
-    'reject' : require('./object/reject'),
-    'set' : require('./object/set'),
-    'size' : require('./object/size'),
-    'some' : require('./object/some'),
-    'unset' : require('./object/unset'),
-    'values' : require('./object/values')
-};
-
-
-
-},{"./object/bindAll":54,"./object/contains":55,"./object/deepEquals":56,"./object/deepFillIn":57,"./object/deepMatches":58,"./object/deepMixIn":59,"./object/equals":60,"./object/every":61,"./object/fillIn":62,"./object/filter":63,"./object/find":64,"./object/forIn":65,"./object/forOwn":66,"./object/functions":67,"./object/get":68,"./object/has":69,"./object/hasOwn":70,"./object/keys":71,"./object/map":72,"./object/matches":73,"./object/max":74,"./object/merge":75,"./object/min":76,"./object/mixIn":77,"./object/namespace":78,"./object/pick":79,"./object/pluck":80,"./object/reduce":81,"./object/reject":82,"./object/set":83,"./object/size":84,"./object/some":85,"./object/unset":86,"./object/values":87}],54:[function(require,module,exports){
-var functions = require('./functions');
-var bind = require('../function/bind');
-var forEach = require('../array/forEach');
-var slice = require('../array/slice');
-
-    /**
-     * Binds methods of the object to be run in it's own context.
-     */
-    function bindAll(obj, rest_methodNames){
-        var keys = arguments.length > 1?
-                    slice(arguments, 1) : functions(obj);
-        forEach(keys, function(key){
-            obj[key] = bind(obj[key], obj);
-        });
-    }
-
-    module.exports = bindAll;
-
-
-
-},{"../array/forEach":13,"../array/slice":16,"../function/bind":17,"./functions":67}],55:[function(require,module,exports){
-var some = require('./some');
-
-    /**
-     * Check if object contains value
-     */
-    function contains(obj, needle) {
-        return some(obj, function(val) {
-            return (val === needle);
-        });
-    }
-    module.exports = contains;
-
-
-
-},{"./some":85}],56:[function(require,module,exports){
-var isObject = require('../lang/isObject');
-var equals = require('./equals');
-
-    function defaultCompare(a, b) {
-        return a === b;
-    }
-
-    /**
-     * Recursively checks for same properties and values.
-     */
-    function deepEquals(a, b, callback){
-        callback = callback || defaultCompare;
-
-        if (!isObject(a) || !isObject(b)) {
-            return callback(a, b);
-        }
-
-        function compare(a, b){
-            return deepEquals(a, b, callback);
-        }
-
-        return equals(a, b, compare);
-    }
-
-    module.exports = deepEquals;
-
-
-
-},{"../lang/isObject":41,"./equals":60}],57:[function(require,module,exports){
-var forOwn = require('./forOwn');
-var isPlainObject = require('../lang/isPlainObject');
-
-    /**
-     * Deeply copy missing properties in the target from the defaults.
-     */
-    function deepFillIn(target, defaults){
-        var i = 0,
-            n = arguments.length,
-            obj;
-
-        while(++i < n) {
-            obj = arguments[i];
-            if (obj) {
-                // jshint loopfunc: true
-                forOwn(obj, function(newValue, key) {
-                    var curValue = target[key];
-                    if (curValue == null) {
-                        target[key] = newValue;
-                    } else if (isPlainObject(curValue) &&
-                               isPlainObject(newValue)) {
-                        deepFillIn(curValue, newValue);
-                    }
-                });
-            }
-        }
-
-        return target;
-    }
-
-    module.exports = deepFillIn;
-
-
-
-},{"../lang/isPlainObject":42,"./forOwn":66}],58:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var isArray = require('../lang/isArray');
 
@@ -2521,7 +1981,7 @@ var isArray = require('../lang/isArray');
 
 
 
-},{"../lang/isArray":30,"./forOwn":66}],59:[function(require,module,exports){
+},{"../lang/isArray":17,"./forOwn":34}],31:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var isPlainObject = require('../lang/isPlainObject');
 
@@ -2557,93 +2017,7 @@ var isPlainObject = require('../lang/isPlainObject');
 
 
 
-},{"../lang/isPlainObject":42,"./forOwn":66}],60:[function(require,module,exports){
-var hasOwn = require('./hasOwn');
-var every = require('./every');
-var isObject = require('../lang/isObject');
-
-    function defaultCompare(a, b) {
-        return a === b;
-    }
-
-    // Makes a function to compare the object values from the specified compare
-    // operation callback.
-    function makeCompare(callback) {
-        return function(value, key) {
-            return hasOwn(this, key) && callback(value, this[key]);
-        };
-    }
-
-    function checkProperties(value, key) {
-        return hasOwn(this, key);
-    }
-
-    /**
-     * Checks if two objects have the same keys and values.
-     */
-    function equals(a, b, callback) {
-        callback = callback || defaultCompare;
-
-        if (!isObject(a) || !isObject(b)) {
-            return callback(a, b);
-        }
-
-        return (every(a, makeCompare(callback), b) &&
-                every(b, checkProperties, a));
-    }
-
-    module.exports = equals;
-
-
-},{"../lang/isObject":41,"./every":61,"./hasOwn":70}],61:[function(require,module,exports){
-var forOwn = require('./forOwn');
-var makeIterator = require('../function/makeIterator_');
-
-    /**
-     * Object every
-     */
-    function every(obj, callback, thisObj) {
-        callback = makeIterator(callback, thisObj);
-        var result = true;
-        forOwn(obj, function(val, key) {
-            // we consider any falsy values as "false" on purpose so shorthand
-            // syntax can be used to check property existence
-            if (!callback(val, key, obj)) {
-                result = false;
-                return false; // break
-            }
-        });
-        return result;
-    }
-
-    module.exports = every;
-
-
-
-},{"../function/makeIterator_":19,"./forOwn":66}],62:[function(require,module,exports){
-var forEach = require('../array/forEach');
-var slice = require('../array/slice');
-var forOwn = require('./forOwn');
-
-    /**
-     * Copy missing properties in the obj from the defaults.
-     */
-    function fillIn(obj, var_defaults){
-        forEach(slice(arguments, 1), function(base){
-            forOwn(base, function(val, key){
-                if (obj[key] == null) {
-                    obj[key] = val;
-                }
-            });
-        });
-        return obj;
-    }
-
-    module.exports = fillIn;
-
-
-
-},{"../array/forEach":13,"../array/slice":16,"./forOwn":66}],63:[function(require,module,exports){
+},{"../lang/isPlainObject":25,"./forOwn":34}],32:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var makeIterator = require('../function/makeIterator_');
 
@@ -2665,30 +2039,7 @@ var makeIterator = require('../function/makeIterator_');
     module.exports = filterValues;
 
 
-},{"../function/makeIterator_":19,"./forOwn":66}],64:[function(require,module,exports){
-var some = require('./some');
-var makeIterator = require('../function/makeIterator_');
-
-    /**
-     * Returns first item that matches criteria
-     */
-    function find(obj, callback, thisObj) {
-        callback = makeIterator(callback, thisObj);
-        var result;
-        some(obj, function(value, key, obj) {
-            if (callback(value, key, obj)) {
-                result = value;
-                return true; //break
-            }
-        });
-        return result;
-    }
-
-    module.exports = find;
-
-
-
-},{"../function/makeIterator_":19,"./some":85}],65:[function(require,module,exports){
+},{"../function/makeIterator_":14,"./forOwn":34}],33:[function(require,module,exports){
 
 
     var _hasDontEnumBug,
@@ -2752,7 +2103,7 @@ var makeIterator = require('../function/makeIterator_');
 
 
 
-},{}],66:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var hasOwn = require('./hasOwn');
 var forIn = require('./forIn');
 
@@ -2773,7 +2124,7 @@ var forIn = require('./forIn');
 
 
 
-},{"./forIn":65,"./hasOwn":70}],67:[function(require,module,exports){
+},{"./forIn":33,"./hasOwn":38}],35:[function(require,module,exports){
 var forIn = require('./forIn');
 
     /**
@@ -2793,7 +2144,7 @@ var forIn = require('./forIn');
 
 
 
-},{"./forIn":65}],68:[function(require,module,exports){
+},{"./forIn":33}],36:[function(require,module,exports){
 
 
     /**
@@ -2815,7 +2166,7 @@ var forIn = require('./forIn');
 
 
 
-},{}],69:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 var get = require('./get');
 
     var UNDEF;
@@ -2832,7 +2183,7 @@ var get = require('./get');
 
 
 
-},{"./get":68}],70:[function(require,module,exports){
+},{"./get":36}],38:[function(require,module,exports){
 
 
     /**
@@ -2846,7 +2197,7 @@ var get = require('./get');
 
 
 
-},{}],71:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 var forOwn = require('./forOwn');
 
     /**
@@ -2864,119 +2215,7 @@ var forOwn = require('./forOwn');
 
 
 
-},{"./forOwn":66}],72:[function(require,module,exports){
-var forOwn = require('./forOwn');
-var makeIterator = require('../function/makeIterator_');
-
-    /**
-     * Creates a new object where all the values are the result of calling
-     * `callback`.
-     */
-    function mapValues(obj, callback, thisObj) {
-        callback = makeIterator(callback, thisObj);
-        var output = {};
-        forOwn(obj, function(val, key, obj) {
-            output[key] = callback(val, key, obj);
-        });
-
-        return output;
-    }
-    module.exports = mapValues;
-
-
-},{"../function/makeIterator_":19,"./forOwn":66}],73:[function(require,module,exports){
-var forOwn = require('./forOwn');
-
-    /**
-     * checks if a object contains all given properties/values
-     */
-    function matches(target, props){
-        // can't use "object/every" because of circular dependency
-        var result = true;
-        forOwn(props, function(val, key){
-            if (target[key] !== val) {
-                // break loop at first difference
-                return (result = false);
-            }
-        });
-        return result;
-    }
-
-    module.exports = matches;
-
-
-
-},{"./forOwn":66}],74:[function(require,module,exports){
-var arrMax = require('../array/max');
-var values = require('./values');
-
-    /**
-     * Returns maximum value inside object.
-     */
-    function max(obj, compareFn) {
-        return arrMax(values(obj), compareFn);
-    }
-
-    module.exports = max;
-
-
-},{"../array/max":14,"./values":87}],75:[function(require,module,exports){
-var hasOwn = require('./hasOwn');
-var deepClone = require('../lang/deepClone');
-var isObject = require('../lang/isObject');
-
-    /**
-     * Deep merge objects.
-     */
-    function merge() {
-        var i = 1,
-            key, val, obj, target;
-
-        // make sure we don't modify source element and it's properties
-        // objects are passed by reference
-        target = deepClone( arguments[0] );
-
-        while (obj = arguments[i++]) {
-            for (key in obj) {
-                if ( ! hasOwn(obj, key) ) {
-                    continue;
-                }
-
-                val = obj[key];
-
-                if ( isObject(val) && isObject(target[key]) ){
-                    // inception, deep merge objects
-                    target[key] = merge(target[key], val);
-                } else {
-                    // make sure arrays, regexp, date, objects are cloned
-                    target[key] = deepClone(val);
-                }
-
-            }
-        }
-
-        return target;
-    }
-
-    module.exports = merge;
-
-
-
-},{"../lang/deepClone":25,"../lang/isObject":41,"./hasOwn":70}],76:[function(require,module,exports){
-var arrMin = require('../array/min');
-var values = require('./values');
-
-    /**
-     * Returns minimum value inside object.
-     */
-    function min(obj, iterator) {
-        return arrMin(values(obj), iterator);
-    }
-
-    module.exports = min;
-
-
-},{"../array/min":15,"./values":87}],77:[function(require,module,exports){
+},{"./forOwn":34}],40:[function(require,module,exports){
 var forOwn = require('./forOwn');
 
     /**
@@ -3006,7 +2245,7 @@ var forOwn = require('./forOwn');
     module.exports = mixIn;
 
 
-},{"./forOwn":66}],78:[function(require,module,exports){
+},{"./forOwn":34}],41:[function(require,module,exports){
 var forEach = require('../array/forEach');
 
     /**
@@ -3027,91 +2266,7 @@ var forEach = require('../array/forEach');
 
 
 
-},{"../array/forEach":13}],79:[function(require,module,exports){
-var slice = require('../array/slice');
-
-    /**
-     * Return a copy of the object, filtered to only have values for the whitelisted keys.
-     */
-    function pick(obj, var_keys){
-        var keys = typeof arguments[1] !== 'string'? arguments[1] : slice(arguments, 1),
-            out = {},
-            i = 0, key;
-        while (key = keys[i++]) {
-            out[key] = obj[key];
-        }
-        return out;
-    }
-
-    module.exports = pick;
-
-
-
-},{"../array/slice":16}],80:[function(require,module,exports){
-var map = require('./map');
-var prop = require('../function/prop');
-
-    /**
-     * Extract a list of property values.
-     */
-    function pluck(obj, propName){
-        return map(obj, prop(propName));
-    }
-
-    module.exports = pluck;
-
-
-
-},{"../function/prop":20,"./map":72}],81:[function(require,module,exports){
-var forOwn = require('./forOwn');
-var size = require('./size');
-
-    /**
-     * Object reduce
-     */
-    function reduce(obj, callback, memo, thisObj) {
-        var initial = arguments.length > 2;
-
-        if (!size(obj) && !initial) {
-            throw new Error('reduce of empty object with no initial value');
-        }
-
-        forOwn(obj, function(value, key, list) {
-            if (!initial) {
-                memo = value;
-                initial = true;
-            }
-            else {
-                memo = callback.call(thisObj, memo, value, key, list);
-            }
-        });
-
-        return memo;
-    }
-
-    module.exports = reduce;
-
-
-
-},{"./forOwn":66,"./size":84}],82:[function(require,module,exports){
-var filter = require('./filter');
-var makeIterator = require('../function/makeIterator_');
-
-    /**
-     * Object reject
-     */
-    function reject(obj, callback, thisObj) {
-        callback = makeIterator(callback, thisObj);
-        return filter(obj, function(value, index, obj) {
-            return !callback(value, index, obj);
-        }, thisObj);
-    }
-
-    module.exports = reject;
-
-
-
-},{"../function/makeIterator_":19,"./filter":63}],83:[function(require,module,exports){
+},{"../array/forEach":12}],42:[function(require,module,exports){
 var namespace = require('./namespace');
 
     /**
@@ -3130,48 +2285,7 @@ var namespace = require('./namespace');
 
 
 
-},{"./namespace":78}],84:[function(require,module,exports){
-var forOwn = require('./forOwn');
-
-    /**
-     * Get object size
-     */
-    function size(obj) {
-        var count = 0;
-        forOwn(obj, function(){
-            count++;
-        });
-        return count;
-    }
-
-    module.exports = size;
-
-
-
-},{"./forOwn":66}],85:[function(require,module,exports){
-var forOwn = require('./forOwn');
-var makeIterator = require('../function/makeIterator_');
-
-    /**
-     * Object some
-     */
-    function some(obj, callback, thisObj) {
-        callback = makeIterator(callback, thisObj);
-        var result = false;
-        forOwn(obj, function(val, key) {
-            if (callback(val, key, obj)) {
-                result = true;
-                return false; // break
-            }
-        });
-        return result;
-    }
-
-    module.exports = some;
-
-
-
-},{"../function/makeIterator_":19,"./forOwn":66}],86:[function(require,module,exports){
+},{"./namespace":41}],43:[function(require,module,exports){
 var has = require('./has');
 
     /**
@@ -3196,25 +2310,39 @@ var has = require('./has');
 
 
 
-},{"./has":69}],87:[function(require,module,exports){
-var forOwn = require('./forOwn');
+},{"./has":37}],44:[function(require,module,exports){
+var toString = require('../lang/toString');
 
     /**
-     * Get object values
+     * Escapes a string for insertion into HTML.
      */
-    function values(obj) {
-        var vals = [];
-        forOwn(obj, function(val, key){
-            vals.push(val);
-        });
-        return vals;
+    function escapeHtml(str){
+        str = toString(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/'/g, '&#39;')
+            .replace(/"/g, '&quot;');
+        return str;
     }
 
-    module.exports = values;
+    module.exports = escapeHtml;
 
 
 
-},{"./forOwn":66}]},{},[2])
+},{"../lang/toString":28}],45:[function(require,module,exports){
+var toString = require('../lang/toString');
+    /**
+     * "Safer" String.toUpperCase()
+     */
+    function upperCase(str){
+        str = toString(str);
+        return str.toUpperCase();
+    }
+    module.exports = upperCase;
+
+
+},{"../lang/toString":28}]},{},[2])
 (2)
 });
 ;

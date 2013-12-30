@@ -17,7 +17,8 @@ module.exports = function (grunt) {
 		},
 		jshint: {
 			options: {
-				jshintrc: '.jshintrc'
+				jshintrc: '.jshintrc',
+				ignores: ['test/support/*.js']
 			},
 			all: [
 				'Gruntfile.js',
@@ -63,11 +64,25 @@ module.exports = function (grunt) {
 					'dist/robocop.js': ['lib/index.js']
 				}
 			}
+		},
+
+		karma: {
+			options: {
+				configFile: './karma.conf.js'
+			},
+			dist: {}
+		},
+		coveralls: {
+			options: {
+				coverage_dir: 'coverage'
+			}
 		}
 	});
 
 	grunt.registerTask('test-unit', ['mochaTest:unit']);
-	grunt.registerTask('test', ['test-unit']);
+	grunt.registerTask('test-karma', ['browserify', 'karma']);
+
+	grunt.registerTask('test', ['test-unit', 'test-karma']);
 	grunt.registerTask('build', ['clean', 'jshint', 'test', 'browserify', 'uglify']);
 
 	grunt.registerTask('default', ['build']);
