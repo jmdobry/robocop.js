@@ -1,12 +1,3 @@
-/**
- * @author Jason Dobry <jason.dobry@gmail.com>
- * @file robocop.js
- * @version 0.10.0 - Homepage <http://jmdobry.github.io/robocop.js/>
- * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
- * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
- *
- * @overview Define and validate rules, datatypes and schemata in Node and in the browser.
- */
 !function(o){"object"==typeof exports?module.exports=o():"function"==typeof define&&define.amd?define(o):"undefined"!=typeof window?window.robocop=o():"undefined"!=typeof global?global.robocop=o():"undefined"!=typeof self&&(self.robocop=o())}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
@@ -112,13 +103,22 @@ module.exports = {
 },{"../support/utils":9}],2:[function(require,module,exports){
 'use strict';
 
+/**
+ * @author Jason Dobry <jason.dobry@gmail.com>
+ * @file robocop.js
+ * @version 0.10.0 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
+ * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
+ *
+ * @overview Define and validate rules, datatypes and schemata in Node and in the browser.
+ */
+
 module.exports = require('./robocop');
 
 },{"./robocop":4}],3:[function(require,module,exports){
 'use strict';
 
-var isString = require('mout/lang/isString'),
-	keys = require('mout/object/keys');
+var utils = require('../support/utils');
 
 var defaultDataTypes = require('../dataType');
 
@@ -126,7 +126,7 @@ var dataTypes = {};
 
 module.exports = {
 	defineDataType: function (name, typeDefinition) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.defineDataType(name, typeDefinition): name: Must be a string!');
 		}
 		if (dataTypes[name]) {
@@ -136,25 +136,25 @@ module.exports = {
 	},
 
 	hasDataType: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.hasDataType(name): name: Must be a string!');
 		}
 		return !!(dataTypes[name] || defaultDataTypes[name]);
 	},
 
 	getDataType: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.getDataType(name): name: Must be a string!');
 		}
 		return dataTypes[name] || defaultDataTypes[name];
 	},
 
 	availableDataTypes: function () {
-		return keys(dataTypes).concat(keys(defaultDataTypes));
+		return utils.keys(dataTypes).concat(utils.keys(defaultDataTypes));
 	},
 
 	testDataType: function (name, value) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.testDataType(name, value): name: Must be a string!');
 		} else if (!(dataTypes[name] || defaultDataTypes[name])) {
 			throw new Error('robocop.testDataType(name, value): name: No dataType with that name exists!');
@@ -163,7 +163,7 @@ module.exports = {
 	},
 
 	removeDataType: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.removeDataType(name): name: Must be a string!');
 		}
 		if (dataTypes[name]) {
@@ -172,10 +172,10 @@ module.exports = {
 	}
 };
 
-},{"../dataType":1,"mout/lang/isString":26,"mout/object/keys":39}],4:[function(require,module,exports){
+},{"../dataType":1,"../support/utils":9}],4:[function(require,module,exports){
 'use strict';
 
-var deepMixIn = require('mout/object/deepMixIn');
+var utils = require('../support/utils');
 
 var robocop = module.exports = {
 	Schema: require('../schema'),
@@ -183,15 +183,14 @@ var robocop = module.exports = {
 	defaultDataTypes: require('../dataType')
 };
 
-deepMixIn(robocop, require('./schema'));
-deepMixIn(robocop, require('./rule'));
-deepMixIn(robocop, require('./dataType'));
+utils.deepMixIn(robocop, require('./schema'));
+utils.deepMixIn(robocop, require('./rule'));
+utils.deepMixIn(robocop, require('./dataType'));
 
-},{"../dataType":1,"../rule":7,"../schema":8,"./dataType":3,"./rule":5,"./schema":6,"mout/object/deepMixIn":31}],5:[function(require,module,exports){
+},{"../dataType":1,"../rule":7,"../schema":8,"../support/utils":9,"./dataType":3,"./rule":5,"./schema":6}],5:[function(require,module,exports){
 'use strict';
 
-var isString = require('mout/lang/isString'),
-	keys = require('mout/object/keys');
+var utils = require('../support/utils');
 
 var defaultRules = require('../rule');
 
@@ -206,25 +205,25 @@ module.exports = {
 	},
 
 	hasRule: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.hasRule(name): name: Must be a string!');
 		}
 		return !!rules[name];
 	},
 
 	getRule: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.getRule(name): name: Must be a string!');
 		}
 		return rules[name];
 	},
 
 	availableRules: function () {
-		return keys(rules).concat(keys(defaultRules));
+		return utils.keys(rules).concat(utils.keys(defaultRules));
 	},
 
 	testRule: function (name, value, options) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.testRule(name, value, options): name: Must be a string!');
 		} else if (!rules[name] && !defaultRules[name]) {
 			throw new Error('robocop.testRule(name, value, options): name: No rule with that name exists!');
@@ -233,7 +232,7 @@ module.exports = {
 	},
 
 	removeRule: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.removeRule(name): name: Must be a string!');
 		}
 		if (rules[name]) {
@@ -242,12 +241,10 @@ module.exports = {
 	}
 };
 
-},{"../rule":7,"mout/lang/isString":26,"mout/object/keys":39}],6:[function(require,module,exports){
+},{"../rule":7,"../support/utils":9}],6:[function(require,module,exports){
 'use strict';
 
-var isString = require('mout/lang/isString'),
-	isObject = require('mout/lang/isObject'),
-	keys = require('mout/object/keys'),
+var utils = require('../support/utils'),
 	Schema = require('../schema');
 
 var schemas = {};
@@ -262,27 +259,27 @@ module.exports = {
 	},
 
 	hasSchema: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.hasSchema(name): name: Must be a string!');
 		}
 		return !!schemas[name];
 	},
 
 	getSchema: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.getSchema(name): name: Must be a string!');
 		}
 		return schemas[name];
 	},
 
 	availableSchemas: function () {
-		return keys(schemas);
+		return utils.keys(schemas);
 	},
 
 	testSchema: function (attrs, options) {
-		if (!isObject(attrs)) {
+		if (!utils.isObject(attrs)) {
 			throw new Error('robocop.testSchema(attrs, options, cb): attrs: Must be an object!');
-		} else if (!isObject(options)) {
+		} else if (!utils.isObject(options)) {
 			throw new Error('robocop.testSchema(attrs, options, cb): options: Must be an object!');
 		} else if (!schemas[options.name]) {
 			throw new Error('robocop.testSchema(attrs, options, cb): options.name: No schema with that name exists!');
@@ -291,7 +288,7 @@ module.exports = {
 	},
 
 	removeSchema: function (name) {
-		if (!isString(name)) {
+		if (!utils.isString(name)) {
 			throw new Error('robocop.removeSchema(name): name: Must be a string!');
 		}
 		if (schemas[name]) {
@@ -300,7 +297,7 @@ module.exports = {
 	}
 };
 
-},{"../schema":8,"mout/lang/isObject":24,"mout/lang/isString":26,"mout/object/keys":39}],7:[function(require,module,exports){
+},{"../schema":8,"../support/utils":9}],7:[function(require,module,exports){
 'use strict';
 
 var utils = require('../support/utils'),
@@ -572,28 +569,24 @@ module.exports = {
 	isObject: require('mout/lang/isObject'),
 	isDate: require('mout/lang/isDate'),
 	isFunction: require('mout/lang/isFunction'),
+	isUndefined: require('mout/lang/isUndefined'),
 	isArray: require('mout/lang/isArray'),
 	isEmpty: require('mout/lang/isEmpty'),
-	clone: require('mout/lang/clone'),
+	toString: require('mout/lang/toString'),
+	toNumber: require('mout/lang/toNumber'),
 
-	functions: require('mout/object/functions'),
 	get: require('mout/object/get'),
 	set: require('mout/object/set'),
 	unset: require('mout/object/unset'),
-	has: require('mout/object/has'),
-	hasOwn: require('mout/object/hasOwn'),
 	deepMixIn: require('mout/object/deepMixIn'),
 	forOwn: require('mout/object/forOwn'),
 	keys: require('mout/object/keys'),
 	filter: require('mout/object/filter'),
 
-	escapeHtml: require('mout/string/escapeHtml'),
-	uppercase: require('mout/string/uppercase'),
-
 	toInt: require('mout/number/toInt')
 };
 
-},{"mout/array/forEach":12,"mout/lang/clone":16,"mout/lang/isArray":17,"mout/lang/isBoolean":18,"mout/lang/isDate":19,"mout/lang/isEmpty":20,"mout/lang/isFunction":21,"mout/lang/isNumber":23,"mout/lang/isObject":24,"mout/lang/isString":26,"mout/number/toInt":29,"mout/object/deepMixIn":31,"mout/object/filter":32,"mout/object/forOwn":34,"mout/object/functions":35,"mout/object/get":36,"mout/object/has":37,"mout/object/hasOwn":38,"mout/object/keys":39,"mout/object/set":42,"mout/object/unset":43,"mout/string/escapeHtml":44,"mout/string/uppercase":45}],10:[function(require,module,exports){
+},{"mout/array/forEach":12,"mout/lang/isArray":16,"mout/lang/isBoolean":17,"mout/lang/isDate":18,"mout/lang/isEmpty":19,"mout/lang/isFunction":20,"mout/lang/isNumber":22,"mout/lang/isObject":23,"mout/lang/isString":25,"mout/lang/isUndefined":26,"mout/lang/toNumber":28,"mout/lang/toString":29,"mout/number/toInt":30,"mout/object/deepMixIn":32,"mout/object/filter":33,"mout/object/forOwn":35,"mout/object/get":36,"mout/object/keys":39,"mout/object/set":41,"mout/object/unset":42}],10:[function(require,module,exports){
 var process=require("__browserify_process");/*global setImmediate: false, setTimeout: false, console: false */
 (function () {
 
@@ -1679,7 +1672,7 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{"../object/deepMatches":30,"./identity":13,"./prop":15}],15:[function(require,module,exports){
+},{"../object/deepMatches":31,"./identity":13,"./prop":15}],15:[function(require,module,exports){
 
 
     /**
@@ -1696,57 +1689,6 @@ var deepMatches = require('../object/deepMatches');
 
 
 },{}],16:[function(require,module,exports){
-var kindOf = require('./kindOf');
-var isPlainObject = require('./isPlainObject');
-var mixIn = require('../object/mixIn');
-
-    /**
-     * Clone native types.
-     */
-    function clone(val){
-        switch (kindOf(val)) {
-            case 'Object':
-                return cloneObject(val);
-            case 'Array':
-                return cloneArray(val);
-            case 'RegExp':
-                return cloneRegExp(val);
-            case 'Date':
-                return cloneDate(val);
-            default:
-                return val;
-        }
-    }
-
-    function cloneObject(source) {
-        if (isPlainObject(source)) {
-            return mixIn({}, source);
-        } else {
-            return source;
-        }
-    }
-
-    function cloneRegExp(r) {
-        var flags = '';
-        flags += r.multiline ? 'm' : '';
-        flags += r.global ? 'g' : '';
-        flags += r.ignorecase ? 'i' : '';
-        return new RegExp(r.source, flags);
-    }
-
-    function cloneDate(date) {
-        return new Date(+date);
-    }
-
-    function cloneArray(arr) {
-        return arr.slice();
-    }
-
-    module.exports = clone;
-
-
-
-},{"../object/mixIn":40,"./isPlainObject":25,"./kindOf":27}],17:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1756,7 +1698,7 @@ var isKind = require('./isKind');
     module.exports = isArray;
 
 
-},{"./isKind":22}],18:[function(require,module,exports){
+},{"./isKind":21}],17:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1766,7 +1708,7 @@ var isKind = require('./isKind');
     module.exports = isBoolean;
 
 
-},{"./isKind":22}],19:[function(require,module,exports){
+},{"./isKind":21}],18:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1776,7 +1718,7 @@ var isKind = require('./isKind');
     module.exports = isDate;
 
 
-},{"./isKind":22}],20:[function(require,module,exports){
+},{"./isKind":21}],19:[function(require,module,exports){
 var forOwn = require('../object/forOwn');
 var isArray = require('./isArray');
 
@@ -1802,7 +1744,7 @@ var isArray = require('./isArray');
 
 
 
-},{"../object/forOwn":34,"./isArray":17}],21:[function(require,module,exports){
+},{"../object/forOwn":35,"./isArray":16}],20:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1812,7 +1754,7 @@ var isKind = require('./isKind');
     module.exports = isFunction;
 
 
-},{"./isKind":22}],22:[function(require,module,exports){
+},{"./isKind":21}],21:[function(require,module,exports){
 var kindOf = require('./kindOf');
     /**
      * Check if value is from a specific "kind".
@@ -1823,7 +1765,7 @@ var kindOf = require('./kindOf');
     module.exports = isKind;
 
 
-},{"./kindOf":27}],23:[function(require,module,exports){
+},{"./kindOf":27}],22:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1833,7 +1775,7 @@ var isKind = require('./isKind');
     module.exports = isNumber;
 
 
-},{"./isKind":22}],24:[function(require,module,exports){
+},{"./isKind":21}],23:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1843,7 +1785,7 @@ var isKind = require('./isKind');
     module.exports = isObject;
 
 
-},{"./isKind":22}],25:[function(require,module,exports){
+},{"./isKind":21}],24:[function(require,module,exports){
 
 
     /**
@@ -1858,7 +1800,7 @@ var isKind = require('./isKind');
 
 
 
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -1868,7 +1810,19 @@ var isKind = require('./isKind');
     module.exports = isString;
 
 
-},{"./isKind":22}],27:[function(require,module,exports){
+},{"./isKind":21}],26:[function(require,module,exports){
+
+    var UNDEF;
+
+    /**
+     */
+    function isUndef(val){
+        return val === UNDEF;
+    }
+    module.exports = isUndef;
+
+
+},{}],27:[function(require,module,exports){
 
 
     var _rKind = /^\[object (.*)\]$/,
@@ -1891,6 +1845,28 @@ var isKind = require('./isKind');
 
 
 },{}],28:[function(require,module,exports){
+var isArray = require('./isArray');
+
+    /**
+     * covert value into number if numeric
+     */
+    function toNumber(val){
+        // numberic values should come first because of -0
+        if (typeof val === 'number') return val;
+        // we want all falsy values (besides -0) to return zero to avoid
+        // headaches
+        if (!val) return 0;
+        if (typeof val === 'string') return parseFloat(val);
+        // arrays are edge cases. `Number([4]) === 4`
+        if (isArray(val)) return NaN;
+        return Number(val);
+    }
+
+    module.exports = toNumber;
+
+
+
+},{"./isArray":16}],29:[function(require,module,exports){
 
 
     /**
@@ -1905,7 +1881,7 @@ var isKind = require('./isKind');
 
 
 
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 
 
     /**
@@ -1924,7 +1900,7 @@ var isKind = require('./isKind');
 
 
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var isArray = require('../lang/isArray');
 
@@ -1981,7 +1957,7 @@ var isArray = require('../lang/isArray');
 
 
 
-},{"../lang/isArray":17,"./forOwn":34}],31:[function(require,module,exports){
+},{"../lang/isArray":16,"./forOwn":35}],32:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var isPlainObject = require('../lang/isPlainObject');
 
@@ -2017,7 +1993,7 @@ var isPlainObject = require('../lang/isPlainObject');
 
 
 
-},{"../lang/isPlainObject":25,"./forOwn":34}],32:[function(require,module,exports){
+},{"../lang/isPlainObject":24,"./forOwn":35}],33:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var makeIterator = require('../function/makeIterator_');
 
@@ -2039,7 +2015,7 @@ var makeIterator = require('../function/makeIterator_');
     module.exports = filterValues;
 
 
-},{"../function/makeIterator_":14,"./forOwn":34}],33:[function(require,module,exports){
+},{"../function/makeIterator_":14,"./forOwn":35}],34:[function(require,module,exports){
 
 
     var _hasDontEnumBug,
@@ -2103,7 +2079,7 @@ var makeIterator = require('../function/makeIterator_');
 
 
 
-},{}],34:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 var hasOwn = require('./hasOwn');
 var forIn = require('./forIn');
 
@@ -2124,27 +2100,7 @@ var forIn = require('./forIn');
 
 
 
-},{"./forIn":33,"./hasOwn":38}],35:[function(require,module,exports){
-var forIn = require('./forIn');
-
-    /**
-     * return a list of all enumerable properties that have function values
-     */
-    function functions(obj){
-        var keys = [];
-        forIn(obj, function(val, key){
-            if (typeof val === 'function'){
-                keys.push(key);
-            }
-        });
-        return keys.sort();
-    }
-
-    module.exports = functions;
-
-
-
-},{"./forIn":33}],36:[function(require,module,exports){
+},{"./forIn":34,"./hasOwn":38}],36:[function(require,module,exports){
 
 
     /**
@@ -2215,37 +2171,7 @@ var forOwn = require('./forOwn');
 
 
 
-},{"./forOwn":34}],40:[function(require,module,exports){
-var forOwn = require('./forOwn');
-
-    /**
-    * Combine properties from all the objects into first one.
-    * - This method affects target object in place, if you want to create a new Object pass an empty object as first param.
-    * @param {object} target    Target Object
-    * @param {...object} objects    Objects to be combined (0...n objects).
-    * @return {object} Target Object.
-    */
-    function mixIn(target, objects){
-        var i = 0,
-            n = arguments.length,
-            obj;
-        while(++i < n){
-            obj = arguments[i];
-            if (obj != null) {
-                forOwn(obj, copyProp, target);
-            }
-        }
-        return target;
-    }
-
-    function copyProp(val, key){
-        this[key] = val;
-    }
-
-    module.exports = mixIn;
-
-
-},{"./forOwn":34}],41:[function(require,module,exports){
+},{"./forOwn":35}],40:[function(require,module,exports){
 var forEach = require('../array/forEach');
 
     /**
@@ -2266,7 +2192,7 @@ var forEach = require('../array/forEach');
 
 
 
-},{"../array/forEach":12}],42:[function(require,module,exports){
+},{"../array/forEach":12}],41:[function(require,module,exports){
 var namespace = require('./namespace');
 
     /**
@@ -2285,7 +2211,7 @@ var namespace = require('./namespace');
 
 
 
-},{"./namespace":41}],43:[function(require,module,exports){
+},{"./namespace":40}],42:[function(require,module,exports){
 var has = require('./has');
 
     /**
@@ -2310,39 +2236,7 @@ var has = require('./has');
 
 
 
-},{"./has":37}],44:[function(require,module,exports){
-var toString = require('../lang/toString');
-
-    /**
-     * Escapes a string for insertion into HTML.
-     */
-    function escapeHtml(str){
-        str = toString(str)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/'/g, '&#39;')
-            .replace(/"/g, '&quot;');
-        return str;
-    }
-
-    module.exports = escapeHtml;
-
-
-
-},{"../lang/toString":28}],45:[function(require,module,exports){
-var toString = require('../lang/toString');
-    /**
-     * "Safer" String.toUpperCase()
-     */
-    function upperCase(str){
-        str = toString(str);
-        return str.toUpperCase();
-    }
-    module.exports = upperCase;
-
-
-},{"../lang/toString":28}]},{},[2])
+},{"./has":37}]},{},[2])
 (2)
 });
 ;
