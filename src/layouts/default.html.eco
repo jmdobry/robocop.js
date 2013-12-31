@@ -179,7 +179,23 @@
 					output(err.message);
                 }
             });
-            editor.getSession().setValue('{\n\t"name": {\n\t\t"type": "string"\n\t}\n}');
+            editor.getSession().setValue('{\n' +
+                '\t"name": {\n' +
+                    '\t\t"type": "string",\n' +
+                    '\t\t"maxLength": 255\n' +
+                '\t},\n' +
+                '\t"age": {\n' +
+                    '\t\t"type": "number",\n' +
+                    '\t\t"max": 120,\n' +
+                    '\t\t"min": 0\n' +
+                '\t},\n' +
+                '\t"address": {\n' +
+                    '\t\t"state": {\n' +
+                        '\t\t\t"type": "string",\n' +
+                        '\t\t\t"maxLength": 2\n' +
+                    '\t\t}\n' +
+                '\t}\n' +
+            '}\n');
 
             var editor2 = ace.edit('data-editor');
 			editor2.renderer.setShowGutter(false);
@@ -194,7 +210,13 @@
 					output(err.message);
                 }
             });
-            editor2.getSession().setValue('{\n\t"name": "John Smith"\n}');
+            editor2.getSession().setValue('{\n' +
+                '\t"name": "John Anderson",\n' +
+                '\t"age": 30,\n' +
+                '\t"address": {\n' +
+                    '\t\t"state": "NY"\n' +
+                '\t}\n' +
+            '}\n');
             $('.row .row .highlighted').addClass('col-md-4');
 		</script>
 	<% end %>

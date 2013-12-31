@@ -13,6 +13,8 @@ For the demo these must be valid JSON
 - Center - Test Data
 - Right - Output (null is good)
 
+_You can also open your browser's dev console and try robocop there._
+
 <div class="row">
 	<div id="schema-editor" class="col-md-4" title="Schema Definition"></div>
 	<div id="data-editor" class="col-md-4" title="Test Data"></div>

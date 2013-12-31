@@ -105,6 +105,16 @@
         
             
         
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
         
 
 		<!-- Docs nav
@@ -175,6 +185,24 @@
                     
                         
                             <li class="list-group-item ">
+                                <a href="#robocopremovedatatype"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.removeDataType(name)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopremoverule"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.removeRule(name)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopremoveschema"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.removeSchema(name)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
                                 <a href="#schema"><i class="glyphicon glyphicon-chevron-right"></i> Schema</a>
                             </li>
                         
@@ -188,6 +216,18 @@
                         
                             <li class="list-group-item ">
                                 <a href="#schemavalidatesync"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.validateSync(attrs[, options])</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#schemacoerce"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.coerce(attrs)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#schemaadddefaults"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.addDefaults(attrs)</a>
                             </li>
                         
                     
@@ -327,13 +367,13 @@ robocop.defineSchema(<span class="string">'mySchema'</span>, {
     }
 });
 
-<span class="keyword">var</span> errors = robocop.testSchema(<span class="string">'mySchema'</span>, {
+<span class="keyword">var</span> errors = robocop.getSchema(<span class="string">'mySchema'</span>).validateSync({
     seats: <span class="number">16</span>
 });
 
 errors; <span class="comment">//  null</span>
 
-errors = robocop.testSchema(<span class="string">'mySchema'</span>, {
+errors = robocop.getSchema(<span class="string">'mySchema'</span>).validateSync({
     seats: <span class="number">17</span>
 });
 
@@ -469,6 +509,60 @@ errors; // null</code></pre>
                     
                 
 				    
+				        <section id="robocopremovedatatype">
+                            <div class="page-header"><h1>.removeDataType(name)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Remove the data type with the given name from robocop&#39;s registry.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name of the data type to remove.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript">robocop.removeDataType(<span class="string">'NaN'</span>);
+
+robocop.getDataType(<span class="string">'NaN'</span>) <span class="comment">// undefined;</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopremoverule">
+                            <div class="page-header"><h1>.removeRule(name)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Remove the rule with the given name from robocop&#39;s registry.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name of the rule to remove.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript">robocop.removeRule(<span class="string">'divisibleBy'</span>);
+
+robocop.getRule(<span class="string">'divisibleBy'</span>) <span class="comment">// undefined;</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopremoveschema">
+                            <div class="page-header"><h1>.removeSchema(name)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Remove the schema with the given name from robocop&#39;s registry.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name of the schema to remove.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript">robocop.removeSchema(<span class="string">'person'</span>);
+
+robocop.getSchema(<span class="string">'person'</span>) <span class="comment">// undefined;</span></code></pre>
+
+                        </section>
+                    
+                
+				    
 				        <section id="schema">
                             <div class="page-header"><h1>Schema</h1></div>
                             <h2 id="description">Description</h2>
@@ -565,6 +659,40 @@ errors; <span class="comment">//  {</span>
         <span class="comment">//          }]</span>
         <span class="comment">//      }</span>
         <span class="comment">//  }</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="schemacoerce">
+                            <div class="page-header"><h1>.coerce(attrs)</h1></div>
+                            <h2 id="description">Description</h2>
+<p><strong>METHOD NOT IMPLEMENTED</strong></p>
+<p>Attempt to coerce the given attributes to their proper data types as specified by any &quot;type&quot; rules in this Schema.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="attrs">attrs</h4>
+<p><strong>Type:</strong> <code>object</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The hash of attributes to coerce.</p>
+<h2 id="usage">Usage</h2>
+<p><strong>METHOD NOT IMPLEMENTED</strong></p>
+
+                        </section>
+                    
+                
+				    
+				        <section id="schemaadddefaults">
+                            <div class="page-header"><h1>.addDefaults(attrs)</h1></div>
+                            <h2 id="description">Description</h2>
+<p><strong>METHOD NOT IMPLEMENTED</strong></p>
+<p>Fill in default values for those attributes that are missing, as specified by any &quot;default&quot; rules in this Schema.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="attrs">attrs</h4>
+<p><strong>Type:</strong> <code>object</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The hash of attributes to which to fill in default values.</p>
+<h2 id="usage">Usage</h2>
+<p><strong>METHOD NOT IMPLEMENTED</strong></p>
 
                         </section>
                     

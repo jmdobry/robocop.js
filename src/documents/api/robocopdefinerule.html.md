@@ -44,13 +44,13 @@ robocop.defineSchema('mySchema', {
 	}
 });
 
-var errors = robocop.testSchema('mySchema', {
+var errors = robocop.getSchema('mySchema').validateSync({
 	seats: 16
 });
 
 errors; //  null
 
-errors = robocop.testSchema('mySchema', {
+errors = robocop.getSchema('mySchema').validateSync({
 	seats: 17
 });
 
