@@ -10,11 +10,13 @@ robocop.js is a library that allows you to define and validate rules, datatypes 
 
 #### Define a rule
 ```javascript
-robocop.defineRule('noBadWords', function (value, options) {
-	// This function should return null if value satisfies the rule,
-	// otherwise the return value will be the error message
-	if (typeof value === 'string') {
-		return value.indexOf('bad word') === -1;
+robocop.defineRule('divisibleBy', function (x, divisor) {
+	if (typeof x === 'number' && typeof divisor === 'number' && x % divisor !== 0) {
+		return {
+            rule: 'divisibleBy',
+            actual: '' + x + ' % ' + divisor + ' === ' + (x % divisor),
+            expected: '' + x + ' % ' + divisor + ' === 0'
+        };
 	}
 	return null;
 });
@@ -22,60 +24,85 @@ robocop.defineRule('noBadWords', function (value, options) {
 
 #### Define a schema
 ```javascript
-robocop.defineSchema('post', {
-	id: {
-		type: 'string'
+robocop.defineSchema('mySchema', {
+	seats: {
+		divisibleBy: 4
+	}
+});
+
+var errors = robocop.getSchema('mySchema').validateSync({
+	seats: 16
+});
+
+errors; //  null
+
+errors = robocop.getSchema('mySchema').validateSync({
+	seats: 17
+});
+
+errors; //  {
+		//      seats: {
+		//          errors: [ {
+		//              rule: 'divisibleBy',
+		//              actual: '17 % 4 === 1',
+		//              expected: '17 % 4 === 0'
+		//          } ]
+		//      }
+		//  }
+```
+
+Another example:
+
+```javascript
+robocop.defineSchema('person', {
+	name: {
+		given: {
+    		type: 'string',
+    		maxLength: 255
+    	},
+    	surname: {
+    		type: 'string',
+            maxLength: 255
+    	}
 	},
-	content: {
-		type: 'string',
-		maxLength: 5000,
-		noBadWords: true // Our custom rule
-	},
-	title: {
-		type: 'string',
-		required: true,
-		minLength: 3,
-		maxLength: 255
-	},
-	author: {
-		type: 'string',
-		required: true,
-		maxLength: 255
-	},
-	tags: {
-		type: 'array'
+	age: {
+		type: 'number',
+		max: 150,
+		min: 0
 	}
 });
 ```
 
-#### Validate an object against a schema
+#### Validate attributes against a schema
 ```javascript
-var result = robocop.testSchema({
-	id: 34,
-	content: 'With great power comes great responsibility.',
-	title: 'A trustworthy government',
-	author: 'Concerned citizen',
-	tags: [
-		'freedom'
-	]
-}, {
-	name: 'post' // the name of the schema to use in the test
+var errors = robocop.getSchema('person').validateSync({
+	name: {
+		given: 'John',
+		surname: 'Anderson'
+	},
+	age: 30
 });
 
-result; // null (null is good)
+errors; // null
 ```
 
 #### Get an error object when the test fails
 ```javascript
-var result = robocop.testSchema({
-	id: 35,
-	content: 'Here is a bad word.',
-	title: 'A likely post',
-	author: 'gordan fooman',
-	tags: 'oops'
-}, {
-	name: 'post' // the name of the schema to use in the test
+errors = robocop.getSchema('person').validateSync({
+	name: {
+		given: 'John',
+		surname: 'Anderson'
+	},
+	age: -4
 });
 
-result; //  { content: { errors: [10] } }
+errors; //  {
+		//      age: {
+		//          errors: [{
+		//              rule: 'min',
+		//              actual: '150 < 0',
+		//              expected: '150 >= 0',
+		//          }]
+		//      }
+		//  }
 ```
