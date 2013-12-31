@@ -21,3 +21,5 @@ rethinkdb_data
 *.iml
 
 coverage/
+
+.docpad.db
