@@ -1,0 +1,631 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="description" content="robocop.js : Define and validate rules, datatypes and schemata in Node and in the browser.">
+	<meta name="author" content="Jason Dobry">
+	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+    <link rel="icon" href="img/favicon.png" type="image/x-icon">
+
+	<link rel="stylesheet" type="text/css" media="screen" href="css/styles.min.css">
+	<title>robocop.js</title>
+</head>
+<body data-spy="scroll" data-target="#sidebar" data-ember-extension="1" cz-shortcut-listen="true">
+    <a href="https://github.com/jmdobry/robocop.js" id="github-ribbon">
+        <img style="z-index: 2000; position: fixed; top: 0; right: 0; border: 0;" width="120" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub">
+    </a>
+	<div class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="brand" href="./">
+					<img src="data:image/png;base64,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" alt="robocop.js" width="225" height="50">
+				</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav pull-right">
+                    <li class="">
+                        <a href="./">Home</a>
+                    </li>
+                    <li class="">
+                        <a href="installation.html">Installation</a>
+                    </li>
+                    <!--
+                    <li class="">
+                        <a href="guide.html">Guide</a>
+                    </li>
+                    -->
+                    <li class="">
+                        <a href="playground.html">Playground</a>
+                    </li>
+                    <li class="active">
+                        <a href="api.html">API</a>
+                    </li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Community <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li>
+							    <a href="https://groups.google.com/forum/#!forum/robocop.js">
+							    <i class="glyphicon glyphicon-envelope"></i> Mailing List
+							    </a>
+                            </li>
+							<li class="divider"></li>
+							<li><a href="https://github.com/jmdobry/robocop.js/issues?state=open">Issues</a></li>
+							<li><a href="https://github.com/jmdobry/robocop.js">GitHub</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div><!--/.nav-collapse -->
+		</div>
+	</div>
+	<header class="jumbotron subhead" id="overview">
+		<div class="container">
+			<h1>API</h1>
+			<p class="lead">Reference API documentation for robocop.js.</p>
+		</div>
+	</header>
+	<div class="container">
+        
+        
+        
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+        
+
+		<!-- Docs nav
+		================================================== -->
+		<div class="row">
+			<div class="col-md-3" id="sidebar" >
+				<ul class="list-group nav" id="sidenav">
+				    
+                        
+                            <li class="list-group-item active">
+                                <a href="#robocop"><i class="glyphicon glyphicon-chevron-right"></i> robocop</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopavailabledatatypes"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.availableDataTypes()</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopavailablerules"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.availableRules()</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopavailableschemas"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.availableSchemas()</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopdefinedatatype"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.defineDataType(name, def)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopdefinerule"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.defineRule(name, ruleFunc)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopdefineschema"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.defineSchema(name, def)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopgetdatatype"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.getDataType(name)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopgetrule"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.getRule(name)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#robocopgetschema"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.getSchema(name)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#schema"><i class="glyphicon glyphicon-chevron-right"></i> Schema</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#schemavalidate"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.validate(attrs[, options], cb)</a>
+                            </li>
+                        
+                    
+                        
+                            <li class="list-group-item ">
+                                <a href="#schemavalidatesync"><i class="glyphicon glyphicon-chevron-right"></i> &emsp;.validateSync(attrs[, options])</a>
+                            </li>
+                        
+                    
+				</ul>
+			</div>
+			<div class="col-md-9">
+				
+				    
+				        <section id="robocop">
+                            <div class="page-header"><h1>robocop</h1></div>
+                            <h2 id="description">Description</h2>
+<p><code>robocop</code> is the global variable exposed by robocop.js.</p>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopavailabledatatypes">
+                            <div class="page-header"><h1>.availableDataTypes()</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Return the list of data types registered with robocop.js.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript"><span class="comment">// data types provided by robocop</span>
+robocop.availableDataTypes();   <span class="comment">//  [</span>
+                                <span class="comment">//      "string",</span>
+                                <span class="comment">//      "number",</span>
+                                <span class="comment">//      "integer",</span>
+                                <span class="comment">//      "float",</span>
+                                <span class="comment">//      "array",</span>
+                                <span class="comment">//      "object",</span>
+                                <span class="comment">//      "boolean",</span>
+                                <span class="comment">//      "date"</span>
+                                <span class="comment">//  ]</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopavailablerules">
+                            <div class="page-header"><h1>.availableRules()</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Return the list of rules registered with robocop.js.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript"><span class="comment">// rules provided by robocop</span>
+robocop.availableRules();   <span class="comment">//  [</span>
+                            <span class="comment">//      "nullable",</span>
+                            <span class="comment">//      "max",</span>
+                            <span class="comment">//      "min",</span>
+                            <span class="comment">//      "maxLength",</span>
+                            <span class="comment">//      "minLength",</span>
+                            <span class="comment">//      "type"</span>
+                            <span class="comment">//  ]</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopavailableschemas">
+                            <div class="page-header"><h1>.availableSchemas()</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Return the list of schemas registered with robocop.js.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript"><span class="comment">// schemas provided by robocop</span>
+robocop.availableSchemas();   <span class="comment">// []</span>
+
+<span class="comment">// define your own, that's the point!</span>
+robocop.defineSchema(<span class="string">'mySchema'</span>, {
+    name: {
+        type: <span class="string">'string'</span>
+    }
+});
+
+robocop.availableSchemas();   <span class="comment">// ['mySchema']</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopdefinedatatype">
+                            <div class="page-header"><h1>.defineDataType(name, def)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Register a new data type with robocop.js.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name by which this data type will be identified.</p>
+<h4 id="typedefinition">typeDefinition</h4>
+<p><strong>Type:</strong> <code>function</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> Function that accepts the value to be tested. This function should return null if the value is considered valid, otherwise any return value will be used as the error message.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript">robocop.defineDataType(<span class="string">'NaN'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x)</span> {</span>
+    <span class="keyword">if</span> (isNaN(x)) {
+        <span class="keyword">return</span> <span class="literal">null</span>;
+    } <span class="keyword">else</span> {
+        <span class="keyword">return</span> {
+            rule: <span class="string">'type'</span>,
+            actual: <span class="keyword">typeof</span> x,
+            expected: <span class="string">'NaN'</span>
+        };
+    }
+});</code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopdefinerule">
+                            <div class="page-header"><h1>.defineRule(name, ruleFunc)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Register a new rule with robocop.js.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name by which this rule will be identified.</p>
+<h4 id="rulefunc">ruleFunc</h4>
+<p><strong>Type:</strong> <code>function</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> Function that accepts the value to be tested. This function should return null if the value passes the rule&#39;s test, otherwise any return value will be used as the error message.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript">robocop.defineRule(<span class="string">'divisibleBy'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x, divisor)</span> {</span>
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">'number'</span> &amp;&amp; <span class="keyword">typeof</span> divisor === <span class="string">'number'</span> &amp;&amp; x % divisor !== <span class="number">0</span>) {
+        <span class="keyword">return</span> {
+            rule: <span class="string">'divisibleBy'</span>,
+            actual: <span class="string">''</span> + x + <span class="string">' % '</span> + divisor + <span class="string">' === '</span> + (x % divisor),
+            expected: <span class="string">''</span> + x + <span class="string">' % '</span> + divisor + <span class="string">' === 0'</span>
+        };
+    }
+    <span class="keyword">return</span> <span class="literal">null</span>;
+});
+
+robocop.defineSchema(<span class="string">'mySchema'</span>, {
+    seats: {
+        divisibleBy: <span class="number">4</span>
+    }
+});
+
+<span class="keyword">var</span> errors = robocop.testSchema(<span class="string">'mySchema'</span>, {
+    seats: <span class="number">16</span>
+});
+
+errors; <span class="comment">//  null</span>
+
+errors = robocop.testSchema(<span class="string">'mySchema'</span>, {
+    seats: <span class="number">17</span>
+});
+
+errors; <span class="comment">//  {</span>
+        <span class="comment">//      seats: {</span>
+        <span class="comment">//          errors: [ {</span>
+        <span class="comment">//              rule: 'divisibleBy',</span>
+        <span class="comment">//              actual: '17 % 4 === 1',</span>
+        <span class="comment">//              expected: '17 % 4 === 0'</span>
+        <span class="comment">//          } ]</span>
+        <span class="comment">//      }</span>
+        <span class="comment">//  }</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopdefineschema">
+                            <div class="page-header"><h1>.defineSchema(name, def)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Register a new schema with robocop.js.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name by which this schema will be identified.</p>
+<h4 id="definition">definition</h4>
+<p><strong>Type:</strong> <code>object</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> Object that maps rules to properties.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript">robocop.defineSchema(<span class="string">'person'</span>, {
+    name: {
+        given: {
+            type: <span class="string">'string'</span>,
+            maxLength: <span class="number">255</span>
+        },
+        surname: {
+            type: <span class="string">'string'</span>,
+            maxLength: <span class="number">255</span>
+        }
+    },
+    age: {
+        type: <span class="string">'number'</span>,
+        max: <span class="number">150</span>,
+        min: <span class="number">0</span>
+    }
+});</code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopgetdatatype">
+                            <div class="page-header"><h1>.getDataType(name)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Retrieve the data type with the given name from robocop&#39;s registry.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name of the data type to retrieve.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> NaNDataType = robocop.getDataType(<span class="string">'NaN'</span>);
+
+<span class="keyword">var</span> errors = NaNDataType(<span class="number">30</span>);
+
+errors; <span class="comment">//  {</span>
+        <span class="comment">//      rule: 'type',</span>
+        <span class="comment">//      actual: 'number',</span>
+        <span class="comment">//      expected: 'NaN'</span>
+        <span class="comment">//  }</span>
+
+errors = NaNDataType(<span class="literal">NaN</span>);
+
+errors; <span class="comment">// null</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopgetrule">
+                            <div class="page-header"><h1>.getRule(name)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Retrieve the rule with the given name from robocop&#39;s registry.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name of the data type to retrieve.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> DivisibleByRule = robocop.getRule(<span class="string">'divisibleBy'</span>);
+
+<span class="keyword">var</span> errors = DivisibleByRule(<span class="number">16</span>, <span class="number">4</span>);
+
+errors; <span class="comment">//  null</span>
+
+errors = DivisibleByRule(<span class="number">17</span>, <span class="number">4</span>);
+
+errors; <span class="comment">//  {</span>
+        <span class="comment">//      rule: 'divisibleBy',</span>
+        <span class="comment">//      actual: '17 % 4 === 1',</span>
+        <span class="comment">//      expected: '17 % 4 === 0'</span>
+        <span class="comment">//  }</span></code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="robocopgetschema">
+                            <div class="page-header"><h1>.getSchema(name)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Retrieve the schema with the given name from robocop&#39;s registry.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="name">name</h4>
+<p><strong>Type:</strong> <code>string</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The name of the schema to retrieve.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="undefined">var PersonSchema = robocop.getSchema('person');
+
+var errors = PersonSchema.validateSync({
+    name: {
+        given: 'John',
+        surname: 'Anderson
+    },
+    age: 30
+});
+
+errors; // null</code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="schema">
+                            <div class="page-header"><h1>Schema</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Schema class used internally by <code>robocop</code>. You can use <code>Schema</code> directly if you&#39;d like.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript"><span class="comment">// A standalone schema</span>
+<span class="keyword">var</span> schema = <span class="keyword">new</span> robocop.Schema(<span class="string">'mySchema'</span>, {
+    name: {
+        type: <span class="string">'string'</span>
+    }
+});</code></pre>
+<pre class="highlighted"><code class="javascript"><span class="comment">// This schema will be saved in robocop's registry</span>
+<span class="keyword">var</span> schema = robocop.defineSchema(<span class="string">'mySchema'</span>, {
+    name: {
+        type: <span class="string">'string'</span>
+    }
+});</code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="schemavalidate">
+                            <div class="page-header"><h1>.validate(attrs[, options], cb)</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Validate the given attributes against this Schema instance.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="attrs">attrs</h4>
+<p><strong>Type:</strong> <code>object</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The hash of attributes to validate.</p>
+<h4 id="options">options</h4>
+<p><strong>Type:</strong> <code>object</code></p>
+<p><strong>Required:</strong> No</p>
+<p><strong>Description:</strong> Optional configuration.</p>
+<h4 id="cb">cb</h4>
+<p><strong>Type:</strong> <code>function</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> Callback function. Signature: <code>cb(err)</code>. <code>err</code> will be null if validation succeeds.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript">mySchema.validate({
+    name: <span class="string">'John Anderson'</span>
+}, <span class="function"><span class="keyword">function</span> <span class="params">(err)</span> {</span>
+    err; <span class="comment">// null</span>
+});
+
+mySchema.validate({
+    name: <span class="number">5</span>
+}, <span class="function"><span class="keyword">function</span> <span class="params">(err)</span> {</span>
+    err;    <span class="comment">//  {</span>
+            <span class="comment">//      name: {</span>
+            <span class="comment">//          errors: [{</span>
+            <span class="comment">//              rule: 'type',</span>
+            <span class="comment">//              actual: 'number',</span>
+            <span class="comment">//              expected: 'string'</span>
+            <span class="comment">//          }]</span>
+            <span class="comment">//      }</span>
+            <span class="comment">//  }</span>
+});</code></pre>
+
+                        </section>
+                    
+                
+				    
+				        <section id="schemavalidatesync">
+                            <div class="page-header"><h1>.validateSync(attrs[, options])</h1></div>
+                            <h2 id="description">Description</h2>
+<p>Synchronously validate the given attributes against this Schema instance.</p>
+<h2 id="parameters">Parameters</h2>
+<h4 id="attrs">attrs</h4>
+<p><strong>Type:</strong> <code>object</code></p>
+<p><strong>Required:</strong> Yes</p>
+<p><strong>Description:</strong> The hash of attributes to validate.</p>
+<h4 id="options">options</h4>
+<p><strong>Type:</strong> <code>object</code></p>
+<p><strong>Required:</strong> No</p>
+<p><strong>Description:</strong> Optional configuration.</p>
+<h2 id="usage">Usage</h2>
+<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> errors = mySchema.validate({
+    name: <span class="string">'John Anderson'</span>
+});
+
+errors; <span class="comment">// null</span>
+
+errors = mySchema.validate({
+    name: <span class="number">5</span>
+});
+errors; <span class="comment">//  {</span>
+        <span class="comment">//      name: {</span>
+        <span class="comment">//          errors: [{</span>
+        <span class="comment">//              rule: 'type',</span>
+        <span class="comment">//              actual: 'number',</span>
+        <span class="comment">//              expected: 'string'</span>
+        <span class="comment">//          }]</span>
+        <span class="comment">//      }</span>
+        <span class="comment">//  }</span></code></pre>
+
+                        </section>
+                    
+                
+			</div>
+		</div>
+		<div class="row">
+		    <div class="col-md-3"  ></div>
+		    <div class="col-md-9">
+                <div id="disqus_thread"></div>
+                <script type="text/javascript">
+                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+                    var disqus_shortname = 'robocopjs'; // required: replace example with your forum shortname
+
+                    /* * * DON'T EDIT BELOW THIS LINE * * */
+                    (function() {
+                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                    })();
+                </script>
+            </div>
+		</div>
+	</div>
+	<footer id="footer-main" class="navbar navbar-default">
+        <div class="container">
+            <ul class="nav navbar-nav row">
+                <li class="col-lg-3">
+                    <a href="http://www.pseudobry.com/">© 2013 Jason Dobry</a>
+                </li>
+                <li class="col-lg-2">
+                    <a href="https://github.com/jmdobry/robocop.js/blob/master/LICENSE">MIT Licensed</a>
+                </li>
+                <li class="col-lg-4">
+                    <span class="footer-button"><iframe src="http://ghbtns.com/github-btn.html?user=jmdobry&repo=robocop.js&type=watch&count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe></span>
+                    <span class="footer-button"><iframe src="http://ghbtns.com/github-btn.html?user=jmdobry&repo=robocop.js&type=fork&count=true"allowtransparency="true" frameborder="0" scrolling="0" width="95" height="20"></iframe></span>
+                </li>
+                <li class="col-lg-3 pull-right">
+                    <a href="JavaScript:void(0)" onclick="window.scrollTo(0, 0);" class="pull-right" style="margin-right: 30px;">
+                        <span class="glyphicon glyphicon-arrow-up"></span>&nbsp;&nbsp;Back to top
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+	<script src="js/scripts.js"></script>
+	<script>
+		$(document).ready(function(){
+			$('#sidenav').affix({
+				offset: {
+					top: function () { return $(window).width() <= 768 ? 290 : 154 },
+			  		bottom: 0
+				}
+			})
+		});
+	</script>
+	
+	<script type="text/javascript">
+      window.analytics||(window.analytics=[]),window.analytics.methods=["identify","track","trackLink","trackForm","trackClick","trackSubmit","page","pageview","ab","alias","ready","group","on","once","off"],window.analytics.factory=function(t){return function(){var a=Array.prototype.slice.call(arguments);return a.unshift(t),window.analytics.push(a),window.analytics}};for(var i=0;i<window.analytics.methods.length;i++){var method=window.analytics.methods[i];window.analytics[method]=window.analytics.factory(method)}window.analytics.load=function(t){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"===document.location.protocol?"https://":"http://")+"d2dq2ahtl5zl1z.cloudfront.net/analytics.js/v1/"+t+"/analytics.min.js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n)},window.analytics.SNIPPET_VERSION="2.0.8",
+      window.analytics.load("5e2vnbkf6h");
+      window.analytics.page();
+    </script>
+</body>
+</html>
