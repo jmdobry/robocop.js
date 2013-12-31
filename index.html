@@ -121,65 +121,88 @@
                             <h2 id="what-is-robocop-js-">What is robocop.js?</h2>
 <p>robocop.js is a library that allows you to define and validate rules, datatypes and schemata in Node and in the browser. Check it out:</p>
 <h4 id="define-a-rule">Define a rule</h4>
-<pre class="highlighted"><code class="javascript">robocop.defineRule(<span class="string">'noBadWords'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(value, options)</span> {</span>
-    <span class="comment">// This function should return null if value satisfies the rule,</span>
-    <span class="comment">// otherwise the return value will be the error message</span>
-    <span class="keyword">if</span> (<span class="keyword">typeof</span> value === <span class="string">'string'</span>) {
-        <span class="keyword">return</span> value.indexOf(<span class="string">'bad word'</span>) === -<span class="number">1</span>;
+<pre class="highlighted"><code class="javascript">robocop.defineRule(<span class="string">'divisibleBy'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x, divisor)</span> {</span>
+    <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">'number'</span> &amp;&amp; <span class="keyword">typeof</span> divisor === <span class="string">'number'</span> &amp;&amp; x % divisor !== <span class="number">0</span>) {
+        <span class="keyword">return</span> {
+            rule: <span class="string">'divisibleBy'</span>,
+            actual: <span class="string">''</span> + x + <span class="string">' % '</span> + divisor + <span class="string">' === '</span> + (x % divisor),
+            expected: <span class="string">''</span> + x + <span class="string">' % '</span> + divisor + <span class="string">' === 0'</span>
+        };
     }
     <span class="keyword">return</span> <span class="literal">null</span>;
 });</code></pre>
 <h4 id="define-a-schema">Define a schema</h4>
-<pre class="highlighted"><code class="javascript">robocop.defineSchema(<span class="string">'post'</span>, {
-    id: {
-        type: <span class="string">'string'</span>
+<pre class="highlighted"><code class="javascript">robocop.defineSchema(<span class="string">'mySchema'</span>, {
+    seats: {
+        divisibleBy: <span class="number">4</span>
+    }
+});
+
+<span class="keyword">var</span> errors = robocop.getSchema(<span class="string">'mySchema'</span>).validateSync({
+    seats: <span class="number">16</span>
+});
+
+errors; <span class="comment">//  null</span>
+
+errors = robocop.getSchema(<span class="string">'mySchema'</span>).validateSync({
+    seats: <span class="number">17</span>
+});
+
+errors; <span class="comment">//  {</span>
+        <span class="comment">//      seats: {</span>
+        <span class="comment">//          errors: [ {</span>
+        <span class="comment">//              rule: 'divisibleBy',</span>
+        <span class="comment">//              actual: '17 % 4 === 1',</span>
+        <span class="comment">//              expected: '17 % 4 === 0'</span>
+        <span class="comment">//          } ]</span>
+        <span class="comment">//      }</span>
+        <span class="comment">//  }</span></code></pre>
+<p>Another example:</p>
+<pre class="highlighted"><code class="javascript">robocop.defineSchema(<span class="string">'person'</span>, {
+    name: {
+        given: {
+            type: <span class="string">'string'</span>,
+            maxLength: <span class="number">255</span>
+        },
+        surname: {
+            type: <span class="string">'string'</span>,
+            maxLength: <span class="number">255</span>
+        }
     },
-    content: {
-        type: <span class="string">'string'</span>,
-        maxLength: <span class="number">5000</span>,
-        noBadWords: <span class="literal">true</span> <span class="comment">// Our custom rule</span>
-    },
-    title: {
-        type: <span class="string">'string'</span>,
-        required: <span class="literal">true</span>,
-        minLength: <span class="number">3</span>,
-        maxLength: <span class="number">255</span>
-    },
-    author: {
-        type: <span class="string">'string'</span>,
-        required: <span class="literal">true</span>,
-        maxLength: <span class="number">255</span>
-    },
-    tags: {
-        type: <span class="string">'array'</span>
+    age: {
+        type: <span class="string">'number'</span>,
+        max: <span class="number">150</span>,
+        min: <span class="number">0</span>
     }
 });</code></pre>
-<h4 id="validate-an-object-against-a-schema">Validate an object against a schema</h4>
-<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> result = robocop.testSchema({
-    id: <span class="number">34</span>,
-    content: <span class="string">'With great power comes great responsibility.'</span>,
-    title: <span class="string">'A trustworthy government'</span>,
-    author: <span class="string">'Concerned citizen'</span>,
-    tags: [
-        <span class="string">'freedom'</span>
-    ]
-}, {
-    name: <span class="string">'post'</span> <span class="comment">// the name of the schema to use in the test</span>
+<h4 id="validate-attributes-against-a-schema">Validate attributes against a schema</h4>
+<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> errors = robocop.getSchema(<span class="string">'person'</span>).validateSync({
+    name: {
+        given: <span class="string">'John'</span>,
+        surname: <span class="string">'Anderson'</span>
+    },
+    age: <span class="number">30</span>
 });
 
-result; <span class="comment">// null (null is good)</span></code></pre>
+errors; <span class="comment">// null</span></code></pre>
 <h4 id="get-an-error-object-when-the-test-fails">Get an error object when the test fails</h4>
-<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> result = robocop.testSchema({
-    id: <span class="number">35</span>,
-    content: <span class="string">'Here is a bad word.'</span>,
-    title: <span class="string">'A likely post'</span>,
-    author: <span class="string">'gordan fooman'</span>,
-    tags: <span class="string">'oops'</span>
-}, {
-    name: <span class="string">'post'</span> <span class="comment">// the name of the schema to use in the test</span>
+<pre class="highlighted"><code class="javascript">errors = robocop.getSchema(<span class="string">'person'</span>).validateSync({
+    name: {
+        given: <span class="string">'John'</span>,
+        surname: <span class="string">'Anderson'</span>
+    },
+    age: -<span class="number">4</span>
 });
 
-result; <span class="comment">//  { content: { errors: [10] } }</span></code></pre>
+errors; <span class="comment">//  {</span>
+        <span class="comment">//      age: {</span>
+        <span class="comment">//          errors: [{</span>
+        <span class="comment">//              rule: 'min',</span>
+        <span class="comment">//              actual: '150 &lt; 0',</span>
+        <span class="comment">//              expected: '150 &gt;= 0',</span>
+        <span class="comment">//          }]</span>
+        <span class="comment">//      }</span>
+        <span class="comment">//  }</span></code></pre>
 
                         </section>
                     
