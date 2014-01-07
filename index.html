@@ -121,7 +121,7 @@
                             <h2 id="what-is-robocop-js-">What is robocop.js?</h2>
 <p>robocop.js is a library that allows you to define and validate rules, datatypes and schemata in Node and in the browser. Check it out:</p>
 <h4 id="define-a-rule">Define a rule</h4>
-<pre class="highlighted"><code class="javascript">robocop.defineRule(<span class="string">'divisibleBy'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x, divisor)</span> {</span>
+<pre class="highlight"><code class="javascript">robocop.defineRule(<span class="string">'divisibleBy'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x, divisor)</span> {</span>
     <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">'number'</span> &amp;&amp; <span class="keyword">typeof</span> divisor === <span class="string">'number'</span> &amp;&amp; x % divisor !== <span class="number">0</span>) {
         <span class="keyword">return</span> {
             rule: <span class="string">'divisibleBy'</span>,
@@ -132,7 +132,7 @@
     <span class="keyword">return</span> <span class="literal">null</span>;
 });</code></pre>
 <h4 id="define-a-schema">Define a schema</h4>
-<pre class="highlighted"><code class="javascript">robocop.defineSchema(<span class="string">'mySchema'</span>, {
+<pre class="highlight"><code class="javascript">robocop.defineSchema(<span class="string">'mySchema'</span>, {
     seats: {
         divisibleBy: <span class="number">4</span>
     }
@@ -158,7 +158,7 @@ errors; <span class="comment">//  {</span>
         <span class="comment">//      }</span>
         <span class="comment">//  }</span></code></pre>
 <p>Another example:</p>
-<pre class="highlighted"><code class="javascript">robocop.defineSchema(<span class="string">'person'</span>, {
+<pre class="highlight"><code class="javascript">robocop.defineSchema(<span class="string">'person'</span>, {
     name: {
         given: {
             type: <span class="string">'string'</span>,
@@ -176,7 +176,7 @@ errors; <span class="comment">//  {</span>
     }
 });</code></pre>
 <h4 id="validate-attributes-against-a-schema">Validate attributes against a schema</h4>
-<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> errors = robocop.getSchema(<span class="string">'person'</span>).validateSync({
+<pre class="highlight"><code class="javascript"><span class="keyword">var</span> errors = robocop.getSchema(<span class="string">'person'</span>).validateSync({
     name: {
         given: <span class="string">'John'</span>,
         surname: <span class="string">'Anderson'</span>
@@ -186,7 +186,7 @@ errors; <span class="comment">//  {</span>
 
 errors; <span class="comment">// null</span></code></pre>
 <h4 id="get-an-error-object-when-the-test-fails">Get an error object when the test fails</h4>
-<pre class="highlighted"><code class="javascript">errors = robocop.getSchema(<span class="string">'person'</span>).validateSync({
+<pre class="highlight"><code class="javascript">errors = robocop.getSchema(<span class="string">'person'</span>).validateSync({
     name: {
         given: <span class="string">'John'</span>,
         surname: <span class="string">'Anderson'</span>

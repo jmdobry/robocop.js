@@ -250,7 +250,7 @@
                             <h2 id="description">Description</h2>
 <p>Return the list of data types registered with robocop.js.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript"><span class="comment">// data types provided by robocop</span>
+<pre class="highlight"><code class="javascript"><span class="comment">// data types provided by robocop</span>
 robocop.availableDataTypes();   <span class="comment">//  [</span>
                                 <span class="comment">//      "string",</span>
                                 <span class="comment">//      "number",</span>
@@ -271,7 +271,7 @@ robocop.availableDataTypes();   <span class="comment">//  [</span>
                             <h2 id="description">Description</h2>
 <p>Return the list of rules registered with robocop.js.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript"><span class="comment">// rules provided by robocop</span>
+<pre class="highlight"><code class="javascript"><span class="comment">// rules provided by robocop</span>
 robocop.availableRules();   <span class="comment">//  [</span>
                             <span class="comment">//      "nullable",</span>
                             <span class="comment">//      "max",</span>
@@ -290,7 +290,7 @@ robocop.availableRules();   <span class="comment">//  [</span>
                             <h2 id="description">Description</h2>
 <p>Return the list of schemas registered with robocop.js.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript"><span class="comment">// schemas provided by robocop</span>
+<pre class="highlight"><code class="javascript"><span class="comment">// schemas provided by robocop</span>
 robocop.availableSchemas();   <span class="comment">// []</span>
 
 <span class="comment">// define your own, that's the point!</span>
@@ -320,7 +320,7 @@ robocop.availableSchemas();   <span class="comment">// ['mySchema']</span></code
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> Function that accepts the value to be tested. This function should return null if the value is considered valid, otherwise any return value will be used as the error message.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript">robocop.defineDataType(<span class="string">'NaN'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x)</span> {</span>
+<pre class="highlight"><code class="javascript">robocop.defineDataType(<span class="string">'NaN'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x)</span> {</span>
     <span class="keyword">if</span> (isNaN(x)) {
         <span class="keyword">return</span> <span class="literal">null</span>;
     } <span class="keyword">else</span> {
@@ -350,7 +350,7 @@ robocop.availableSchemas();   <span class="comment">// ['mySchema']</span></code
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> Function that accepts the value to be tested. This function should return null if the value passes the rule&#39;s test, otherwise any return value will be used as the error message.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript">robocop.defineRule(<span class="string">'divisibleBy'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x, divisor)</span> {</span>
+<pre class="highlight"><code class="javascript">robocop.defineRule(<span class="string">'divisibleBy'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x, divisor)</span> {</span>
     <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">'number'</span> &amp;&amp; <span class="keyword">typeof</span> divisor === <span class="string">'number'</span> &amp;&amp; x % divisor !== <span class="number">0</span>) {
         <span class="keyword">return</span> {
             rule: <span class="string">'divisibleBy'</span>,
@@ -405,7 +405,7 @@ errors; <span class="comment">//  {</span>
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> Object that maps rules to properties.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript">robocop.defineSchema(<span class="string">'person'</span>, {
+<pre class="highlight"><code class="javascript">robocop.defineSchema(<span class="string">'person'</span>, {
     name: {
         given: {
             type: <span class="string">'string'</span>,
@@ -437,7 +437,7 @@ errors; <span class="comment">//  {</span>
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> The name of the data type to retrieve.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> NaNDataType = robocop.getDataType(<span class="string">'NaN'</span>);
+<pre class="highlight"><code class="javascript"><span class="keyword">var</span> NaNDataType = robocop.getDataType(<span class="string">'NaN'</span>);
 
 <span class="keyword">var</span> errors = NaNDataType(<span class="number">30</span>);
 
@@ -465,7 +465,7 @@ errors; <span class="comment">// null</span></code></pre>
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> The name of the data type to retrieve.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> DivisibleByRule = robocop.getRule(<span class="string">'divisibleBy'</span>);
+<pre class="highlight"><code class="javascript"><span class="keyword">var</span> DivisibleByRule = robocop.getRule(<span class="string">'divisibleBy'</span>);
 
 <span class="keyword">var</span> errors = DivisibleByRule(<span class="number">16</span>, <span class="number">4</span>);
 
@@ -493,7 +493,7 @@ errors; <span class="comment">//  {</span>
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> The name of the schema to retrieve.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="undefined">var PersonSchema = robocop.getSchema('person');
+<pre class="highlight"><code class="undefined">var PersonSchema = robocop.getSchema('person');
 
 var errors = PersonSchema.validateSync({
     name: {
@@ -519,7 +519,7 @@ errors; // null</code></pre>
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> The name of the data type to remove.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript">robocop.removeDataType(<span class="string">'NaN'</span>);
+<pre class="highlight"><code class="javascript">robocop.removeDataType(<span class="string">'NaN'</span>);
 
 robocop.getDataType(<span class="string">'NaN'</span>) <span class="comment">// undefined;</span></code></pre>
 
@@ -537,7 +537,7 @@ robocop.getDataType(<span class="string">'NaN'</span>) <span class="comment">// 
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> The name of the rule to remove.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript">robocop.removeRule(<span class="string">'divisibleBy'</span>);
+<pre class="highlight"><code class="javascript">robocop.removeRule(<span class="string">'divisibleBy'</span>);
 
 robocop.getRule(<span class="string">'divisibleBy'</span>) <span class="comment">// undefined;</span></code></pre>
 
@@ -555,7 +555,7 @@ robocop.getRule(<span class="string">'divisibleBy'</span>) <span class="comment"
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> The name of the schema to remove.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript">robocop.removeSchema(<span class="string">'person'</span>);
+<pre class="highlight"><code class="javascript">robocop.removeSchema(<span class="string">'person'</span>);
 
 robocop.getSchema(<span class="string">'person'</span>) <span class="comment">// undefined;</span></code></pre>
 
@@ -568,13 +568,13 @@ robocop.getSchema(<span class="string">'person'</span>) <span class="comment">//
                             <h2 id="description">Description</h2>
 <p>Schema class used internally by <code>robocop</code>. You can use <code>Schema</code> directly if you&#39;d like.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript"><span class="comment">// A standalone schema</span>
+<pre class="highlight"><code class="javascript"><span class="comment">// A standalone schema</span>
 <span class="keyword">var</span> schema = <span class="keyword">new</span> robocop.Schema(<span class="string">'mySchema'</span>, {
     name: {
         type: <span class="string">'string'</span>
     }
 });</code></pre>
-<pre class="highlighted"><code class="javascript"><span class="comment">// This schema will be saved in robocop's registry</span>
+<pre class="highlight"><code class="javascript"><span class="comment">// This schema will be saved in robocop's registry</span>
 <span class="keyword">var</span> schema = robocop.defineSchema(<span class="string">'mySchema'</span>, {
     name: {
         type: <span class="string">'string'</span>
@@ -603,7 +603,7 @@ robocop.getSchema(<span class="string">'person'</span>) <span class="comment">//
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> Callback function. Signature: <code>cb(err)</code>. <code>err</code> will be null if validation succeeds.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript">mySchema.validate({
+<pre class="highlight"><code class="javascript">mySchema.validate({
     name: <span class="string">'John Anderson'</span>
 }, <span class="function"><span class="keyword">function</span> <span class="params">(err)</span> {</span>
     err; <span class="comment">// null</span>
@@ -641,7 +641,7 @@ mySchema.validate({
 <p><strong>Required:</strong> No</p>
 <p><strong>Description:</strong> Optional configuration.</p>
 <h2 id="usage">Usage</h2>
-<pre class="highlighted"><code class="javascript"><span class="keyword">var</span> errors = mySchema.validate({
+<pre class="highlight"><code class="javascript"><span class="keyword">var</span> errors = mySchema.validate({
     name: <span class="string">'John Anderson'</span>
 });
 

@@ -2,7 +2,7 @@
   "author": "Jason Dobry",
   "name": "robocop.js",
   "description": "Define and validate rules, datatypes and schemata in Node and in the browser.",
-  "version": "0.11.1",
+  "version": "0.11.2",
   "homepage": "http://jmdobry.github.io/robocop.js",
   "repository": {
     "type": "git",
@@ -23,13 +23,13 @@
     ".travis.yml",
     "package.json"
   ],
-  "_release": "0.11.1",
+  "_release": "0.11.2",
   "_resolution": {
     "type": "version",
-    "tag": "0.11.1",
-    "commit": "a0a50210a10f08ead6bc7f1d6fae7fdac16ed1b6"
+    "tag": "0.11.2",
+    "commit": "15cf356850c982fa7cd145a648ff92d805882311"
   },
   "_source": "git://github.com/jmdobry/robocop.js.git",
-  "_target": "0.11.1",
+  "_target": "0.11.2",
   "_originalSource": "robocop.js"
 }

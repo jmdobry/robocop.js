@@ -14,7 +14,7 @@ After installing robocop.js with Bower, your `bower.json` file lists robocop.js 
 
 ```javascript
 "dependencies": {
-    "robocop.js": "~0.11.1"
+    "robocop.js": "~0.11.2"
 }
 ```
 
@@ -28,7 +28,7 @@ will install the latest stable version of robocop.js and save the change to your
 <br>
 Alternatively, you can specify the new version you want to install, for example:
 
-`bower install robocop.js#0.11.1 --save`.
+`bower install robocop.js#0.11.2 --save`.
 
 <br>
 `bower prune` will remove the old installation of robocop.js.
@@ -38,7 +38,7 @@ After installing robocop.js with NPM, your `package.json` file lists robocop.js 
 
 ```javascript
 "dependencies": {
-    "robocop.js": "~0.11.1"
+    "robocop.js": "~0.11.2"
 }
 ```
 
@@ -52,7 +52,7 @@ will install the latest stable version of robocop.js and save the change to your
 <br>
 Alternatively, you can specify the new version you want to install, for example:
 
-`npm install robocop.js@0.11.1 --save`.
+`npm install robocop.js@0.11.2 --save`.
 
 ## Upgrade Manually
 Download the version of robocop.js you want as specified in the [Download](#download) section.
