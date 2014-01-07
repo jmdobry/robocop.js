@@ -5,6 +5,8 @@ sectionLinkName: status
 gfm: true
 index: 2
 ---
+[![NPM](https://nodei.co/npm/robocop.js.png?downloads=true)](https://nodei.co/npm/robocop.js/)
+
 <table class="table">
 <thead>
 <tr>
@@ -15,7 +17,7 @@ index: 2
 <tbody>
 <tr>
 <td>Version</td>
-<td>[0.11.0](https://github.com/jmdobry/robocop.js/releases/tag/0.11.0)</td>
+<td>[![NPM version](https://badge.fury.io/js/robocop.js.png)](http://badge.fury.io/js/robocop.js)</td>
 </tr>
 <tr>
 <td>Source</td>
