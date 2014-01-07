@@ -193,6 +193,68 @@ describe('Schema', function () {
 				done();
 			});
 		});
+		it('should execute applicable nested validation rules', function (done) {
+			var schema = new robocop.Schema('test', {
+				nested: {
+					doubleNested: {
+						shouldFail: {
+							type: 'string'
+						}
+					},
+					doubleNested2: {
+						shouldFail: {
+							max: 45
+						}
+					}
+				},
+				shouldFailAlso: {
+					maxLength: 4
+				}
+			});
+
+			schema.validate({
+				nested: {
+					doubleNested: {
+						shouldFail: 2
+					},
+					doubleNested2: {
+						shouldFail: 50
+					}
+				},
+				shouldFailAlso: 'isastring'
+			}, function (errors) {
+				assert.deepEqual(errors, {
+					nested: {
+						doubleNested: {
+							shouldFail: {
+								errors: [{
+									rule: 'type',
+									actual: 'number',
+									expected: 'string'
+								}]
+							}
+						},
+						doubleNested2: {
+							shouldFail: {
+								errors: [{
+									rule: 'max',
+									actual: '50 > 45',
+									expected: '50 <= 45'
+								}]
+							}
+						}
+					},
+					shouldFailAlso: {
+						errors: [{
+							rule: 'maxLength',
+							actual: '9 > 4',
+							expected: '9 <= 4'
+						}]
+					}
+				}, 'err should exist when the test fails');
+				done();
+			});
+		});
 
 		it('should throw an error if no callback is provided', function (done) {
 			var schema = new robocop.Schema('test', {

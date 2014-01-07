@@ -1,7 +1,7 @@
 {
   "name": "robocop.js",
   "description": "Define and validate rules, datatypes and schemata in Node and in the browser.",
-  "version": "0.11.0",
+  "version": "0.11.1",
   "homepage": "https://github.com/jmdobry/robocop.js",
   "repository": {
     "type": "git",
@@ -38,8 +38,7 @@
   ],
   "readmeFilename": "README.md",
   "dependencies": {
-    "mout": "~0.8.0",
-    "async": "~0.2.9"
+    "mout": "~0.8.0"
   },
   "devDependencies": {
     "sandboxed-module": "~0.3.0",

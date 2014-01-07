@@ -137,27 +137,27 @@ describe('rules', function () {
 		it('should disallow lengths greater than the maxLength', function (done) {
 			assert.deepEqual(rules.maxLength('1234567890', 9), {
 				rule: 'maxLength',
-				actual: '' + ('1234567890'.length) + '  > ' + 9,
+				actual: '' + ('1234567890'.length) + ' > ' + 9,
 				expected: '' + ('1234567890'.length) + ' <= ' + 9
 			}, 'Should disallow "1234567890" when maxLength is 9.');
 			assert.deepEqual(rules.maxLength('123456789', 1), {
 				rule: 'maxLength',
-				actual: '' + ('123456789'.length) + '  > ' + 1,
+				actual: '' + ('123456789'.length) + ' > ' + 1,
 				expected: '' + ('123456789'.length) + ' <= ' + 1
 			}, 'Should disallow "123456789" when maxLength is 1.');
 			assert.deepEqual(rules.maxLength('a', 0), {
 				rule: 'maxLength',
-				actual: '' + ('a'.length) + '  > ' + 0,
+				actual: '' + ('a'.length) + ' > ' + 0,
 				expected: '' + ('a'.length) + ' <= ' + 0
 			}, 'Should disallow "a" when maxLength is 0.');
 			assert.deepEqual(rules.maxLength(['1', '2', '3'], 2), {
 				rule: 'maxLength',
-				actual: '' + (['1', '2', '3'].length) + '  > ' + 2,
+				actual: '' + (['1', '2', '3'].length) + ' > ' + 2,
 				expected: '' + (['1', '2', '3'].length) + ' <= ' + 2
 			}, 'Should disallow ["1", "2", "3"] when maxLength is 2.');
 			assert.deepEqual(rules.maxLength(['1'], 0), {
 				rule: 'maxLength',
-				actual: '' + (['1'].length) + '  > ' + 0,
+				actual: '' + (['1'].length) + ' > ' + 0,
 				expected: '' + (['1'].length) + ' <= ' + 0
 			}, 'Should disallow ["1"] when maxLength is 0.');
 			done();
