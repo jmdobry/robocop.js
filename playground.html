@@ -113,11 +113,13 @@
 <div class="row">
     <div id="schema-editor" class="col-md-4" title="Schema Definition"></div>
     <div id="data-editor" class="col-md-4" title="Test Data"></div>
-    
-    <pre class="highlight"><code class="cs">
-    <span class="keyword">null</span>
-    </code></pre>
-    
+    <div class="col-md-4">
+        
+        <pre class="highlight"><code class="cs">
+        <span class="keyword">null</span>
+        </code></pre>
+        
+    </div>
 </div>
                         </section>
                     
@@ -181,7 +183,7 @@
 			ace.config.set('basePath', '/js/');
 			function output(o) {
 				console.log(o);
-				$('.row .row .highlighted code').html(JSON.stringify(o, null, 2));
+				$('.row .row .highlight code').html(JSON.stringify(o, null, 2));
 			}
 			var editor = ace.edit('schema-editor');
 			editor.renderer.setShowGutter(false);

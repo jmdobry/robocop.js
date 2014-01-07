@@ -163,7 +163,7 @@
 			ace.config.set('basePath', '/js/');
 			function output(o) {
 				console.log(o);
-				$('.row .row .highlighted code').html(JSON.stringify(o, null, 2));
+				$('.row .row .highlight code').html(JSON.stringify(o, null, 2));
 			}
 			var editor = ace.edit('schema-editor');
 			editor.renderer.setShowGutter(false);

@@ -18,9 +18,11 @@ _You can also open your browser's dev console and try robocop there._
 <div class="row">
 	<div id="schema-editor" class="col-md-4" title="Schema Definition"></div>
 	<div id="data-editor" class="col-md-4" title="Test Data"></div>
-	<pre id="output" class="col-md-4" title="Output">
-	<code>
-	null
-	</code>
-	</pre>
+	<div class="col-md-4">
+		<pre id="output"  title="Output">
+    	<code>
+    	null
+    	</code>
+    	</pre>
+	</div>
 </div>
