@@ -1,3 +1,12 @@
+/**
+ * @author Jason Dobry <jason.dobry@gmail.com>
+ * @file robocop.js
+ * @version 0.12.0 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
+ * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
+ *
+ * @overview Define and validate rules, datatypes and schemata in Node and in the browser.
+ */
 !function(o){"object"==typeof exports?module.exports=o():"function"==typeof define&&define.amd?define(o):"undefined"!=typeof window?window.robocop=o():"undefined"!=typeof global?global.robocop=o():"undefined"!=typeof self&&(self.robocop=o())}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
@@ -173,16 +182,6 @@ module.exports = {
 
 },{"../dataType":1,"../support/utils":10}],3:[function(require,module,exports){
 'use strict';
-
-/**
- * @author Jason Dobry <jason.dobry@gmail.com>
- * @file robocop.js
- * @version 0.11.2 - Homepage <http://jmdobry.github.io/robocop.js/>
- * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
- * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
- *
- * @overview Define and validate rules, datatypes and schemata in Node and in the browser.
- */
 
 module.exports = require('./robocop');
 
