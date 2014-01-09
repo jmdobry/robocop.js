@@ -1,6 +1,6 @@
 'use strict';
 
-var rules = require('../../../lib/rule');
+var rules = require('../../../lib/defaultRules');
 
 describe('rules', function () {
 

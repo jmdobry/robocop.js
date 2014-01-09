@@ -15,17 +15,6 @@ var fail = function (msg) {
 	}],
 	TYPES_EXCEPT_BOOLEAN = ['string', 123, 123.123, null, undefined, {}, [], function () {
 	}],
-	TYPES_EXCEPT_FUNCTION = ['string', 123, 123.123, null, undefined, {}, [], true, false],
-	CACHE_DEFAULTS = {
-		capacity: Number.MAX_VALUE,
-		maxAge: null,
-		deleteOnExpire: 'none',
-		onExpire: null,
-		cacheFlushInterval: null,
-		recycleFreq: 1000,
-		storageMode: 'none',
-		storageImpl: null,
-		verifyIntegrity: true
-	};
+	TYPES_EXCEPT_FUNCTION = ['string', 123, 123.123, null, undefined, {}, [], true, false];
 
 console.log('STARTING KARMA TESTS');

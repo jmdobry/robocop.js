@@ -15,7 +15,8 @@ var SandboxedModule = require('sandboxed-module'),
 		requires: {
 			'mout/lang': require('mout/lang'), // Real dependency
 			'mout/object': require('mout/object'), // Real dependency
-			'../rule': rules // Mock dependency
+			'../rules': rules, // Mock dependency
+			'../defaultRules': {}
 		}
 	}),
 	mout = require('mout');

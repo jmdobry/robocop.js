@@ -72,15 +72,227 @@ describe('Schema', function () {
 			}, function (errors) {
 				assert.deepEqual(errors, {
 					shouldFail: {
-						errors: [{
-							rule: 'type',
-							actual: typeof true,
-							expected: 'string'
-						}]
+						errors: [
+							{
+								rule: 'type',
+								actual: typeof true,
+								expected: 'string'
+							}
+						]
 					}
 				}, 'errors should be defined when the test fails');
 			});
 			done();
+		});
+		it('should execute multiple async validation rules', function (done) {
+			robocop.defineRule('asyncString', function (x, options, done) {
+				setTimeout(function () {
+					if (typeof x !== 'string') {
+						done({
+							rule: 'asyncString',
+							actual: typeof x,
+							expected: 'string'
+						});
+					} else {
+						done();
+					}
+				}, 200);
+			}, true);
+			robocop.defineRule('asyncMaxLength', function (x, maxLength, done) {
+				setTimeout(function () {
+					if (x && (typeof x.length === 'number') && x.length > maxLength) {
+						done({
+							rule: 'asyncMaxLength',
+							actual: 'x.length > maxLength',
+							expected: 'x.length <= maxLength'
+						});
+					} else {
+						done();
+					}
+				}, 200);
+			}, true);
+			robocop.defineRule('asyncNumber', function (x, options, done) {
+				setTimeout(function () {
+					if (typeof x !== 'number') {
+						done({
+							rule: 'asyncNumber',
+							actual: typeof x,
+							expected: 'number'
+						});
+					} else {
+						done();
+					}
+				}, 200);
+			}, true);
+
+			var schema = new robocop.Schema('test', {
+				shouldFail: {
+					asyncString: true,
+					asyncMaxLength: 2
+				},
+				nested: {
+					shouldFail: {
+						asyncNumber: true
+					}
+				}
+			});
+
+			schema.validate({
+				shouldFail: ['shouldbestring', 'andistoolong', 3],
+				nested: {
+					shouldFail: 'shouldbeanumber'
+				}
+			}, function (errors) {
+				assert.deepEqual(errors, {
+					nested: {
+						shouldFail: {
+							errors: [
+								{
+									rule: 'asyncNumber',
+									actual: 'string',
+									expected: 'number'
+								}
+							]
+						}
+					},
+					shouldFail: {
+						errors: [
+							{
+								rule: 'asyncString',
+								actual: 'object',
+								expected: 'string'
+							},
+							{
+								rule: 'asyncMaxLength',
+								actual: 'x.length > maxLength',
+								expected: 'x.length <= maxLength'
+							}
+						]
+					}
+				}, 'errors should be defined when the test fails');
+				done();
+			});
+		});
+
+		it('should execute a mix of rules', function (done) {
+			robocop.defineRule('asyncString2', function (x, options, done) {
+				setTimeout(function () {
+					if (typeof x !== 'string') {
+						done({
+							rule: 'asyncString',
+							actual: typeof x,
+							expected: 'string'
+						});
+					} else {
+						done();
+					}
+				}, 200);
+			}, true);
+			robocop.defineRule('asyncMaxLength2', function (x, maxLength, done) {
+				setTimeout(function () {
+					if (x && (typeof x.length === 'number') && x.length > maxLength) {
+						done({
+							rule: 'asyncMaxLength',
+							actual: 'x.length > maxLength',
+							expected: 'x.length <= maxLength'
+						});
+					} else {
+						done();
+					}
+				}, 200);
+			}, true);
+			robocop.defineRule('asyncNumber2', function (x, options, done) {
+				setTimeout(function () {
+					if (typeof x !== 'number') {
+						done({
+							rule: 'asyncNumber',
+							actual: typeof x,
+							expected: 'number'
+						});
+					} else {
+						done();
+					}
+				}, 200);
+			}, true);
+
+			var schema = new robocop.Schema('test', {
+				shouldFail: {
+					asyncString2: true,
+					type: 'string',
+					maxLength: 1,
+					asyncMaxLength2: 2
+				},
+				nested: {
+					shouldFail: {
+						asyncNumber2: true,
+						type: 'number'
+					}
+				},
+				willFail: {
+					type: 'boolean'
+				}
+			});
+
+			schema.validate({
+				shouldFail: ['shouldbestring', 'andistoolong', 3],
+				nested: {
+					shouldFail: 'shouldbeanumber'
+				},
+				willFail: 'shouldBeABoolean'
+			}, function (errors) {
+				assert.deepEqual(errors, {
+					shouldFail: {
+						errors: [
+							{
+								rule: 'type',
+								actual: 'object',
+								expected: 'string'
+							},
+							{
+								rule: 'maxLength',
+								actual: '3 > 1',
+								expected: '3 <= 1'
+							},
+							{
+								rule: 'asyncString',
+								actual: 'object',
+								expected: 'string'
+							},
+							{
+								rule: 'asyncMaxLength',
+								actual: 'x.length > maxLength',
+								expected: 'x.length <= maxLength'
+							}
+						]
+					},
+					willFail: {
+						errors: [
+							{
+								rule: 'type',
+								actual: 'string',
+								expected: 'boolean'
+							}
+						]
+					},
+					nested: {
+						shouldFail: {
+							errors: [
+								{
+									rule: 'type',
+									actual: 'string',
+									expected: 'number'
+								},
+								{
+									rule: 'asyncNumber',
+									actual: 'string',
+									expected: 'number'
+								}
+							]
+						}
+					}
+				}, 'errors should be defined when the test fails');
+				done();
+			});
 		});
 
 		it('should execute applicable validation rules', function (done) {
@@ -110,11 +322,13 @@ describe('Schema', function () {
 			}, function (errors) {
 				assert.deepEqual(errors, {
 					shouldFail: {
-						errors: [{
-							rule: 'type',
-							actual: typeof true,
-							expected: 'string'
-						}]
+						errors: [
+							{
+								rule: 'type',
+								actual: typeof true,
+								expected: 'string'
+							}
+						]
 					}
 				}, 'err should be defined when the test fails');
 				done();
@@ -147,20 +361,24 @@ describe('Schema', function () {
 					nested: {
 						doubleNested: {
 							shouldFail: {
-								errors: [{
-							rule: 'type',
-							actual: typeof true,
-							expected: 'string'
-						}]
+								errors: [
+									{
+										rule: 'type',
+										actual: typeof true,
+										expected: 'string'
+									}
+								]
 							}
 						}
 					},
 					shouldFailAlso: {
-						errors: [{
-							rule: 'type',
-							actual: typeof true,
-							expected: 'string'
-						}]
+						errors: [
+							{
+								rule: 'type',
+								actual: typeof true,
+								expected: 'string'
+							}
+						]
 					}
 				}, 'err should be defined when the test fails');
 				done();
@@ -227,29 +445,35 @@ describe('Schema', function () {
 					nested: {
 						doubleNested: {
 							shouldFail: {
-								errors: [{
-									rule: 'type',
-									actual: 'number',
-									expected: 'string'
-								}]
+								errors: [
+									{
+										rule: 'type',
+										actual: 'number',
+										expected: 'string'
+									}
+								]
 							}
 						},
 						doubleNested2: {
 							shouldFail: {
-								errors: [{
-									rule: 'max',
-									actual: '50 > 45',
-									expected: '50 <= 45'
-								}]
+								errors: [
+									{
+										rule: 'max',
+										actual: '50 > 45',
+										expected: '50 <= 45'
+									}
+								]
 							}
 						}
 					},
 					shouldFailAlso: {
-						errors: [{
-							rule: 'maxLength',
-							actual: '9 > 4',
-							expected: '9 <= 4'
-						}]
+						errors: [
+							{
+								rule: 'maxLength',
+								actual: '9 > 4',
+								expected: '9 <= 4'
+							}
+						]
 					}
 				}, 'err should exist when the test fails');
 				done();
@@ -331,11 +555,13 @@ describe('Schema', function () {
 			});
 			assert.deepEqual(errors, {
 				shouldFail: {
-					errors: [{
-						rule: 'type',
-						actual: typeof true,
-						expected: 'string'
-					}]
+					errors: [
+						{
+							rule: 'type',
+							actual: typeof true,
+							expected: 'string'
+						}
+					]
 				}
 			}, 'errors should be defined when the test fails');
 			done();
@@ -367,11 +593,13 @@ describe('Schema', function () {
 			});
 			assert.deepEqual(errors, {
 				shouldFail: {
-					errors: [{
-						rule: 'type',
-						actual: typeof true,
-						expected: 'string'
-					}]
+					errors: [
+						{
+							rule: 'type',
+							actual: typeof true,
+							expected: 'string'
+						}
+					]
 				}
 			}, 'err should be defined when the test fails');
 			done();
@@ -403,20 +631,24 @@ describe('Schema', function () {
 				nested: {
 					doubleNested: {
 						shouldFail: {
-							errors: [{
-								rule: 'type',
-								actual: typeof true,
-								expected: 'string'
-							}]
+							errors: [
+								{
+									rule: 'type',
+									actual: typeof true,
+									expected: 'string'
+								}
+							]
 						}
 					}
 				},
 				shouldFailAlso: {
-					errors: [{
-						rule: 'type',
-						actual: typeof true,
-						expected: 'string'
-					}]
+					errors: [
+						{
+							rule: 'type',
+							actual: typeof true,
+							expected: 'string'
+						}
+					]
 				}
 			}, 'err should be defined when the test fails');
 			done();

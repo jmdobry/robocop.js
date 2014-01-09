@@ -9,7 +9,7 @@ var Schema = function (name, schema) {
 
 Schema.prototype.validate = sinon.stub().callsArg(2);
 
-var rules = {
+var defaultRules = {
 	succeedTest: function () {
 		return true;
 	},
@@ -33,14 +33,15 @@ describe('robocop', function () {
 				}),
 				'./rule': SandboxedModule.require('../../../lib/robocop/rule', {
 					requires: {
-						'../rule': rules
+						'../rules': {},
+						'../defaultRules': defaultRules
 					}
 				})
 			}
 		});
 		Schema.prototype.validate = sinon.stub();
-		rules.succeedTest = sinon.stub().returns(true);
-		rules.failTest = sinon.stub().returns(false);
+		defaultRules.succeedTest = sinon.stub().returns(true);
+		defaultRules.failTest = sinon.stub().returns(false);
 		done();
 	});
 
@@ -160,7 +161,7 @@ describe('robocop', function () {
 	});
 
 	/******** robocop RULE methods *********/
-	describe('robocop.defineRule(name, ruleFunc)', function () {
+	describe('robocop.defineRule(name, ruleFunc[, async])', function () {
 		it('should register a new rule', function (done) {
 			var ruleFunc = function () {
 			};
@@ -168,7 +169,7 @@ describe('robocop', function () {
 			assert.deepEqual(robocop.getRule('test'), ruleFunc);
 			done();
 		});
-		it('should throw an error if the schema already exists', function (done) {
+		it('should throw an error if the rule already exists', function (done) {
 			robocop.defineRule('test', function () {
 			});
 			try {
@@ -176,10 +177,29 @@ describe('robocop', function () {
 				});
 				fail('should not reach this!');
 			} catch (err) {
-				assert.equal(err.message, 'robocop.defineRule(name, ruleFunc): name: Name already in use!');
+				assert.equal(err.message, 'robocop.defineRule(name, ruleFunc[, async]): name: Name already in use!');
 				return done();
 			}
 			fail('should not reach this!');
+		});
+		it('should register a new async rule', function (done) {
+			var ruleFunc = function (value, options, done) {
+				setTimeout(function () {
+					if (typeof value === 'string') {
+						done();
+					} else {
+						done('error');
+					}
+				}, 200);
+			};
+			robocop.defineRule('test', ruleFunc, true);
+			assert.deepEqual(robocop.getRule('test'), ruleFunc);
+			assert.isTrue(robocop.getRule('test').async);
+
+			robocop.getRule('test')('test', null, function (err) {
+				assert.isUndefined(err);
+				done();
+			});
 		});
 	});
 

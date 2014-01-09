@@ -13,7 +13,7 @@ module.exports = function (grunt) {
 		config: config,
 		pkg: grunt.file.readJSON('package.json'),
 		clean: {
-			pre: ['dist/']
+			pre: ['coverage', 'dist/']
 		},
 		jshint: {
 			options: {
