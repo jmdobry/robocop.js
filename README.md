@@ -1,10 +1,12 @@
 ## robocop.js
 
-__Version:__ 0.11.2
+__Version:__ [![NPM version](https://badge.fury.io/js/robocop.js.png)](http://badge.fury.io/js/robocop.js)
 
 __Define and validate rules, datatypes and schemata in Node and in the browser.__
 
 All [Documentation](http://jmdobry.github.io/robocop.js) can be found at [jmdobry.github.io/robocop.js](http://jmdobry.github.io/robocop.js).
+
+[![NPM](https://nodei.co/npm/robocop.js.png?downloads=true)](https://nodei.co/npm/robocop.js/)
 
 [![Build Status](https://travis-ci.org/jmdobry/robocop.js.png?branch=master)](https://travis-ci.org/jmdobry/robocop.js)
 [![Dependency Status](https://gemnasium.com/jmdobry/robocop.js.png)](https://gemnasium.com/jmdobry/robocop.js)
