@@ -374,10 +374,31 @@ var _parallel = function (tasks, cb) {
 	}
 };
 
+function _sanitize(attrs, rules) {
+	rules = rules || [];
+	var keys = utils.keys(attrs),
+		noRules = utils.intersection(keys, rules).length === 0;
+
+	utils.forOwn(attrs, function (value, key) {
+		if (noRules && utils.isString(value)) {
+			attrs[key] = {
+				type: value
+			};
+		} else if (utils.isObject(value)) {
+			if (utils.contains(rules, key)) {
+				throw new Error('Schema(name, schema): schema: Rule configuration for rule "' + key + '" cannot be an object!');
+			} else {
+				_sanitize(value, rules);
+			}
+		}
+	});
+}
+
 function validateSchema(schema) {
 	if (!utils.isObject(schema)) {
 		throw new Error('Schema(name, schema): schema: Must be an object!');
 	}
+	_sanitize(schema, require('../robocop/rule').availableRules());
 }
 
 var Schema = module.exports = function Schema(name, schema) {
@@ -610,7 +631,7 @@ Schema.prototype.addDefaults = function () {
 	throw new Error('Unsupported Operation!');
 };
 
-},{"../defaultRules":2,"../rules":8,"../support/utils":10}],10:[function(require,module,exports){
+},{"../defaultRules":2,"../robocop/rule":6,"../rules":8,"../support/utils":10}],10:[function(require,module,exports){
 module.exports = {
 	isString: require('mout/lang/isString'),
 	isBoolean: require('mout/lang/isBoolean'),
@@ -630,10 +651,181 @@ module.exports = {
 	keys: require('mout/object/keys'),
 	filter: require('mout/object/filter'),
 
+	contains: require('mout/array/contains'),
+	intersection: require('mout/array/intersection'),
+
 	toInt: require('mout/number/toInt')
 };
 
-},{"mout/lang/isArray":14,"mout/lang/isBoolean":15,"mout/lang/isDate":16,"mout/lang/isEmpty":17,"mout/lang/isFunction":18,"mout/lang/isNumber":20,"mout/lang/isObject":21,"mout/lang/isString":23,"mout/lang/isUndefined":24,"mout/lang/toNumber":26,"mout/lang/toString":27,"mout/number/toInt":28,"mout/object/deepMixIn":30,"mout/object/filter":31,"mout/object/forOwn":33,"mout/object/get":34,"mout/object/keys":36}],11:[function(require,module,exports){
+},{"mout/array/contains":11,"mout/array/intersection":15,"mout/lang/isArray":21,"mout/lang/isBoolean":22,"mout/lang/isDate":23,"mout/lang/isEmpty":24,"mout/lang/isFunction":25,"mout/lang/isNumber":27,"mout/lang/isObject":28,"mout/lang/isString":30,"mout/lang/isUndefined":31,"mout/lang/toNumber":33,"mout/lang/toString":34,"mout/number/toInt":35,"mout/object/deepMixIn":37,"mout/object/filter":38,"mout/object/forOwn":40,"mout/object/get":41,"mout/object/keys":43}],11:[function(require,module,exports){
+var indexOf = require('./indexOf');
+
+    /**
+     * If array contains values.
+     */
+    function contains(arr, val) {
+        return indexOf(arr, val) !== -1;
+    }
+    module.exports = contains;
+
+
+},{"./indexOf":14}],12:[function(require,module,exports){
+var makeIterator = require('../function/makeIterator_');
+
+    /**
+     * Array every
+     */
+    function every(arr, callback, thisObj) {
+        callback = makeIterator(callback, thisObj);
+        var result = true;
+        if (arr == null) {
+            return result;
+        }
+
+        var i = -1, len = arr.length;
+        while (++i < len) {
+            // we iterate over sparse items since there is no way to make it
+            // work properly on IE 7-8. see #64
+            if (!callback(arr[i], i, arr) ) {
+                result = false;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    module.exports = every;
+
+
+},{"../function/makeIterator_":19}],13:[function(require,module,exports){
+var makeIterator = require('../function/makeIterator_');
+
+    /**
+     * Array filter
+     */
+    function filter(arr, callback, thisObj) {
+        callback = makeIterator(callback, thisObj);
+        var results = [];
+        if (arr == null) {
+            return results;
+        }
+
+        var i = -1, len = arr.length, value;
+        while (++i < len) {
+            value = arr[i];
+            if (callback(value, i, arr)) {
+                results.push(value);
+            }
+        }
+
+        return results;
+    }
+
+    module.exports = filter;
+
+
+
+},{"../function/makeIterator_":19}],14:[function(require,module,exports){
+
+
+    /**
+     * Array.indexOf
+     */
+    function indexOf(arr, item, fromIndex) {
+        fromIndex = fromIndex || 0;
+        if (arr == null) {
+            return -1;
+        }
+
+        var len = arr.length,
+            i = fromIndex < 0 ? len + fromIndex : fromIndex;
+        while (i < len) {
+            // we iterate over sparse items since there is no way to make it
+            // work properly on IE 7-8. see #64
+            if (arr[i] === item) {
+                return i;
+            }
+
+            i++;
+        }
+
+        return -1;
+    }
+
+    module.exports = indexOf;
+
+
+},{}],15:[function(require,module,exports){
+var unique = require('./unique');
+var filter = require('./filter');
+var every = require('./every');
+var contains = require('./contains');
+var slice = require('./slice');
+
+
+    /**
+     * Return a new Array with elements common to all Arrays.
+     * - based on underscore.js implementation
+     */
+    function intersection(arr) {
+        var arrs = slice(arguments, 1),
+            result = filter(unique(arr), function(needle){
+                return every(arrs, function(haystack){
+                    return contains(haystack, needle);
+                });
+            });
+        return result;
+    }
+
+    module.exports = intersection;
+
+
+
+},{"./contains":11,"./every":12,"./filter":13,"./slice":16,"./unique":17}],16:[function(require,module,exports){
+
+
+    var arrSlice = Array.prototype.slice;
+
+    /**
+     * Create slice of source array or array-like object
+     */
+    function slice(arr, start, end){
+        return arrSlice.call(arr, start, end);
+    }
+
+    module.exports = slice;
+
+
+
+},{}],17:[function(require,module,exports){
+var filter = require('./filter');
+
+    /**
+     * @return {array} Array of unique items
+     */
+    function unique(arr, compare){
+        compare = compare || isEqual;
+        return filter(arr, function(item, i, arr){
+            var n = arr.length;
+            while (++i < n) {
+                if ( compare(item, arr[i]) ) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
+    function isEqual(a, b){
+        return a === b;
+    }
+
+    module.exports = unique;
+
+
+
+},{"./filter":13}],18:[function(require,module,exports){
 
 
     /**
@@ -647,7 +839,7 @@ module.exports = {
 
 
 
-},{}],12:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var identity = require('./identity');
 var prop = require('./prop');
 var deepMatches = require('../object/deepMatches');
@@ -683,7 +875,7 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{"../object/deepMatches":29,"./identity":11,"./prop":13}],13:[function(require,module,exports){
+},{"../object/deepMatches":36,"./identity":18,"./prop":20}],20:[function(require,module,exports){
 
 
     /**
@@ -699,7 +891,7 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{}],14:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -709,7 +901,7 @@ var isKind = require('./isKind');
     module.exports = isArray;
 
 
-},{"./isKind":19}],15:[function(require,module,exports){
+},{"./isKind":26}],22:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -719,7 +911,7 @@ var isKind = require('./isKind');
     module.exports = isBoolean;
 
 
-},{"./isKind":19}],16:[function(require,module,exports){
+},{"./isKind":26}],23:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -729,7 +921,7 @@ var isKind = require('./isKind');
     module.exports = isDate;
 
 
-},{"./isKind":19}],17:[function(require,module,exports){
+},{"./isKind":26}],24:[function(require,module,exports){
 var forOwn = require('../object/forOwn');
 var isArray = require('./isArray');
 
@@ -755,7 +947,7 @@ var isArray = require('./isArray');
 
 
 
-},{"../object/forOwn":33,"./isArray":14}],18:[function(require,module,exports){
+},{"../object/forOwn":40,"./isArray":21}],25:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -765,7 +957,7 @@ var isKind = require('./isKind');
     module.exports = isFunction;
 
 
-},{"./isKind":19}],19:[function(require,module,exports){
+},{"./isKind":26}],26:[function(require,module,exports){
 var kindOf = require('./kindOf');
     /**
      * Check if value is from a specific "kind".
@@ -776,7 +968,7 @@ var kindOf = require('./kindOf');
     module.exports = isKind;
 
 
-},{"./kindOf":25}],20:[function(require,module,exports){
+},{"./kindOf":32}],27:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -786,7 +978,7 @@ var isKind = require('./isKind');
     module.exports = isNumber;
 
 
-},{"./isKind":19}],21:[function(require,module,exports){
+},{"./isKind":26}],28:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -796,7 +988,7 @@ var isKind = require('./isKind');
     module.exports = isObject;
 
 
-},{"./isKind":19}],22:[function(require,module,exports){
+},{"./isKind":26}],29:[function(require,module,exports){
 
 
     /**
@@ -811,7 +1003,7 @@ var isKind = require('./isKind');
 
 
 
-},{}],23:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -821,7 +1013,7 @@ var isKind = require('./isKind');
     module.exports = isString;
 
 
-},{"./isKind":19}],24:[function(require,module,exports){
+},{"./isKind":26}],31:[function(require,module,exports){
 
     var UNDEF;
 
@@ -833,7 +1025,7 @@ var isKind = require('./isKind');
     module.exports = isUndef;
 
 
-},{}],25:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 
 
     var _rKind = /^\[object (.*)\]$/,
@@ -855,7 +1047,7 @@ var isKind = require('./isKind');
     module.exports = kindOf;
 
 
-},{}],26:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var isArray = require('./isArray');
 
     /**
@@ -877,7 +1069,7 @@ var isArray = require('./isArray');
 
 
 
-},{"./isArray":14}],27:[function(require,module,exports){
+},{"./isArray":21}],34:[function(require,module,exports){
 
 
     /**
@@ -892,7 +1084,7 @@ var isArray = require('./isArray');
 
 
 
-},{}],28:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 
 
     /**
@@ -911,7 +1103,7 @@ var isArray = require('./isArray');
 
 
 
-},{}],29:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var isArray = require('../lang/isArray');
 
@@ -968,7 +1160,7 @@ var isArray = require('../lang/isArray');
 
 
 
-},{"../lang/isArray":14,"./forOwn":33}],30:[function(require,module,exports){
+},{"../lang/isArray":21,"./forOwn":40}],37:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var isPlainObject = require('../lang/isPlainObject');
 
@@ -1004,7 +1196,7 @@ var isPlainObject = require('../lang/isPlainObject');
 
 
 
-},{"../lang/isPlainObject":22,"./forOwn":33}],31:[function(require,module,exports){
+},{"../lang/isPlainObject":29,"./forOwn":40}],38:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var makeIterator = require('../function/makeIterator_');
 
@@ -1026,7 +1218,7 @@ var makeIterator = require('../function/makeIterator_');
     module.exports = filterValues;
 
 
-},{"../function/makeIterator_":12,"./forOwn":33}],32:[function(require,module,exports){
+},{"../function/makeIterator_":19,"./forOwn":40}],39:[function(require,module,exports){
 
 
     var _hasDontEnumBug,
@@ -1090,7 +1282,7 @@ var makeIterator = require('../function/makeIterator_');
 
 
 
-},{}],33:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 var hasOwn = require('./hasOwn');
 var forIn = require('./forIn');
 
@@ -1111,7 +1303,7 @@ var forIn = require('./forIn');
 
 
 
-},{"./forIn":32,"./hasOwn":35}],34:[function(require,module,exports){
+},{"./forIn":39,"./hasOwn":42}],41:[function(require,module,exports){
 
 
     /**
@@ -1133,7 +1325,7 @@ var forIn = require('./forIn');
 
 
 
-},{}],35:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 
 
     /**
@@ -1147,7 +1339,7 @@ var forIn = require('./forIn');
 
 
 
-},{}],36:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 var forOwn = require('./forOwn');
 
     /**
@@ -1165,7 +1357,7 @@ var forOwn = require('./forOwn');
 
 
 
-},{"./forOwn":33}]},{},[3])
+},{"./forOwn":40}]},{},[3])
 (3)
 });
 ;

@@ -74,6 +74,60 @@ describe('Schema', function () {
 
 			done();
 		});
+
+		it('should support shorthand for data type only attributes', function (done) {
+			var schema = new Schema('name', {
+				name: 'string',
+				age: 'number',
+				address: {
+					state: {
+						type: 'string',
+						maxLength: 45
+					},
+					city: 'string'
+				}
+			});
+
+			assert.deepEqual(schema.schema, {
+				name: {
+					type: 'string'
+				},
+				age: {
+					type: 'number'
+				},
+				address: {
+					state: {
+						type: 'string',
+						maxLength: 45
+					},
+					city: {
+						type: 'string'
+					}
+				}
+			});
+
+			done();
+		});
+
+		it('should throw an error if a rule is improperly configured', function (done) {
+			try {
+				var schema = new Schema('name', {
+					name: 'string',
+					age: 'number',
+					address: {
+						type: {
+							type: 'string',
+							maxLength: 45
+						},
+						city: 'string'
+					}
+				});
+			} catch (err) {
+				assert.equal(err.message, 'Schema(name, schema): schema: Rule configuration for rule "type" cannot be an object!')
+			}
+
+			done();
+		});
 	});
 
 	describe('Schema#validate', function () {
