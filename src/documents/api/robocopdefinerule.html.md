@@ -24,6 +24,13 @@ __Required:__ Yes
 
 __Description:__ Function that accepts the value to be tested. This function should return null if the value passes the rule's test, otherwise any return value will be used as the error message.
 
+#### async
+__Type:__ `boolean`
+
+__Required:__ false
+
+__Description:__ Whether this is an asynchronous rule. If `true`, a third argument will be passed to this rule which will be a callback function to be executed when the rule is done. Any argument passed to the callback will be considered a validation failure.
+
 ## Usage
 
 ```javascript

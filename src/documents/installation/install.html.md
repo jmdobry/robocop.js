@@ -23,5 +23,5 @@ var robocop = require('robocop.js');
 Include the version of robocop.js you downloaded on your web page.
 
 ```html
-<script src="/js/libs/robocop-0.11.2.min.js"></script>
+<script src="/js/libs/robocop-0.12.0.min.js"></script>
 ```

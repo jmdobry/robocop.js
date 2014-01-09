@@ -349,6 +349,10 @@ robocop.availableSchemas();   <span class="comment">// ['mySchema']</span></code
 <p><strong>Type:</strong> <code>function</code></p>
 <p><strong>Required:</strong> Yes</p>
 <p><strong>Description:</strong> Function that accepts the value to be tested. This function should return null if the value passes the rule&#39;s test, otherwise any return value will be used as the error message.</p>
+<h4 id="async">async</h4>
+<p><strong>Type:</strong> <code>boolean</code></p>
+<p><strong>Required:</strong> false</p>
+<p><strong>Description:</strong> Whether this is an asynchronous rule. If <code>true</code>, a third argument will be passed to this rule which will be a callback function to be executed when the rule is done. Any argument passed to the callback will be considered a validation failure.</p>
 <h2 id="usage">Usage</h2>
 <pre class="highlight"><code class="javascript">robocop.defineRule(<span class="string">'divisibleBy'</span>, <span class="function"><span class="keyword">function</span> <span class="params">(x, divisor)</span> {</span>
     <span class="keyword">if</span> (<span class="keyword">typeof</span> x === <span class="string">'number'</span> &amp;&amp; <span class="keyword">typeof</span> divisor === <span class="string">'number'</span> &amp;&amp; x % divisor !== <span class="number">0</span>) {

@@ -1,7 +1,7 @@
 /**
  * @author Jason Dobry <jason.dobry@gmail.com>
  * @file robocop.js
- * @version 0.11.2 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @version 0.12.0 - Homepage <http://jmdobry.github.io/robocop.js/>
  * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
  * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
  *
@@ -109,154 +109,7 @@ module.exports = {
 	}
 };
 
-},{"../support/utils":9}],2:[function(require,module,exports){
-'use strict';
-
-module.exports = require('./robocop');
-
-},{"./robocop":4}],3:[function(require,module,exports){
-'use strict';
-
-var utils = require('../support/utils');
-
-var defaultDataTypes = require('../dataType');
-
-var dataTypes = {};
-
-module.exports = {
-	defineDataType: function (name, typeDefinition) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.defineDataType(name, typeDefinition): name: Must be a string!');
-		} else if (!utils.isFunction(typeDefinition)) {
-			throw new Error('robocop.defineDataType(name, typeDefinition): typeDefinition: Must be a function!');
-		} else if (dataTypes[name]) {
-			throw new Error('robocop.defineDataType(name, typeDefinition): name: Name already in use!');
-		}
-		dataTypes[name] = typeDefinition;
-	},
-
-	getDataType: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.getDataType(name): name: Must be a string!');
-		}
-		return dataTypes[name] || defaultDataTypes[name];
-	},
-
-	availableDataTypes: function () {
-		return utils.keys(dataTypes).concat(utils.keys(defaultDataTypes));
-	},
-
-	removeDataType: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.removeDataType(name): name: Must be a string!');
-		}
-		if (dataTypes[name]) {
-			delete dataTypes[name];
-		}
-	}
-};
-
-},{"../dataType":1,"../support/utils":9}],4:[function(require,module,exports){
-'use strict';
-
-var utils = require('../support/utils');
-
-var robocop = module.exports = {
-	Schema: require('../schema')
-};
-
-utils.deepMixIn(robocop, require('./schema'));
-utils.deepMixIn(robocop, require('./rule'));
-utils.deepMixIn(robocop, require('./dataType'));
-
-},{"../schema":8,"../support/utils":9,"./dataType":3,"./rule":5,"./schema":6}],5:[function(require,module,exports){
-'use strict';
-
-var utils = require('../support/utils');
-
-var defaultRules = require('../rule');
-
-var rules = {};
-
-module.exports = {
-	defineRule: function (name, ruleFunc) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.defineRule(name, ruleFunc): name: Must be a string!');
-		} else if (!utils.isFunction(ruleFunc)) {
-			throw new Error('robocop.defineRule(name, ruleFunc): ruleFunc: Must be a function!');
-		} else if (rules[name]) {
-			throw new Error('robocop.defineRule(name, ruleFunc): name: Name already in use!');
-		}
-		rules[name] = ruleFunc;
-	},
-
-	getRule: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.getRule(name): name: Must be a string!');
-		}
-		return rules[name] || defaultRules[name];
-	},
-
-	availableRules: function () {
-		return utils.keys(rules).concat(utils.keys(defaultRules));
-	},
-
-	removeRule: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.removeRule(name): name: Must be a string!');
-		}
-		if (rules[name]) {
-			delete rules[name];
-		}
-	}
-};
-
-},{"../rule":7,"../support/utils":9}],6:[function(require,module,exports){
-'use strict';
-
-var utils = require('../support/utils'),
-	Schema = require('../schema');
-
-var schemas = {};
-
-module.exports = {
-	defineSchema: function (name, schema) {
-		if (schemas[name]) {
-			throw new Error('robocop.defineSchema(name, schema): name: Name already in use!');
-		}
-		if (schema instanceof Schema) {
-			schemas[name] = schema;
-		} else {
-			if (!utils.isObject(schema)) {
-				throw new Error('robocop.defineSchema(name, schema): schema: Must be an object or an instance of Schema!');
-			}
-			schemas[name] = new Schema(name, schema);
-		}
-		return schemas[name];
-	},
-
-	getSchema: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.getSchema(name): name: Must be a string!');
-		}
-		return schemas[name];
-	},
-
-	availableSchemas: function () {
-		return utils.keys(schemas);
-	},
-
-	removeSchema: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.removeSchema(name): name: Must be a string!');
-		}
-		if (schemas[name]) {
-			delete schemas[name];
-		}
-	}
-};
-
-},{"../schema":8,"../support/utils":9}],7:[function(require,module,exports){
+},{"../support/utils":10}],2:[function(require,module,exports){
 'use strict';
 
 var utils = require('../support/utils'),
@@ -327,11 +180,169 @@ module.exports = {
 	}
 };
 
-},{"../dataType":1,"../support/utils":9}],8:[function(require,module,exports){
+},{"../dataType":1,"../support/utils":10}],3:[function(require,module,exports){
+'use strict';
+
+module.exports = require('./robocop');
+
+},{"./robocop":5}],4:[function(require,module,exports){
+'use strict';
+
+var utils = require('../support/utils');
+
+var defaultDataTypes = require('../dataType');
+
+var dataTypes = {};
+
+module.exports = {
+	defineDataType: function (name, typeDefinition) {
+		if (!utils.isString(name)) {
+			throw new Error('robocop.defineDataType(name, typeDefinition): name: Must be a string!');
+		} else if (!utils.isFunction(typeDefinition)) {
+			throw new Error('robocop.defineDataType(name, typeDefinition): typeDefinition: Must be a function!');
+		} else if (dataTypes[name]) {
+			throw new Error('robocop.defineDataType(name, typeDefinition): name: Name already in use!');
+		}
+		dataTypes[name] = typeDefinition;
+	},
+
+	getDataType: function (name) {
+		if (!utils.isString(name)) {
+			throw new Error('robocop.getDataType(name): name: Must be a string!');
+		}
+		return dataTypes[name] || defaultDataTypes[name];
+	},
+
+	availableDataTypes: function () {
+		return utils.keys(dataTypes).concat(utils.keys(defaultDataTypes));
+	},
+
+	removeDataType: function (name) {
+		if (!utils.isString(name)) {
+			throw new Error('robocop.removeDataType(name): name: Must be a string!');
+		}
+		if (dataTypes[name]) {
+			delete dataTypes[name];
+		}
+	}
+};
+
+},{"../dataType":1,"../support/utils":10}],5:[function(require,module,exports){
+'use strict';
+
+var utils = require('../support/utils');
+
+var robocop = module.exports = {
+	Schema: require('../schema')
+};
+
+utils.deepMixIn(robocop, require('./schema'));
+utils.deepMixIn(robocop, require('./rule'));
+utils.deepMixIn(robocop, require('./dataType'));
+
+},{"../schema":9,"../support/utils":10,"./dataType":4,"./rule":6,"./schema":7}],6:[function(require,module,exports){
+'use strict';
+
+var utils = require('../support/utils');
+
+var defaultRules = require('../defaultRules');
+
+var rules = require('../rules');
+
+module.exports = {
+	defineRule: function (name, ruleFunc, async) {
+		if (!utils.isString(name)) {
+			throw new Error('robocop.defineRule(name, ruleFunc[, async]): name: Must be a string!');
+		} else if (!utils.isFunction(ruleFunc)) {
+			throw new Error('robocop.defineRule(name, ruleFunc[, async]): ruleFunc: Must be a function!');
+		} else if (rules[name]) {
+			throw new Error('robocop.defineRule(name, ruleFunc[, async]): name: Name already in use!');
+		} else if (async && !utils.isBoolean(async)) {
+			throw new Error('robocop.defineRule(name, ruleFunc[, async]): async: Must be a boolean!');
+		}
+		rules[name] = ruleFunc;
+		if (async) {
+			rules[name].async = true;
+		}
+	},
+
+	getRule: function (name) {
+		if (!utils.isString(name)) {
+			throw new Error('robocop.getRule(name): name: Must be a string!');
+		}
+		return rules[name] || defaultRules[name];
+	},
+
+	availableRules: function () {
+		return utils.keys(rules).concat(utils.keys(defaultRules));
+	},
+
+	removeRule: function (name) {
+		if (!utils.isString(name)) {
+			throw new Error('robocop.removeRule(name): name: Must be a string!');
+		}
+		if (rules[name]) {
+			delete rules[name];
+		}
+	}
+};
+
+},{"../defaultRules":2,"../rules":8,"../support/utils":10}],7:[function(require,module,exports){
 'use strict';
 
 var utils = require('../support/utils'),
-	rules = require('../rule');
+	Schema = require('../schema');
+
+var schemas = {};
+
+module.exports = {
+	defineSchema: function (name, schema) {
+		if (schemas[name]) {
+			throw new Error('robocop.defineSchema(name, schema): name: Name already in use!');
+		}
+		if (schema instanceof Schema) {
+			schemas[name] = schema;
+		} else {
+			if (!utils.isObject(schema)) {
+				throw new Error('robocop.defineSchema(name, schema): schema: Must be an object or an instance of Schema!');
+			}
+			schemas[name] = new Schema(name, schema);
+		}
+		return schemas[name];
+	},
+
+	getSchema: function (name) {
+		if (!utils.isString(name)) {
+			throw new Error('robocop.getSchema(name): name: Must be a string!');
+		}
+		return schemas[name];
+	},
+
+	availableSchemas: function () {
+		return utils.keys(schemas);
+	},
+
+	removeSchema: function (name) {
+		if (!utils.isString(name)) {
+			throw new Error('robocop.removeSchema(name): name: Must be a string!');
+		}
+		if (schemas[name]) {
+			delete schemas[name];
+		}
+	}
+};
+
+},{"../schema":9,"../support/utils":10}],8:[function(require,module,exports){
+'use strict';
+
+module.exports = {};
+
+},{}],9:[function(require,module,exports){
+'use strict';
+
+var utils = require('../support/utils'),
+	defaultRules = require('../defaultRules'),
+	rules;
 
 var _parallel = function (tasks, cb) {
 	var results = {},
@@ -362,10 +373,31 @@ var _parallel = function (tasks, cb) {
 	}
 };
 
+function _sanitize(attrs, rules) {
+	rules = rules || [];
+	var keys = utils.keys(attrs),
+		noRules = utils.intersection(keys, rules).length === 0;
+
+	utils.forOwn(attrs, function (value, key) {
+		if (noRules && utils.isString(value)) {
+			attrs[key] = {
+				type: value
+			};
+		} else if (utils.isObject(value)) {
+			if (utils.contains(rules, key)) {
+				throw new Error('Schema(name, schema): schema: Rule configuration for rule "' + key + '" cannot be an object!');
+			} else {
+				_sanitize(value, rules);
+			}
+		}
+	});
+}
+
 function validateSchema(schema) {
 	if (!utils.isObject(schema)) {
 		throw new Error('Schema(name, schema): schema: Must be an object!');
 	}
+	_sanitize(schema, require('../robocop/rule').availableRules());
 }
 
 var Schema = module.exports = function Schema(name, schema) {
@@ -377,6 +409,7 @@ var Schema = module.exports = function Schema(name, schema) {
 
 	validateSchema(schema);
 	this.schema = schema;
+	rules = require('../rules');
 };
 
 /**
@@ -385,32 +418,39 @@ var Schema = module.exports = function Schema(name, schema) {
 function _validateSync(targetKey, attrs) {
 	var errors = {};
 	var _this = this;
-	utils.forOwn(attrs, function (value, key) {
-		var nestedKey = targetKey + (targetKey.length ? '.' : '') + key;
-		if (utils.isObject(value)) {
-			var err = _validateSync.apply(_this, [nestedKey, value]);
-			if (err) {
-				errors[key] = err;
-			}
-		} else {
-			var schemaRules = utils.get(_this.schema, nestedKey);
-			utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
-				var err = rules[ruleKey](value, ruleValue);
+	try {
+		utils.forOwn(attrs, function (value, key) {
+			var nestedKey = targetKey + (targetKey.length ? '.' : '') + key;
+			if (utils.isObject(value)) {
+				var err = _validateSync.apply(_this, [nestedKey, value]);
 				if (err) {
-					if (!errors[key]) {
-						errors[key] = {
-							errors: []
-						};
-					}
-					errors[key].errors.push(err);
+					errors[key] = err;
 				}
-			});
+			} else {
+				var schemaRules = utils.get(_this.schema, nestedKey);
+				utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
+					var rule = rules[ruleKey] || defaultRules[ruleKey];
+					if (!rule.async) {
+						var err = rule(value, ruleValue);
+						if (err) {
+							if (!errors[key]) {
+								errors[key] = {
+									errors: []
+								};
+							}
+							errors[key].errors.push(err);
+						}
+					}
+				});
+			}
+		});
+		if (utils.keys(errors).length > 0) {
+			return errors;
+		} else {
+			return null;
 		}
-	});
-	if (utils.keys(errors).length > 0) {
-		return errors;
-	} else {
-		return null;
+	} catch (err) {
+		return err;
 	}
 }
 
@@ -421,7 +461,8 @@ function _validate(targetKey, attrs, options, cb) {
 	var errors = {},
 		_this = this,
 		prefix = targetKey + (targetKey.length ? '.' : ''),
-		queue = {},
+		deepQueue = {},
+		ruleQueue = {},
 		first = options.first;
 
 	delete options.first;
@@ -429,47 +470,90 @@ function _validate(targetKey, attrs, options, cb) {
 	utils.forOwn(attrs, function (value, key) {
 		var nestedKey = prefix + key;
 		if (utils.isObject(value)) {
-			// Recursive down into nested attributes
-			queue[key] = (function (nK, val) {
+			// Recurse down into nested attributes
+			deepQueue[key] = (function (nK, val) {
 				return function (next) {
 					_validate.apply(_this, [nK, val, options, next]);
 				};
 			})(nestedKey, value);
 		} else {
-			// Test the rule for this attribute
 			var schemaRules = utils.get(_this.schema, nestedKey);
 			utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
-				var err = rules[ruleKey](value, ruleValue);
-				if (err) {
-					if (!errors[key]) {
-						errors[key] = {
-							errors: []
+				var rule = rules[ruleKey] || defaultRules[ruleKey];
+				// Asynchronous rules get added to the queue
+				if (rule.async) {
+					ruleQueue[ruleKey] = (function (r, key, val, rVal) {
+						return function (next) {
+							r(val, rVal, function (err) {
+								next(null, { err: err, key: key });
+							});
 						};
+					})(rule, key, value, ruleValue);
+				} else {
+					// Get results of synchronous rules immediately
+					var err = rule(value, ruleValue);
+					if (err) {
+						if (!errors[key]) {
+							errors[key] = {
+								errors: []
+							};
+						}
+						errors[key].errors.push(err);
 					}
-					errors[key].errors.push(err);
 				}
 			});
 		}
 	});
-	if (utils.keys(queue).length > 0) {
-		_parallel(queue, function (err, results) {
 
-			// Merge results back up the recursion tree
-			if (results) {
-				results = utils.filter(results, function (x) {
+	var finalQueue = {};
+
+	if (!utils.isEmpty(deepQueue)) {
+		finalQueue.deepQueue = function (next) {
+			_parallel(deepQueue, next);
+		};
+	}
+	if (!utils.isEmpty(ruleQueue)) {
+		finalQueue.ruleQueue = function (next) {
+			_parallel(ruleQueue, next);
+		};
+	}
+
+	if (!utils.isEmpty(finalQueue)) {
+		_parallel(finalQueue, function (err, results) {
+
+			// Merge results of recursion
+			if (results.deepQueue) {
+				results.deepQueue = utils.filter(results.deepQueue, function (x) {
 					return x !== undefined && x !== null;
 				});
-				utils.deepMixIn(errors, results);
+				utils.deepMixIn(errors, results.deepQueue);
 			}
 
-			if (utils.keys(errors).length > 0) {
+			// Merge results of asynchronous rules
+			if (results.ruleQueue) {
+				if (results.ruleQueue) {
+					results.ruleQueue = utils.filter(results.ruleQueue, function (x) {
+						return x.err !== undefined && x.err !== null;
+					});
+				}
+				utils.forOwn(results.ruleQueue, function (value) {
+					if (!errors[value.key]) {
+						errors[value.key] = {
+							errors: []
+						};
+					}
+					errors[value.key].errors.push(value.err);
+				});
+			}
+
+			if (!utils.isEmpty(errors)) {
 				first ? cb(errors) : cb(null, errors);
 			} else {
 				cb(null);
 			}
 		});
 	} else {
-		if (utils.keys(errors).length > 0) {
+		if (!utils.isEmpty(errors)) {
 			first ? cb(errors) : cb(null, errors);
 		} else {
 			cb(null);
@@ -546,7 +630,7 @@ Schema.prototype.addDefaults = function () {
 	throw new Error('Unsupported Operation!');
 };
 
-},{"../rule":7,"../support/utils":9}],9:[function(require,module,exports){
+},{"../defaultRules":2,"../robocop/rule":6,"../rules":8,"../support/utils":10}],10:[function(require,module,exports){
 module.exports = {
 	isString: require('mout/lang/isString'),
 	isBoolean: require('mout/lang/isBoolean'),
@@ -566,10 +650,181 @@ module.exports = {
 	keys: require('mout/object/keys'),
 	filter: require('mout/object/filter'),
 
+	contains: require('mout/array/contains'),
+	intersection: require('mout/array/intersection'),
+
 	toInt: require('mout/number/toInt')
 };
 
-},{"mout/lang/isArray":13,"mout/lang/isBoolean":14,"mout/lang/isDate":15,"mout/lang/isEmpty":16,"mout/lang/isFunction":17,"mout/lang/isNumber":19,"mout/lang/isObject":20,"mout/lang/isString":22,"mout/lang/isUndefined":23,"mout/lang/toNumber":25,"mout/lang/toString":26,"mout/number/toInt":27,"mout/object/deepMixIn":29,"mout/object/filter":30,"mout/object/forOwn":32,"mout/object/get":33,"mout/object/keys":35}],10:[function(require,module,exports){
+},{"mout/array/contains":11,"mout/array/intersection":15,"mout/lang/isArray":21,"mout/lang/isBoolean":22,"mout/lang/isDate":23,"mout/lang/isEmpty":24,"mout/lang/isFunction":25,"mout/lang/isNumber":27,"mout/lang/isObject":28,"mout/lang/isString":30,"mout/lang/isUndefined":31,"mout/lang/toNumber":33,"mout/lang/toString":34,"mout/number/toInt":35,"mout/object/deepMixIn":37,"mout/object/filter":38,"mout/object/forOwn":40,"mout/object/get":41,"mout/object/keys":43}],11:[function(require,module,exports){
+var indexOf = require('./indexOf');
+
+    /**
+     * If array contains values.
+     */
+    function contains(arr, val) {
+        return indexOf(arr, val) !== -1;
+    }
+    module.exports = contains;
+
+
+},{"./indexOf":14}],12:[function(require,module,exports){
+var makeIterator = require('../function/makeIterator_');
+
+    /**
+     * Array every
+     */
+    function every(arr, callback, thisObj) {
+        callback = makeIterator(callback, thisObj);
+        var result = true;
+        if (arr == null) {
+            return result;
+        }
+
+        var i = -1, len = arr.length;
+        while (++i < len) {
+            // we iterate over sparse items since there is no way to make it
+            // work properly on IE 7-8. see #64
+            if (!callback(arr[i], i, arr) ) {
+                result = false;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    module.exports = every;
+
+
+},{"../function/makeIterator_":19}],13:[function(require,module,exports){
+var makeIterator = require('../function/makeIterator_');
+
+    /**
+     * Array filter
+     */
+    function filter(arr, callback, thisObj) {
+        callback = makeIterator(callback, thisObj);
+        var results = [];
+        if (arr == null) {
+            return results;
+        }
+
+        var i = -1, len = arr.length, value;
+        while (++i < len) {
+            value = arr[i];
+            if (callback(value, i, arr)) {
+                results.push(value);
+            }
+        }
+
+        return results;
+    }
+
+    module.exports = filter;
+
+
+
+},{"../function/makeIterator_":19}],14:[function(require,module,exports){
+
+
+    /**
+     * Array.indexOf
+     */
+    function indexOf(arr, item, fromIndex) {
+        fromIndex = fromIndex || 0;
+        if (arr == null) {
+            return -1;
+        }
+
+        var len = arr.length,
+            i = fromIndex < 0 ? len + fromIndex : fromIndex;
+        while (i < len) {
+            // we iterate over sparse items since there is no way to make it
+            // work properly on IE 7-8. see #64
+            if (arr[i] === item) {
+                return i;
+            }
+
+            i++;
+        }
+
+        return -1;
+    }
+
+    module.exports = indexOf;
+
+
+},{}],15:[function(require,module,exports){
+var unique = require('./unique');
+var filter = require('./filter');
+var every = require('./every');
+var contains = require('./contains');
+var slice = require('./slice');
+
+
+    /**
+     * Return a new Array with elements common to all Arrays.
+     * - based on underscore.js implementation
+     */
+    function intersection(arr) {
+        var arrs = slice(arguments, 1),
+            result = filter(unique(arr), function(needle){
+                return every(arrs, function(haystack){
+                    return contains(haystack, needle);
+                });
+            });
+        return result;
+    }
+
+    module.exports = intersection;
+
+
+
+},{"./contains":11,"./every":12,"./filter":13,"./slice":16,"./unique":17}],16:[function(require,module,exports){
+
+
+    var arrSlice = Array.prototype.slice;
+
+    /**
+     * Create slice of source array or array-like object
+     */
+    function slice(arr, start, end){
+        return arrSlice.call(arr, start, end);
+    }
+
+    module.exports = slice;
+
+
+
+},{}],17:[function(require,module,exports){
+var filter = require('./filter');
+
+    /**
+     * @return {array} Array of unique items
+     */
+    function unique(arr, compare){
+        compare = compare || isEqual;
+        return filter(arr, function(item, i, arr){
+            var n = arr.length;
+            while (++i < n) {
+                if ( compare(item, arr[i]) ) {
+                    return false;
+                }
+            }
+            return true;
+        });
+    }
+
+    function isEqual(a, b){
+        return a === b;
+    }
+
+    module.exports = unique;
+
+
+
+},{"./filter":13}],18:[function(require,module,exports){
 
 
     /**
@@ -583,7 +838,7 @@ module.exports = {
 
 
 
-},{}],11:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 var identity = require('./identity');
 var prop = require('./prop');
 var deepMatches = require('../object/deepMatches');
@@ -619,7 +874,7 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{"../object/deepMatches":28,"./identity":10,"./prop":12}],12:[function(require,module,exports){
+},{"../object/deepMatches":36,"./identity":18,"./prop":20}],20:[function(require,module,exports){
 
 
     /**
@@ -635,7 +890,7 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{}],13:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -645,7 +900,7 @@ var isKind = require('./isKind');
     module.exports = isArray;
 
 
-},{"./isKind":18}],14:[function(require,module,exports){
+},{"./isKind":26}],22:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -655,7 +910,7 @@ var isKind = require('./isKind');
     module.exports = isBoolean;
 
 
-},{"./isKind":18}],15:[function(require,module,exports){
+},{"./isKind":26}],23:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -665,7 +920,7 @@ var isKind = require('./isKind');
     module.exports = isDate;
 
 
-},{"./isKind":18}],16:[function(require,module,exports){
+},{"./isKind":26}],24:[function(require,module,exports){
 var forOwn = require('../object/forOwn');
 var isArray = require('./isArray');
 
@@ -691,7 +946,7 @@ var isArray = require('./isArray');
 
 
 
-},{"../object/forOwn":32,"./isArray":13}],17:[function(require,module,exports){
+},{"../object/forOwn":40,"./isArray":21}],25:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -701,7 +956,7 @@ var isKind = require('./isKind');
     module.exports = isFunction;
 
 
-},{"./isKind":18}],18:[function(require,module,exports){
+},{"./isKind":26}],26:[function(require,module,exports){
 var kindOf = require('./kindOf');
     /**
      * Check if value is from a specific "kind".
@@ -712,7 +967,7 @@ var kindOf = require('./kindOf');
     module.exports = isKind;
 
 
-},{"./kindOf":24}],19:[function(require,module,exports){
+},{"./kindOf":32}],27:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -722,7 +977,7 @@ var isKind = require('./isKind');
     module.exports = isNumber;
 
 
-},{"./isKind":18}],20:[function(require,module,exports){
+},{"./isKind":26}],28:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -732,7 +987,7 @@ var isKind = require('./isKind');
     module.exports = isObject;
 
 
-},{"./isKind":18}],21:[function(require,module,exports){
+},{"./isKind":26}],29:[function(require,module,exports){
 
 
     /**
@@ -747,7 +1002,7 @@ var isKind = require('./isKind');
 
 
 
-},{}],22:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 var isKind = require('./isKind');
     /**
      */
@@ -757,7 +1012,7 @@ var isKind = require('./isKind');
     module.exports = isString;
 
 
-},{"./isKind":18}],23:[function(require,module,exports){
+},{"./isKind":26}],31:[function(require,module,exports){
 
     var UNDEF;
 
@@ -769,7 +1024,7 @@ var isKind = require('./isKind');
     module.exports = isUndef;
 
 
-},{}],24:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 
 
     var _rKind = /^\[object (.*)\]$/,
@@ -791,7 +1046,7 @@ var isKind = require('./isKind');
     module.exports = kindOf;
 
 
-},{}],25:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 var isArray = require('./isArray');
 
     /**
@@ -813,7 +1068,7 @@ var isArray = require('./isArray');
 
 
 
-},{"./isArray":13}],26:[function(require,module,exports){
+},{"./isArray":21}],34:[function(require,module,exports){
 
 
     /**
@@ -828,7 +1083,7 @@ var isArray = require('./isArray');
 
 
 
-},{}],27:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 
 
     /**
@@ -847,7 +1102,7 @@ var isArray = require('./isArray');
 
 
 
-},{}],28:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var isArray = require('../lang/isArray');
 
@@ -904,7 +1159,7 @@ var isArray = require('../lang/isArray');
 
 
 
-},{"../lang/isArray":13,"./forOwn":32}],29:[function(require,module,exports){
+},{"../lang/isArray":21,"./forOwn":40}],37:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var isPlainObject = require('../lang/isPlainObject');
 
@@ -940,7 +1195,7 @@ var isPlainObject = require('../lang/isPlainObject');
 
 
 
-},{"../lang/isPlainObject":21,"./forOwn":32}],30:[function(require,module,exports){
+},{"../lang/isPlainObject":29,"./forOwn":40}],38:[function(require,module,exports){
 var forOwn = require('./forOwn');
 var makeIterator = require('../function/makeIterator_');
 
@@ -962,7 +1217,7 @@ var makeIterator = require('../function/makeIterator_');
     module.exports = filterValues;
 
 
-},{"../function/makeIterator_":11,"./forOwn":32}],31:[function(require,module,exports){
+},{"../function/makeIterator_":19,"./forOwn":40}],39:[function(require,module,exports){
 
 
     var _hasDontEnumBug,
@@ -1026,7 +1281,7 @@ var makeIterator = require('../function/makeIterator_');
 
 
 
-},{}],32:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 var hasOwn = require('./hasOwn');
 var forIn = require('./forIn');
 
@@ -1047,7 +1302,7 @@ var forIn = require('./forIn');
 
 
 
-},{"./forIn":31,"./hasOwn":34}],33:[function(require,module,exports){
+},{"./forIn":39,"./hasOwn":42}],41:[function(require,module,exports){
 
 
     /**
@@ -1069,7 +1324,7 @@ var forIn = require('./forIn');
 
 
 
-},{}],34:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 
 
     /**
@@ -1083,7 +1338,7 @@ var forIn = require('./forIn');
 
 
 
-},{}],35:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 var forOwn = require('./forOwn');
 
     /**
@@ -1101,7 +1356,7 @@ var forOwn = require('./forOwn');
 
 
 
-},{"./forOwn":32}]},{},[2])
-(2)
+},{"./forOwn":40}]},{},[3])
+(3)
 });
 ;

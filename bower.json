@@ -17,6 +17,6 @@
   ],
   "dependencies": {
     "ace-builds": "~1.1.1",
-    "robocop.js": "0.11.2"
+    "robocop.js": "0.12.0"
   }
 }
