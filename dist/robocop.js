@@ -1,16 +1,7 @@
-/**
- * @author Jason Dobry <jason.dobry@gmail.com>
- * @file robocop.js
- * @version 0.12.0 - Homepage <http://jmdobry.github.io/robocop.js/>
- * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
- * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
- *
- * @overview Define and validate rules, datatypes and schemata in Node and in the browser.
- */
-!function(o){"object"==typeof exports?module.exports=o():"function"==typeof define&&define.amd?define(o):"undefined"!=typeof window?window.robocop=o():"undefined"!=typeof global?global.robocop=o():"undefined"!=typeof self&&(self.robocop=o())}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.robocop=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
 
-var utils = require('../support/utils');
+var utils = _dereq_('../support/utils');
 
 module.exports = {
 	string: function (x) {
@@ -109,11 +100,11 @@ module.exports = {
 	}
 };
 
-},{"../support/utils":10}],2:[function(require,module,exports){
+},{"../support/utils":10}],2:[function(_dereq_,module,exports){
 'use strict';
 
-var utils = require('../support/utils'),
-	dataTypes = require('../dataType');
+var utils = _dereq_('../support/utils'),
+	dataTypes = _dereq_('../dataType');
 
 module.exports = {
 	nullable: function (x, nullable) {
@@ -180,17 +171,27 @@ module.exports = {
 	}
 };
 
-},{"../dataType":1,"../support/utils":10}],3:[function(require,module,exports){
+},{"../dataType":1,"../support/utils":10}],3:[function(_dereq_,module,exports){
 'use strict';
 
-module.exports = require('./robocop');
+/**
+ * @author Jason Dobry <jason.dobry@gmail.com>
+ * @file robocop.js
+ * @version 0.13.0 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
+ * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
+ *
+ * @overview Define and validate rules, datatypes and schemata in Node and in the browser.
+ */
 
-},{"./robocop":5}],4:[function(require,module,exports){
+module.exports = _dereq_('./robocop');
+
+},{"./robocop":5}],4:[function(_dereq_,module,exports){
 'use strict';
 
-var utils = require('../support/utils');
+var utils = _dereq_('../support/utils');
 
-var defaultDataTypes = require('../dataType');
+var defaultDataTypes = _dereq_('../dataType');
 
 var dataTypes = {};
 
@@ -227,27 +228,27 @@ module.exports = {
 	}
 };
 
-},{"../dataType":1,"../support/utils":10}],5:[function(require,module,exports){
+},{"../dataType":1,"../support/utils":10}],5:[function(_dereq_,module,exports){
 'use strict';
 
-var utils = require('../support/utils');
+var utils = _dereq_('../support/utils');
 
 var robocop = module.exports = {
-	Schema: require('../schema')
+	Schema: _dereq_('../schema')
 };
 
-utils.deepMixIn(robocop, require('./schema'));
-utils.deepMixIn(robocop, require('./rule'));
-utils.deepMixIn(robocop, require('./dataType'));
+utils.deepMixIn(robocop, _dereq_('./schema'));
+utils.deepMixIn(robocop, _dereq_('./rule'));
+utils.deepMixIn(robocop, _dereq_('./dataType'));
 
-},{"../schema":9,"../support/utils":10,"./dataType":4,"./rule":6,"./schema":7}],6:[function(require,module,exports){
+},{"../schema":9,"../support/utils":10,"./dataType":4,"./rule":6,"./schema":7}],6:[function(_dereq_,module,exports){
 'use strict';
 
-var utils = require('../support/utils');
+var utils = _dereq_('../support/utils');
 
-var defaultRules = require('../defaultRules');
+var defaultRules = _dereq_('../defaultRules');
 
-var rules = require('../rules');
+var rules = _dereq_('../rules');
 
 module.exports = {
 	defineRule: function (name, ruleFunc, async) {
@@ -287,11 +288,11 @@ module.exports = {
 	}
 };
 
-},{"../defaultRules":2,"../rules":8,"../support/utils":10}],7:[function(require,module,exports){
+},{"../defaultRules":2,"../rules":8,"../support/utils":10}],7:[function(_dereq_,module,exports){
 'use strict';
 
-var utils = require('../support/utils'),
-	Schema = require('../schema');
+var utils = _dereq_('../support/utils'),
+	Schema = _dereq_('../schema');
 
 var schemas = {};
 
@@ -332,16 +333,17 @@ module.exports = {
 	}
 };
 
-},{"../schema":9,"../support/utils":10}],8:[function(require,module,exports){
+},{"../schema":9,"../support/utils":10}],8:[function(_dereq_,module,exports){
 'use strict';
 
 module.exports = {};
 
-},{}],9:[function(require,module,exports){
+},{}],9:[function(_dereq_,module,exports){
+/*jshint latedef:false*/
 'use strict';
 
-var utils = require('../support/utils'),
-	defaultRules = require('../defaultRules'),
+var utils = _dereq_('../support/utils'),
+	defaultRules = _dereq_('../defaultRules'),
 	rules;
 
 var _parallel = function (tasks, cb) {
@@ -397,7 +399,7 @@ function validateSchema(schema) {
 	if (!utils.isObject(schema)) {
 		throw new Error('Schema(name, schema): schema: Must be an object!');
 	}
-	_sanitize(schema, require('../robocop/rule').availableRules());
+	_sanitize(schema, _dereq_('../robocop/rule').availableRules());
 }
 
 var Schema = module.exports = function Schema(name, schema) {
@@ -409,48 +411,108 @@ var Schema = module.exports = function Schema(name, schema) {
 
 	validateSchema(schema);
 	this.schema = schema;
-	rules = require('../rules');
+	rules = _dereq_('../rules');
 };
+
+function _executeRulesSync(targetKey, options, errors, value, key) {
+	var _this = this,
+		nestedKey = targetKey + (targetKey.length ? '.' : '') + key;
+
+	if (utils.isObject(value)) {
+		var err = _validateSync.apply(_this, [nestedKey, value, options]);
+		if (err) {
+			errors[key] = err;
+		}
+	} else {
+		var schemaRules = utils.get(_this.schema, nestedKey);
+		utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
+			var rule = rules[ruleKey] || defaultRules[ruleKey];
+			if (!rule.async) {
+				var err = rule(value, ruleValue);
+				if (err) {
+					if (!errors[key]) {
+						errors[key] = {
+							errors: []
+						};
+					}
+					errors[key].errors.push(err);
+				}
+			}
+		});
+	}
+}
 
 /**
  * @see Schema#validateSync
  */
-function _validateSync(targetKey, attrs) {
-	var errors = {};
-	var _this = this;
+function _validateSync(targetKey, attrs, options) {
+	var errors = {},
+		_this = this;
+
 	try {
+		// Validate present attributes
 		utils.forOwn(attrs, function (value, key) {
-			var nestedKey = targetKey + (targetKey.length ? '.' : '') + key;
-			if (utils.isObject(value)) {
-				var err = _validateSync.apply(_this, [nestedKey, value]);
-				if (err) {
-					errors[key] = err;
-				}
-			} else {
-				var schemaRules = utils.get(_this.schema, nestedKey);
-				utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
-					var rule = rules[ruleKey] || defaultRules[ruleKey];
-					if (!rule.async) {
-						var err = rule(value, ruleValue);
-						if (err) {
-							if (!errors[key]) {
-								errors[key] = {
-									errors: []
-								};
-							}
-							errors[key].errors.push(err);
-						}
-					}
-				});
-			}
+			_executeRulesSync.call(_this, targetKey, options, errors, value, key);
 		});
-		if (utils.keys(errors).length > 0) {
+		// Validate missing attributes
+		if (!options.ignoreMissing) {
+			var schema = targetKey ? utils.get(_this.schema, targetKey) || {} : _this.schema,
+				missing = utils.difference(utils.keys(schema), utils.keys(attrs));
+			missing = utils.pick(this.schema, missing);
+			missing = utils.map(missing, function () {
+				return undefined;
+			});
+			utils.forOwn(missing, function (value, key) {
+				_executeRulesSync.call(_this, targetKey, options, errors, value, key);
+			});
+		}
+		if (!utils.isEmpty(errors)) {
 			return errors;
 		} else {
 			return null;
 		}
 	} catch (err) {
 		return err;
+	}
+}
+
+function _executeRules(options, value, key, prefix, errors, deepQueue, ruleQueue) {
+	var _this = this,
+		nestedKey = prefix + key;
+
+	if (utils.isObject(value)) {
+		// Recurse down into nested attributes
+		deepQueue[key] = (function (nK, val) {
+			return function (next) {
+				_validate.apply(_this, [nK, val, options, next]);
+			};
+		})(nestedKey, value);
+	} else {
+		var schemaRules = utils.get(_this.schema, nestedKey);
+		utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
+			var rule = rules[ruleKey] || defaultRules[ruleKey];
+			// Asynchronous rules get added to the queue
+			if (rule.async) {
+				ruleQueue[ruleKey] = (function (r, key, val, rVal) {
+					return function (next) {
+						r(val, rVal, function (err) {
+							next(null, { err: err, key: key });
+						});
+					};
+				})(rule, key, value, ruleValue);
+			} else {
+				// Get results of synchronous rules immediately
+				var err = rule(value, ruleValue);
+				if (err) {
+					if (!errors[key]) {
+						errors[key] = {
+							errors: []
+						};
+					}
+					errors[key].errors.push(err);
+				}
+			}
+		});
 	}
 }
 
@@ -468,42 +530,23 @@ function _validate(targetKey, attrs, options, cb) {
 	delete options.first;
 
 	utils.forOwn(attrs, function (value, key) {
-		var nestedKey = prefix + key;
-		if (utils.isObject(value)) {
-			// Recurse down into nested attributes
-			deepQueue[key] = (function (nK, val) {
-				return function (next) {
-					_validate.apply(_this, [nK, val, options, next]);
-				};
-			})(nestedKey, value);
-		} else {
-			var schemaRules = utils.get(_this.schema, nestedKey);
-			utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
-				var rule = rules[ruleKey] || defaultRules[ruleKey];
-				// Asynchronous rules get added to the queue
-				if (rule.async) {
-					ruleQueue[ruleKey] = (function (r, key, val, rVal) {
-						return function (next) {
-							r(val, rVal, function (err) {
-								next(null, { err: err, key: key });
-							});
-						};
-					})(rule, key, value, ruleValue);
-				} else {
-					// Get results of synchronous rules immediately
-					var err = rule(value, ruleValue);
-					if (err) {
-						if (!errors[key]) {
-							errors[key] = {
-								errors: []
-							};
-						}
-						errors[key].errors.push(err);
-					}
-				}
-			});
-		}
+		_executeRules.call(_this, options, value, key, prefix, errors, deepQueue, ruleQueue);
 	});
+
+	// Validate missing attributes
+	if (!options.ignoreMissing) {
+		var schema = targetKey ? utils.get(_this.schema, targetKey) || {} : _this.schema,
+			missing = utils.difference(utils.keys(schema), utils.keys(attrs));
+
+		missing = utils.pick(this.schema, missing);
+		missing = utils.map(missing, function () {
+			return undefined;
+		});
+
+		utils.forOwn(missing, function (value, key) {
+			_executeRules.call(_this, options, value, key, prefix, errors, deepQueue, ruleQueue);
+		});
+	}
 
 	var finalQueue = {};
 
@@ -630,34 +673,37 @@ Schema.prototype.addDefaults = function () {
 	throw new Error('Unsupported Operation!');
 };
 
-},{"../defaultRules":2,"../robocop/rule":6,"../rules":8,"../support/utils":10}],10:[function(require,module,exports){
+},{"../defaultRules":2,"../robocop/rule":6,"../rules":8,"../support/utils":10}],10:[function(_dereq_,module,exports){
 module.exports = {
-	isString: require('mout/lang/isString'),
-	isBoolean: require('mout/lang/isBoolean'),
-	isNumber: require('mout/lang/isNumber'),
-	isObject: require('mout/lang/isObject'),
-	isDate: require('mout/lang/isDate'),
-	isFunction: require('mout/lang/isFunction'),
-	isUndefined: require('mout/lang/isUndefined'),
-	isArray: require('mout/lang/isArray'),
-	isEmpty: require('mout/lang/isEmpty'),
-	toString: require('mout/lang/toString'),
-	toNumber: require('mout/lang/toNumber'),
+	isString: _dereq_('mout/lang/isString'),
+	isBoolean: _dereq_('mout/lang/isBoolean'),
+	isNumber: _dereq_('mout/lang/isNumber'),
+	isObject: _dereq_('mout/lang/isObject'),
+	isDate: _dereq_('mout/lang/isDate'),
+	isFunction: _dereq_('mout/lang/isFunction'),
+	isUndefined: _dereq_('mout/lang/isUndefined'),
+	isArray: _dereq_('mout/lang/isArray'),
+	isEmpty: _dereq_('mout/lang/isEmpty'),
+	toString: _dereq_('mout/lang/toString'),
+	toNumber: _dereq_('mout/lang/toNumber'),
 
-	get: require('mout/object/get'),
-	deepMixIn: require('mout/object/deepMixIn'),
-	forOwn: require('mout/object/forOwn'),
-	keys: require('mout/object/keys'),
-	filter: require('mout/object/filter'),
+	get: _dereq_('mout/object/get'),
+	deepMixIn: _dereq_('mout/object/deepMixIn'),
+	forOwn: _dereq_('mout/object/forOwn'),
+	keys: _dereq_('mout/object/keys'),
+	pick: _dereq_('mout/object/pick'),
+	filter: _dereq_('mout/object/filter'),
+	map: _dereq_('mout/object/map'),
 
-	contains: require('mout/array/contains'),
-	intersection: require('mout/array/intersection'),
+	contains: _dereq_('mout/array/contains'),
+	intersection: _dereq_('mout/array/intersection'),
+	difference: _dereq_('mout/array/difference'),
 
-	toInt: require('mout/number/toInt')
+	toInt: _dereq_('mout/number/toInt')
 };
 
-},{"mout/array/contains":11,"mout/array/intersection":15,"mout/lang/isArray":21,"mout/lang/isBoolean":22,"mout/lang/isDate":23,"mout/lang/isEmpty":24,"mout/lang/isFunction":25,"mout/lang/isNumber":27,"mout/lang/isObject":28,"mout/lang/isString":30,"mout/lang/isUndefined":31,"mout/lang/toNumber":33,"mout/lang/toString":34,"mout/number/toInt":35,"mout/object/deepMixIn":37,"mout/object/filter":38,"mout/object/forOwn":40,"mout/object/get":41,"mout/object/keys":43}],11:[function(require,module,exports){
-var indexOf = require('./indexOf');
+},{"mout/array/contains":11,"mout/array/difference":12,"mout/array/intersection":16,"mout/lang/isArray":23,"mout/lang/isBoolean":24,"mout/lang/isDate":25,"mout/lang/isEmpty":26,"mout/lang/isFunction":27,"mout/lang/isNumber":29,"mout/lang/isObject":30,"mout/lang/isString":32,"mout/lang/isUndefined":33,"mout/lang/toNumber":35,"mout/lang/toString":36,"mout/number/toInt":37,"mout/object/deepMixIn":39,"mout/object/filter":40,"mout/object/forOwn":42,"mout/object/get":43,"mout/object/keys":45,"mout/object/map":46,"mout/object/pick":47}],11:[function(_dereq_,module,exports){
+var indexOf = _dereq_('./indexOf');
 
     /**
      * If array contains values.
@@ -668,8 +714,33 @@ var indexOf = require('./indexOf');
     module.exports = contains;
 
 
-},{"./indexOf":14}],12:[function(require,module,exports){
-var makeIterator = require('../function/makeIterator_');
+},{"./indexOf":15}],12:[function(_dereq_,module,exports){
+var unique = _dereq_('./unique');
+var filter = _dereq_('./filter');
+var some = _dereq_('./some');
+var contains = _dereq_('./contains');
+var slice = _dereq_('./slice');
+
+
+    /**
+     * Return a new Array with elements that aren't present in the other Arrays.
+     */
+    function difference(arr) {
+        var arrs = slice(arguments, 1),
+            result = filter(unique(arr), function(needle){
+                return !some(arrs, function(haystack){
+                    return contains(haystack, needle);
+                });
+            });
+        return result;
+    }
+
+    module.exports = difference;
+
+
+
+},{"./contains":11,"./filter":14,"./slice":17,"./some":18,"./unique":19}],13:[function(_dereq_,module,exports){
+var makeIterator = _dereq_('../function/makeIterator_');
 
     /**
      * Array every
@@ -697,8 +768,8 @@ var makeIterator = require('../function/makeIterator_');
     module.exports = every;
 
 
-},{"../function/makeIterator_":19}],13:[function(require,module,exports){
-var makeIterator = require('../function/makeIterator_');
+},{"../function/makeIterator_":21}],14:[function(_dereq_,module,exports){
+var makeIterator = _dereq_('../function/makeIterator_');
 
     /**
      * Array filter
@@ -725,7 +796,7 @@ var makeIterator = require('../function/makeIterator_');
 
 
 
-},{"../function/makeIterator_":19}],14:[function(require,module,exports){
+},{"../function/makeIterator_":21}],15:[function(_dereq_,module,exports){
 
 
     /**
@@ -755,12 +826,12 @@ var makeIterator = require('../function/makeIterator_');
     module.exports = indexOf;
 
 
-},{}],15:[function(require,module,exports){
-var unique = require('./unique');
-var filter = require('./filter');
-var every = require('./every');
-var contains = require('./contains');
-var slice = require('./slice');
+},{}],16:[function(_dereq_,module,exports){
+var unique = _dereq_('./unique');
+var filter = _dereq_('./filter');
+var every = _dereq_('./every');
+var contains = _dereq_('./contains');
+var slice = _dereq_('./slice');
 
 
     /**
@@ -781,24 +852,68 @@ var slice = require('./slice');
 
 
 
-},{"./contains":11,"./every":12,"./filter":13,"./slice":16,"./unique":17}],16:[function(require,module,exports){
+},{"./contains":11,"./every":13,"./filter":14,"./slice":17,"./unique":19}],17:[function(_dereq_,module,exports){
 
-
-    var arrSlice = Array.prototype.slice;
 
     /**
      * Create slice of source array or array-like object
      */
     function slice(arr, start, end){
-        return arrSlice.call(arr, start, end);
+        if (start == null) {
+            start = 0;
+        } else if (start < 0) {
+            start = Math.max(arr.length + start, 0);
+        }
+
+        if (end == null) {
+            end = arr.length;
+        } else if (end < 0) {
+            end = Math.max(arr.length + end, 0);
+        }
+
+        var result = [];
+        while (start < end) {
+            result.push(arr[start++]);
+        }
+
+        return result;
     }
 
     module.exports = slice;
 
 
 
-},{}],17:[function(require,module,exports){
-var filter = require('./filter');
+},{}],18:[function(_dereq_,module,exports){
+var makeIterator = _dereq_('../function/makeIterator_');
+
+    /**
+     * Array some
+     */
+    function some(arr, callback, thisObj) {
+        callback = makeIterator(callback, thisObj);
+        var result = false;
+        if (arr == null) {
+            return result;
+        }
+
+        var i = -1, len = arr.length;
+        while (++i < len) {
+            // we iterate over sparse items since there is no way to make it
+            // work properly on IE 7-8. see #64
+            if ( callback(arr[i], i, arr) ) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    module.exports = some;
+
+
+},{"../function/makeIterator_":21}],19:[function(_dereq_,module,exports){
+var filter = _dereq_('./filter');
 
     /**
      * @return {array} Array of unique items
@@ -824,7 +939,7 @@ var filter = require('./filter');
 
 
 
-},{"./filter":13}],18:[function(require,module,exports){
+},{"./filter":14}],20:[function(_dereq_,module,exports){
 
 
     /**
@@ -838,10 +953,10 @@ var filter = require('./filter');
 
 
 
-},{}],19:[function(require,module,exports){
-var identity = require('./identity');
-var prop = require('./prop');
-var deepMatches = require('../object/deepMatches');
+},{}],21:[function(_dereq_,module,exports){
+var identity = _dereq_('./identity');
+var prop = _dereq_('./prop');
+var deepMatches = _dereq_('../object/deepMatches');
 
     /**
      * Converts argument into a valid iterator.
@@ -874,7 +989,7 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{"../object/deepMatches":36,"./identity":18,"./prop":20}],20:[function(require,module,exports){
+},{"../object/deepMatches":38,"./identity":20,"./prop":22}],22:[function(_dereq_,module,exports){
 
 
     /**
@@ -890,8 +1005,8 @@ var deepMatches = require('../object/deepMatches');
 
 
 
-},{}],21:[function(require,module,exports){
-var isKind = require('./isKind');
+},{}],23:[function(_dereq_,module,exports){
+var isKind = _dereq_('./isKind');
     /**
      */
     var isArray = Array.isArray || function (val) {
@@ -900,8 +1015,8 @@ var isKind = require('./isKind');
     module.exports = isArray;
 
 
-},{"./isKind":26}],22:[function(require,module,exports){
-var isKind = require('./isKind');
+},{"./isKind":28}],24:[function(_dereq_,module,exports){
+var isKind = _dereq_('./isKind');
     /**
      */
     function isBoolean(val) {
@@ -910,8 +1025,8 @@ var isKind = require('./isKind');
     module.exports = isBoolean;
 
 
-},{"./isKind":26}],23:[function(require,module,exports){
-var isKind = require('./isKind');
+},{"./isKind":28}],25:[function(_dereq_,module,exports){
+var isKind = _dereq_('./isKind');
     /**
      */
     function isDate(val) {
@@ -920,9 +1035,9 @@ var isKind = require('./isKind');
     module.exports = isDate;
 
 
-},{"./isKind":26}],24:[function(require,module,exports){
-var forOwn = require('../object/forOwn');
-var isArray = require('./isArray');
+},{"./isKind":28}],26:[function(_dereq_,module,exports){
+var forOwn = _dereq_('../object/forOwn');
+var isArray = _dereq_('./isArray');
 
     function isEmpty(val){
         if (val == null) {
@@ -946,8 +1061,8 @@ var isArray = require('./isArray');
 
 
 
-},{"../object/forOwn":40,"./isArray":21}],25:[function(require,module,exports){
-var isKind = require('./isKind');
+},{"../object/forOwn":42,"./isArray":23}],27:[function(_dereq_,module,exports){
+var isKind = _dereq_('./isKind');
     /**
      */
     function isFunction(val) {
@@ -956,8 +1071,8 @@ var isKind = require('./isKind');
     module.exports = isFunction;
 
 
-},{"./isKind":26}],26:[function(require,module,exports){
-var kindOf = require('./kindOf');
+},{"./isKind":28}],28:[function(_dereq_,module,exports){
+var kindOf = _dereq_('./kindOf');
     /**
      * Check if value is from a specific "kind".
      */
@@ -967,8 +1082,8 @@ var kindOf = require('./kindOf');
     module.exports = isKind;
 
 
-},{"./kindOf":32}],27:[function(require,module,exports){
-var isKind = require('./isKind');
+},{"./kindOf":34}],29:[function(_dereq_,module,exports){
+var isKind = _dereq_('./isKind');
     /**
      */
     function isNumber(val) {
@@ -977,8 +1092,8 @@ var isKind = require('./isKind');
     module.exports = isNumber;
 
 
-},{"./isKind":26}],28:[function(require,module,exports){
-var isKind = require('./isKind');
+},{"./isKind":28}],30:[function(_dereq_,module,exports){
+var isKind = _dereq_('./isKind');
     /**
      */
     function isObject(val) {
@@ -987,7 +1102,7 @@ var isKind = require('./isKind');
     module.exports = isObject;
 
 
-},{"./isKind":26}],29:[function(require,module,exports){
+},{"./isKind":28}],31:[function(_dereq_,module,exports){
 
 
     /**
@@ -1002,8 +1117,8 @@ var isKind = require('./isKind');
 
 
 
-},{}],30:[function(require,module,exports){
-var isKind = require('./isKind');
+},{}],32:[function(_dereq_,module,exports){
+var isKind = _dereq_('./isKind');
     /**
      */
     function isString(val) {
@@ -1012,7 +1127,7 @@ var isKind = require('./isKind');
     module.exports = isString;
 
 
-},{"./isKind":26}],31:[function(require,module,exports){
+},{"./isKind":28}],33:[function(_dereq_,module,exports){
 
     var UNDEF;
 
@@ -1024,7 +1139,7 @@ var isKind = require('./isKind');
     module.exports = isUndef;
 
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 
 
     var _rKind = /^\[object (.*)\]$/,
@@ -1046,8 +1161,8 @@ var isKind = require('./isKind');
     module.exports = kindOf;
 
 
-},{}],33:[function(require,module,exports){
-var isArray = require('./isArray');
+},{}],35:[function(_dereq_,module,exports){
+var isArray = _dereq_('./isArray');
 
     /**
      * covert value into number if numeric
@@ -1068,7 +1183,7 @@ var isArray = require('./isArray');
 
 
 
-},{"./isArray":21}],34:[function(require,module,exports){
+},{"./isArray":23}],36:[function(_dereq_,module,exports){
 
 
     /**
@@ -1083,7 +1198,7 @@ var isArray = require('./isArray');
 
 
 
-},{}],35:[function(require,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 
 
     /**
@@ -1102,9 +1217,9 @@ var isArray = require('./isArray');
 
 
 
-},{}],36:[function(require,module,exports){
-var forOwn = require('./forOwn');
-var isArray = require('../lang/isArray');
+},{}],38:[function(_dereq_,module,exports){
+var forOwn = _dereq_('./forOwn');
+var isArray = _dereq_('../lang/isArray');
 
     function containsMatch(array, pattern) {
         var i = -1, length = array.length;
@@ -1159,9 +1274,9 @@ var isArray = require('../lang/isArray');
 
 
 
-},{"../lang/isArray":21,"./forOwn":40}],37:[function(require,module,exports){
-var forOwn = require('./forOwn');
-var isPlainObject = require('../lang/isPlainObject');
+},{"../lang/isArray":23,"./forOwn":42}],39:[function(_dereq_,module,exports){
+var forOwn = _dereq_('./forOwn');
+var isPlainObject = _dereq_('../lang/isPlainObject');
 
     /**
      * Mixes objects into the target object, recursively mixing existing child
@@ -1195,9 +1310,9 @@ var isPlainObject = require('../lang/isPlainObject');
 
 
 
-},{"../lang/isPlainObject":29,"./forOwn":40}],38:[function(require,module,exports){
-var forOwn = require('./forOwn');
-var makeIterator = require('../function/makeIterator_');
+},{"../lang/isPlainObject":31,"./forOwn":42}],40:[function(_dereq_,module,exports){
+var forOwn = _dereq_('./forOwn');
+var makeIterator = _dereq_('../function/makeIterator_');
 
     /**
      * Creates a new object with all the properties where the callback returns
@@ -1217,8 +1332,8 @@ var makeIterator = require('../function/makeIterator_');
     module.exports = filterValues;
 
 
-},{"../function/makeIterator_":19,"./forOwn":40}],39:[function(require,module,exports){
-
+},{"../function/makeIterator_":21,"./forOwn":42}],41:[function(_dereq_,module,exports){
+var hasOwn = _dereq_('./hasOwn');
 
     var _hasDontEnumBug,
         _dontEnums;
@@ -1260,11 +1375,25 @@ var makeIterator = require('../function/makeIterator_');
             }
         }
 
+
         if (_hasDontEnumBug) {
+            var ctor = obj.constructor,
+                isProto = !!ctor && obj === ctor.prototype;
+
             while (key = _dontEnums[i++]) {
-                // since we aren't using hasOwn check we need to make sure the
-                // property was overwritten
-                if (obj[key] !== Object.prototype[key]) {
+                // For constructor, if it is a prototype object the constructor
+                // is always non-enumerable unless defined otherwise (and
+                // enumerated above).  For non-prototype objects, it will have
+                // to be defined on this object, since it cannot be defined on
+                // any prototype objects.
+                //
+                // For other [[DontEnum]] properties, check if the value is
+                // different than Object prototype value.
+                if (
+                    (key !== 'constructor' ||
+                        (!isProto && hasOwn(obj, key))) &&
+                    obj[key] !== Object.prototype[key]
+                ) {
                     if (exec(fn, obj, key, thisObj) === false) {
                         break;
                     }
@@ -1281,9 +1410,9 @@ var makeIterator = require('../function/makeIterator_');
 
 
 
-},{}],40:[function(require,module,exports){
-var hasOwn = require('./hasOwn');
-var forIn = require('./forIn');
+},{"./hasOwn":44}],42:[function(_dereq_,module,exports){
+var hasOwn = _dereq_('./hasOwn');
+var forIn = _dereq_('./forIn');
 
     /**
      * Similar to Array/forEach but works over object properties and fixes Don't
@@ -1302,7 +1431,7 @@ var forIn = require('./forIn');
 
 
 
-},{"./forIn":39,"./hasOwn":42}],41:[function(require,module,exports){
+},{"./forIn":41,"./hasOwn":44}],43:[function(_dereq_,module,exports){
 
 
     /**
@@ -1324,7 +1453,7 @@ var forIn = require('./forIn');
 
 
 
-},{}],42:[function(require,module,exports){
+},{}],44:[function(_dereq_,module,exports){
 
 
     /**
@@ -1338,8 +1467,8 @@ var forIn = require('./forIn');
 
 
 
-},{}],43:[function(require,module,exports){
-var forOwn = require('./forOwn');
+},{}],45:[function(_dereq_,module,exports){
+var forOwn = _dereq_('./forOwn');
 
     /**
      * Get object keys
@@ -1356,7 +1485,46 @@ var forOwn = require('./forOwn');
 
 
 
-},{"./forOwn":40}]},{},[3])
+},{"./forOwn":42}],46:[function(_dereq_,module,exports){
+var forOwn = _dereq_('./forOwn');
+var makeIterator = _dereq_('../function/makeIterator_');
+
+    /**
+     * Creates a new object where all the values are the result of calling
+     * `callback`.
+     */
+    function mapValues(obj, callback, thisObj) {
+        callback = makeIterator(callback, thisObj);
+        var output = {};
+        forOwn(obj, function(val, key, obj) {
+            output[key] = callback(val, key, obj);
+        });
+
+        return output;
+    }
+    module.exports = mapValues;
+
+
+},{"../function/makeIterator_":21,"./forOwn":42}],47:[function(_dereq_,module,exports){
+var slice = _dereq_('../array/slice');
+
+    /**
+     * Return a copy of the object, filtered to only have values for the whitelisted keys.
+     */
+    function pick(obj, var_keys){
+        var keys = typeof arguments[1] !== 'string'? arguments[1] : slice(arguments, 1),
+            out = {},
+            i = 0, key;
+        while (key = keys[i++]) {
+            out[key] = obj[key];
+        }
+        return out;
+    }
+
+    module.exports = pick;
+
+
+
+},{"../array/slice":17}]},{},[3])
 (3)
 });
-;

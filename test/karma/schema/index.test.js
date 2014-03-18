@@ -1,16 +1,9 @@
-describe('test', function () {
-	it('should', function (done) {
-		assert.ok(true);
-		done();
-	});
-});
-
 'use strict';
 
 describe('Schema', function () {
 
 	describe('Schema constructor', function () {
-		it('should validate name', function (done) {
+		it('should validate name', function () {
 			var schema;
 			for (var i = 0; i < TYPES_EXCEPT_STRING.length; i++) {
 				try {
@@ -28,11 +21,9 @@ describe('Schema', function () {
 				fail('should not fail on a string.');
 			}
 			assert.isDefined(schema);
-
-			done();
 		});
 
-		it('validate schema', function (done) {
+		it('validate schema', function () {
 			var schema;
 			for (var i = 0; i < TYPES_EXCEPT_OBJECT.length; i++) {
 				try {
@@ -50,8 +41,6 @@ describe('Schema', function () {
 				fail('should not fail on an object.');
 			}
 			assert.isDefined(schema);
-
-			done();
 		});
 	});
 
@@ -63,12 +52,23 @@ describe('Schema', function () {
 				},
 				shouldFail: {
 					type: 'string'
+				},
+				shouldFail2: {
+					nullable: false
+				},
+				shouldFail3: {
+					nullable: false
+				},
+				shouldFail4: {
+					nullable: false
 				}
 			});
 
 			schema.validate({
 				shouldSucceed: 'isastring',
-				shouldFail: true
+				shouldFail: true,
+				shouldFail2: null,
+				shouldFail3: undefined
 			}, function (errors) {
 				assert.deepEqual(errors, {
 					shouldFail: {
@@ -79,10 +79,37 @@ describe('Schema', function () {
 								expected: 'string'
 							}
 						]
+					},
+					shouldFail2: {
+						errors: [
+							{
+								rule: 'nullable',
+								actual: 'x === null',
+								expected: 'x !== null && x !== undefined'
+							}
+						]
+					},
+					shouldFail3: {
+						errors: [
+							{
+								rule: 'nullable',
+								actual: 'x === undefined',
+								expected: 'x !== null && x !== undefined'
+							}
+						]
+					},
+					shouldFail4: {
+						errors: [
+							{
+								rule: 'nullable',
+								actual: 'x === undefined',
+								expected: 'x !== null && x !== undefined'
+							}
+						]
 					}
 				}, 'errors should be defined when the test fails');
+				done();
 			});
-			done();
 		});
 		it('should execute multiple async validation rules', function (done) {
 			robocop.defineRule('asyncString', function (x, options, done) {
@@ -417,6 +444,9 @@ describe('Schema', function () {
 					doubleNested: {
 						shouldFail: {
 							type: 'string'
+						},
+						shouldFail2: {
+							nullable: false
 						}
 					},
 					doubleNested2: {
@@ -450,6 +480,15 @@ describe('Schema', function () {
 										rule: 'type',
 										actual: 'number',
 										expected: 'string'
+									}
+								]
+							},
+							shouldFail2: {
+								errors: [
+									{
+										rule: 'nullable',
+										actual: 'x === undefined',
+										expected: 'x !== null && x !== undefined'
 									}
 								]
 							}
@@ -539,19 +578,30 @@ describe('Schema', function () {
 	});
 
 	describe('Schema.validateSync(attrs, cb)', function () {
-		it('should execute applicable validation rules', function (done) {
+		it('should execute applicable validation rules', function () {
 			var schema = new robocop.Schema('test', {
 				shouldSucceed: {
 					type: 'string'
 				},
 				shouldFail: {
 					type: 'string'
+				},
+				shouldFail2: {
+					nullable: false
+				},
+				shouldFail3: {
+					nullable: false
+				},
+				shouldFail4: {
+					nullable: false
 				}
 			});
 
 			var errors = schema.validateSync({
 				shouldSucceed: 'isastring',
-				shouldFail: true
+				shouldFail: true,
+				shouldFail2: null,
+				shouldFail3: undefined
 			});
 			assert.deepEqual(errors, {
 				shouldFail: {
@@ -562,12 +612,38 @@ describe('Schema', function () {
 							expected: 'string'
 						}
 					]
+				},
+				shouldFail2: {
+					errors: [
+						{
+							rule: 'nullable',
+							actual: 'x === null',
+							expected: 'x !== null && x !== undefined'
+						}
+					]
+				},
+				shouldFail3: {
+					errors: [
+						{
+							rule: 'nullable',
+							actual: 'x === undefined',
+							expected: 'x !== null && x !== undefined'
+						}
+					]
+				},
+				shouldFail4: {
+					errors: [
+						{
+							rule: 'nullable',
+							actual: 'x === undefined',
+							expected: 'x !== null && x !== undefined'
+						}
+					]
 				}
 			}, 'errors should be defined when the test fails');
-			done();
 		});
 
-		it('should execute applicable validation rules', function (done) {
+		it('should execute applicable validation rules', function () {
 			var schema = new robocop.Schema('test', {
 				shouldSucceed: {
 					type: 'string'
@@ -578,13 +654,15 @@ describe('Schema', function () {
 				shouldSucceed: 'isastring'
 			});
 			assert.isNull(errors, 'errors should be undefined when the test succeeds');
-			done();
 		});
 
-		it('should execute applicable validation rules', function (done) {
+		it('should execute applicable validation rules', function () {
 			var schema = new robocop.Schema('test', {
 				shouldFail: {
 					type: 'string'
+				},
+				shouldFail2: {
+					nullable: false
 				}
 			});
 
@@ -600,17 +678,28 @@ describe('Schema', function () {
 							expected: 'string'
 						}
 					]
+				},
+				shouldFail2: {
+					errors: [
+						{
+							rule: 'nullable',
+							actual: 'x === undefined',
+							expected: 'x !== null && x !== undefined'
+						}
+					]
 				}
 			}, 'err should be defined when the test fails');
-			done();
 		});
 
-		it('should execute applicable nested validation rules', function (done) {
+		it('should execute applicable nested validation rules', function () {
 			var schema = new robocop.Schema('test', {
 				nested: {
 					doubleNested: {
 						shouldFail: {
 							type: 'string'
+						},
+						shouldFail2: {
+							nullable: false
 						}
 					}
 				},
@@ -638,6 +727,15 @@ describe('Schema', function () {
 									expected: 'string'
 								}
 							]
+						},
+						shouldFail2: {
+							errors: [
+								{
+									rule: 'nullable',
+									actual: 'x === undefined',
+									expected: 'x !== null && x !== undefined'
+								}
+							]
 						}
 					}
 				},
@@ -651,10 +749,9 @@ describe('Schema', function () {
 					]
 				}
 			}, 'err should be defined when the test fails');
-			done();
 		});
 
-		it('should execute applicable nested validation rules', function (done) {
+		it('should execute applicable nested validation rules', function () {
 			var schema = new robocop.Schema('test', {
 				nested: {
 					doubleNested: {
@@ -677,10 +774,9 @@ describe('Schema', function () {
 				shouldSucceedAlso: 'isastring'
 			});
 			assert.deepEqual(errors, null, 'err should be null when test succeeds');
-			done();
 		});
 
-		it('should return an error if attrs is not an object', function (done) {
+		it('should return an error if attrs is not an object', function () {
 			var schema = new robocop.Schema('test', {
 				shouldSucceed: {
 					type: 'string'
@@ -694,11 +790,9 @@ describe('Schema', function () {
 					assert.equal(err.message, 'Schema#validateSync(attrs[, options]): attrs: Must be an object!');
 				}
 			}
-
-			done();
 		});
 
-		it('should return an error if options is provided and is not an object', function (done) {
+		it('should return an error if options is provided and is not an object', function () {
 			var schema = new robocop.Schema('test', {
 				shouldSucceed: {
 					type: 'string'
@@ -717,8 +811,6 @@ describe('Schema', function () {
 					assert.equal(err.message, 'Schema#validateSync(attrs[, options]): options: Must be an object!');
 				}
 			}
-
-			done();
 		});
 	});
 });

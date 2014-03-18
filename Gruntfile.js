@@ -15,6 +15,13 @@ module.exports = function (grunt) {
 		clean: {
 			pre: ['coverage', 'dist/']
 		},
+		watch: {
+			files: [
+				'lib/**/*.js',
+				'test/**/*.js'
+			],
+			tasks: ['build']
+		},
 		jshint: {
 			options: {
 				jshintrc: '.jshintrc',
@@ -82,8 +89,13 @@ module.exports = function (grunt) {
 	grunt.registerTask('test-unit', ['mochaTest:unit']);
 	grunt.registerTask('test-karma', ['browserify', 'karma']);
 
-	grunt.registerTask('test', ['test-unit', 'test-karma']);
+	grunt.registerTask('test', [
+		'test-unit',
+		'test-karma'
+	]);
 	grunt.registerTask('build', ['clean', 'jshint', 'test', 'browserify', 'uglify']);
+	grunt.registerTask('ci', ['build', 'coveralls']);
+	grunt.registerTask('go', ['build', 'watch']);
 
 	grunt.registerTask('default', ['build']);
 };
