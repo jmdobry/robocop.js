@@ -1,4 +1,4 @@
-##### 0.13.0 - xx March 2014
+##### 0.13.0 - 18 March 2014
 
 ###### Backwards compatible API changes
 - #18 - Added support for defaults
