@@ -10,12 +10,12 @@ All [Documentation](http://jmdobry.github.io/robocop.js) can be found at [jmdobr
 
 [![Build Status](https://travis-ci.org/jmdobry/robocop.js.png?branch=master)](https://travis-ci.org/jmdobry/robocop.js)
 [![Dependency Status](https://gemnasium.com/jmdobry/robocop.js.png)](https://gemnasium.com/jmdobry/robocop.js)
-[![Code Climate](https://codeclimate.com/github/jmdobry/robocop.js.png)](https://codeclimate.com/github/jmdobry/robocop.js)
+[![Coverage Status](https://coveralls.io/repos/jmdobry/robocop.js/badge.png)](https://coveralls.io/r/jmdobry/robocop.js)
 
 ## License
 [MIT License](https://github.com/jmdobry/robocop.js/blob/master/LICENSE)
 
-Copyright (C) 2013 Jason Dobry
+Copyright (C) 2013-2014 Jason Dobry
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
