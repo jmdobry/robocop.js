@@ -673,13 +673,38 @@ Schema.prototype.coerce = function () {
 };
 
 /**
- * @method Schema#addDefaults
- * @desc Add default values for those values that are missing, as specified by this Schema.
- * @param {object} attrs The values to coerce.
- * @returns {object} The values, with defaults added in.
+ * @method Schema#addDefaultsToTarget
+ * @desc Add the default values for this Schema to the target object.
+ * @param {object} target The target object to which to add the defaults.
+ * rules.
+ * @param {boolean=} overwrite Whether to overwrite existing values with the default values. Default: `false`.
+ * @returns {object} The target with defaults merged in.
  */
-Schema.prototype.addDefaults = function () {
-	throw new Error('Unsupported Operation!');
+Schema.prototype.addDefaultsToTarget = function (target, overwrite) {
+	if (!utils.isObject(target)) {
+		throw new Error('Schema#addDefaultsToTarget(target[, overwrite]): target: Must be an object!');
+	} else if (!this.defaults) {
+		throw new Error('Schema#addDefaultsToTarget(target[, overwrite]): this.defaults: This Schema has no defaults set!');
+	} else if (overwrite) {
+		utils.deepMixIn(target, this.defaults);
+	} else {
+		utils.deepFillIn(target, this.defaults);
+	}
+};
+
+/**
+ * @method Schema#addDefaultsToTarget
+ * @desc Set the default values for this Schema.
+ * @param {object} attrs The default values for an object of this Schema.
+ * @returns {Schema} The target with defaults merged in.
+ */
+Schema.prototype.defaults = function (attrs) {
+	if (!utils.isObject(attrs)) {
+		throw new Error('Schema#defaults(attrs): attrs: Must be an object!');
+	} else {
+		this.defaults = attrs;
+	}
+	return this;
 };
 
 },{"../defaultRules":2,"../robocop/rule":6,"../rules":8,"../support/utils":10}],10:[function(_dereq_,module,exports){
@@ -698,6 +723,7 @@ module.exports = {
 
 	get: _dereq_('mout/object/get'),
 	deepMixIn: _dereq_('mout/object/deepMixIn'),
+	deepFillIn: _dereq_('mout/object/deepFillIn'),
 	forOwn: _dereq_('mout/object/forOwn'),
 	keys: _dereq_('mout/object/keys'),
 	pick: _dereq_('mout/object/pick'),
@@ -711,7 +737,7 @@ module.exports = {
 	toInt: _dereq_('mout/number/toInt')
 };
 
-},{"mout/array/contains":11,"mout/array/difference":12,"mout/array/intersection":16,"mout/lang/isArray":23,"mout/lang/isBoolean":24,"mout/lang/isDate":25,"mout/lang/isEmpty":26,"mout/lang/isFunction":27,"mout/lang/isNumber":29,"mout/lang/isObject":30,"mout/lang/isString":32,"mout/lang/isUndefined":33,"mout/lang/toNumber":35,"mout/lang/toString":36,"mout/number/toInt":37,"mout/object/deepMixIn":39,"mout/object/filter":40,"mout/object/forOwn":42,"mout/object/get":43,"mout/object/keys":45,"mout/object/map":46,"mout/object/pick":47}],11:[function(_dereq_,module,exports){
+},{"mout/array/contains":11,"mout/array/difference":12,"mout/array/intersection":16,"mout/lang/isArray":23,"mout/lang/isBoolean":24,"mout/lang/isDate":25,"mout/lang/isEmpty":26,"mout/lang/isFunction":27,"mout/lang/isNumber":29,"mout/lang/isObject":30,"mout/lang/isString":32,"mout/lang/isUndefined":33,"mout/lang/toNumber":35,"mout/lang/toString":36,"mout/number/toInt":37,"mout/object/deepFillIn":38,"mout/object/deepMixIn":40,"mout/object/filter":41,"mout/object/forOwn":43,"mout/object/get":44,"mout/object/keys":46,"mout/object/map":47,"mout/object/pick":48}],11:[function(_dereq_,module,exports){
 var indexOf = _dereq_('./indexOf');
 
     /**
@@ -998,7 +1024,7 @@ var deepMatches = _dereq_('../object/deepMatches');
 
 
 
-},{"../object/deepMatches":38,"./identity":20,"./prop":22}],22:[function(_dereq_,module,exports){
+},{"../object/deepMatches":39,"./identity":20,"./prop":22}],22:[function(_dereq_,module,exports){
 
 
     /**
@@ -1070,7 +1096,7 @@ var isArray = _dereq_('./isArray');
 
 
 
-},{"../object/forOwn":42,"./isArray":23}],27:[function(_dereq_,module,exports){
+},{"../object/forOwn":43,"./isArray":23}],27:[function(_dereq_,module,exports){
 var isKind = _dereq_('./isKind');
     /**
      */
@@ -1228,6 +1254,41 @@ var isArray = _dereq_('./isArray');
 
 },{}],38:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
+var isPlainObject = _dereq_('../lang/isPlainObject');
+
+    /**
+     * Deeply copy missing properties in the target from the defaults.
+     */
+    function deepFillIn(target, defaults){
+        var i = 0,
+            n = arguments.length,
+            obj;
+
+        while(++i < n) {
+            obj = arguments[i];
+            if (obj) {
+                // jshint loopfunc: true
+                forOwn(obj, function(newValue, key) {
+                    var curValue = target[key];
+                    if (curValue == null) {
+                        target[key] = newValue;
+                    } else if (isPlainObject(curValue) &&
+                               isPlainObject(newValue)) {
+                        deepFillIn(curValue, newValue);
+                    }
+                });
+            }
+        }
+
+        return target;
+    }
+
+    module.exports = deepFillIn;
+
+
+
+},{"../lang/isPlainObject":31,"./forOwn":43}],39:[function(_dereq_,module,exports){
+var forOwn = _dereq_('./forOwn');
 var isArray = _dereq_('../lang/isArray');
 
     function containsMatch(array, pattern) {
@@ -1283,7 +1344,7 @@ var isArray = _dereq_('../lang/isArray');
 
 
 
-},{"../lang/isArray":23,"./forOwn":42}],39:[function(_dereq_,module,exports){
+},{"../lang/isArray":23,"./forOwn":43}],40:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var isPlainObject = _dereq_('../lang/isPlainObject');
 
@@ -1319,7 +1380,7 @@ var isPlainObject = _dereq_('../lang/isPlainObject');
 
 
 
-},{"../lang/isPlainObject":31,"./forOwn":42}],40:[function(_dereq_,module,exports){
+},{"../lang/isPlainObject":31,"./forOwn":43}],41:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var makeIterator = _dereq_('../function/makeIterator_');
 
@@ -1341,7 +1402,7 @@ var makeIterator = _dereq_('../function/makeIterator_');
     module.exports = filterValues;
 
 
-},{"../function/makeIterator_":21,"./forOwn":42}],41:[function(_dereq_,module,exports){
+},{"../function/makeIterator_":21,"./forOwn":43}],42:[function(_dereq_,module,exports){
 var hasOwn = _dereq_('./hasOwn');
 
     var _hasDontEnumBug,
@@ -1419,7 +1480,7 @@ var hasOwn = _dereq_('./hasOwn');
 
 
 
-},{"./hasOwn":44}],42:[function(_dereq_,module,exports){
+},{"./hasOwn":45}],43:[function(_dereq_,module,exports){
 var hasOwn = _dereq_('./hasOwn');
 var forIn = _dereq_('./forIn');
 
@@ -1440,7 +1501,7 @@ var forIn = _dereq_('./forIn');
 
 
 
-},{"./forIn":41,"./hasOwn":44}],43:[function(_dereq_,module,exports){
+},{"./forIn":42,"./hasOwn":45}],44:[function(_dereq_,module,exports){
 
 
     /**
@@ -1462,7 +1523,7 @@ var forIn = _dereq_('./forIn');
 
 
 
-},{}],44:[function(_dereq_,module,exports){
+},{}],45:[function(_dereq_,module,exports){
 
 
     /**
@@ -1476,7 +1537,7 @@ var forIn = _dereq_('./forIn');
 
 
 
-},{}],45:[function(_dereq_,module,exports){
+},{}],46:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 
     /**
@@ -1494,7 +1555,7 @@ var forOwn = _dereq_('./forOwn');
 
 
 
-},{"./forOwn":42}],46:[function(_dereq_,module,exports){
+},{"./forOwn":43}],47:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var makeIterator = _dereq_('../function/makeIterator_');
 
@@ -1514,7 +1575,7 @@ var makeIterator = _dereq_('../function/makeIterator_');
     module.exports = mapValues;
 
 
-},{"../function/makeIterator_":21,"./forOwn":42}],47:[function(_dereq_,module,exports){
+},{"../function/makeIterator_":21,"./forOwn":43}],48:[function(_dereq_,module,exports){
 var slice = _dereq_('../array/slice');
 
     /**

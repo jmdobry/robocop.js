@@ -577,6 +577,112 @@ describe('Schema', function () {
 		});
 	});
 
+	describe('Schema#addDefaults', function () {
+		it('should add one-level deep defaults', function () {
+			var schema = new robocop.Schema('test', {
+				defaultString: {
+					type: 'string',
+					default: 'defaultString'
+				},
+				defaultNumber: {
+					type: 'number'
+				}
+			}).defaults({
+					defaultString: 'defaultString',
+					defaultNumber: 5
+				});
+
+			var target = {};
+
+			schema.addDefaultsToTarget(target);
+
+			assert.deepEqual(target, {
+				defaultString: 'defaultString',
+				defaultNumber: 5
+			}, 'should add defaults');
+		});
+		it('should add one-level deep defaults', function () {
+			var schema = new robocop.Schema('test', {
+				defaultString: {
+					type: 'string',
+					default: 'defaultString'
+				},
+				defaultNumber: {
+					type: 'number'
+				}
+			}).defaults({
+					defaultString: 'defaultString',
+					defaultNumber: 5
+				});
+
+			var target = {
+				defaultString: 'shouldBeOverwritten'
+			};
+
+			schema.addDefaultsToTarget(target, true);
+
+			assert.deepEqual(target, {
+				defaultString: 'defaultString',
+				defaultNumber: 5
+			}, 'should add defaults');
+		});
+
+		it('should add nested defaults', function () {
+			var schema = new robocop.Schema('test', {
+				defaultString: {
+					type: 'string'
+				},
+				defaultNumber: {
+					type: 'number'
+				},
+				nested: {
+					doubleNested: {
+						defaultString3: {
+							type: 'string'
+						},
+						defaultNumber3: {
+							type: 'number'
+						}
+					},
+					defaultString2: {
+						type: 'string'
+					},
+					defaultNumber2: {
+						type: 'number'
+					}
+				}
+			}).defaults({
+					defaultString: 'defaultString',
+					defaultNumber: 5,
+					nested: {
+						doubleNested: {
+							defaultString3: 'defaultString3',
+							defaultNumber3: 15
+						},
+						defaultString2: 'defaultString2',
+						defaultNumber2: 10
+					}
+				});
+
+			var target = {};
+
+			schema.addDefaultsToTarget(target);
+
+			assert.deepEqual(target, {
+				defaultString: 'defaultString',
+				defaultNumber: 5,
+				nested: {
+					doubleNested: {
+						defaultString3: 'defaultString3',
+						defaultNumber3: 15
+					},
+					defaultString2: 'defaultString2',
+					defaultNumber2: 10
+				}
+			}, 'should add nested defaults');
+		});
+	});
+
 	describe('Schema.validateSync(attrs, cb)', function () {
 		it('should execute applicable validation rules', function () {
 			var schema = new robocop.Schema('test', {
