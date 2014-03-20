@@ -1,3 +1,8 @@
+##### 0.13.2 - 20 March 2014
+
+###### Backwards compatible bug fixes
+- #20 - Null pointer sometimes with nullable rule
+
 ##### 0.13.1 - 19 March 2014
 
 ###### Backwards compatible bug fixes
