@@ -253,6 +253,10 @@ describe('Schema', function () {
 					shouldFail: {
 						asyncNumber2: true,
 						type: 'number'
+					},
+					shouldSucceed: {
+						type: 'number',
+						nullable: true
 					}
 				},
 				willFail: {
@@ -447,6 +451,10 @@ describe('Schema', function () {
 						},
 						shouldFail2: {
 							nullable: false
+						},
+						shouldSucceed: {
+							nullable: true,
+							type: 'string'
 						}
 					},
 					doubleNested2: {
@@ -689,6 +697,18 @@ describe('Schema', function () {
 				shouldSucceed: {
 					type: 'string'
 				},
+				shouldSucceed2: {
+					type: 'string',
+					nullable: true
+				},
+				shouldSucceed3: {
+					type: 'string',
+					nullable: true
+				},
+				shouldSucceed4: {
+					type: 'string',
+					nullable: true
+				},
 				shouldFail: {
 					type: 'string'
 				},
@@ -705,6 +725,8 @@ describe('Schema', function () {
 
 			var errors = schema.validateSync({
 				shouldSucceed: 'isastring',
+				shouldSucceed2: null,
+				shouldSucceed3: undefined,
 				shouldFail: true,
 				shouldFail2: null,
 				shouldFail3: undefined

@@ -1,7 +1,7 @@
 /**
  * @author Jason Dobry <jason.dobry@gmail.com>
  * @file robocop.js
- * @version 0.13.0 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @version 0.13.1 - Homepage <http://jmdobry.github.io/robocop.js/>
  * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
  * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
  *
@@ -434,6 +434,14 @@ function _executeRulesSync(targetKey, options, errors, value, key) {
 		}
 	} else {
 		var schemaRules = utils.get(_this.schema, nestedKey);
+		if (schemaRules.nullable === true) {
+			var nullable = rules.nullable || defaultRules.nullable,
+				nErr = nullable(value, true);
+
+			if (nErr === null) {
+				return;
+			}
+		}
 		utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
 			var rule = rules[ruleKey] || defaultRules[ruleKey];
 			if (!rule.async) {
@@ -498,6 +506,14 @@ function _executeRules(options, value, key, prefix, errors, deepQueue, ruleQueue
 		})(nestedKey, value);
 	} else {
 		var schemaRules = utils.get(_this.schema, nestedKey);
+		if (schemaRules.nullable === true) {
+			var nullable = rules.nullable || defaultRules.nullable,
+				nErr = nullable(value, true);
+
+			if (nErr === null) {
+				return;
+			}
+		}
 		utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
 			var rule = rules[ruleKey] || defaultRules[ruleKey];
 			// Asynchronous rules get added to the queue

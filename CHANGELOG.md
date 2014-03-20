@@ -1,3 +1,8 @@
+##### 0.13.1 - 19 March 2014
+
+###### Backwards compatible bug fixes
+- #19 - `nullable: true` now works
+
 ##### 0.13.0 - 18 March 2014
 
 ###### Backwards compatible API changes
