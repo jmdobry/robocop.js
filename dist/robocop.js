@@ -1,7 +1,7 @@
 /**
  * @author Jason Dobry <jason.dobry@gmail.com>
  * @file robocop.js
- * @version 0.13.2 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @version 0.14.0 - Homepage <http://jmdobry.github.io/robocop.js/>
  * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
  * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
  *
@@ -713,18 +713,27 @@ Schema.prototype.addDefaultsToTarget = function (target, overwrite) {
 };
 
 /**
- * @method Schema#addDefaultsToTarget
+ * @method Schema#setDefaults
  * @desc Set the default values for this Schema.
  * @param {object} attrs The default values for an object of this Schema.
- * @returns {Schema} The target with defaults merged in.
+ * @returns {Schema} Reference to this schema.
  */
-Schema.prototype.defaults = function (attrs) {
+Schema.prototype.setDefaults = function (attrs) {
 	if (!utils.isObject(attrs)) {
 		throw new Error('Schema#defaults(attrs): attrs: Must be an object!');
 	} else {
-		this.defaults = attrs;
+		this.defaults = utils.merge({}, attrs);
 	}
 	return this;
+};
+
+/**
+ * @method Schema#getDefaults
+ * @desc Get the default values for this Schema.
+ * @returns {object} The default values for this schema.
+ */
+Schema.prototype.getDefaults = function () {
+	return utils.merge({}, this.defaults);
 };
 
 },{"../defaultRules":2,"../robocop/rule":6,"../rules":8,"../support/utils":10}],10:[function(_dereq_,module,exports){
@@ -749,6 +758,7 @@ module.exports = {
 	pick: _dereq_('mout/object/pick'),
 	filter: _dereq_('mout/object/filter'),
 	map: _dereq_('mout/object/map'),
+	merge: _dereq_('mout/object/merge'),
 
 	contains: _dereq_('mout/array/contains'),
 	intersection: _dereq_('mout/array/intersection'),
@@ -757,7 +767,7 @@ module.exports = {
 	toInt: _dereq_('mout/number/toInt')
 };
 
-},{"mout/array/contains":11,"mout/array/difference":12,"mout/array/intersection":16,"mout/lang/isArray":23,"mout/lang/isBoolean":24,"mout/lang/isDate":25,"mout/lang/isEmpty":26,"mout/lang/isFunction":27,"mout/lang/isNumber":29,"mout/lang/isObject":30,"mout/lang/isString":32,"mout/lang/isUndefined":33,"mout/lang/toNumber":35,"mout/lang/toString":36,"mout/number/toInt":37,"mout/object/deepFillIn":38,"mout/object/deepMixIn":40,"mout/object/filter":41,"mout/object/forOwn":43,"mout/object/get":44,"mout/object/keys":46,"mout/object/map":47,"mout/object/pick":48}],11:[function(_dereq_,module,exports){
+},{"mout/array/contains":11,"mout/array/difference":12,"mout/array/intersection":16,"mout/lang/isArray":25,"mout/lang/isBoolean":26,"mout/lang/isDate":27,"mout/lang/isEmpty":28,"mout/lang/isFunction":29,"mout/lang/isNumber":31,"mout/lang/isObject":32,"mout/lang/isString":34,"mout/lang/isUndefined":35,"mout/lang/toNumber":37,"mout/lang/toString":38,"mout/number/toInt":39,"mout/object/deepFillIn":40,"mout/object/deepMixIn":42,"mout/object/filter":43,"mout/object/forOwn":45,"mout/object/get":46,"mout/object/keys":48,"mout/object/map":49,"mout/object/merge":50,"mout/object/pick":52}],11:[function(_dereq_,module,exports){
 var indexOf = _dereq_('./indexOf');
 
     /**
@@ -1044,7 +1054,7 @@ var deepMatches = _dereq_('../object/deepMatches');
 
 
 
-},{"../object/deepMatches":39,"./identity":20,"./prop":22}],22:[function(_dereq_,module,exports){
+},{"../object/deepMatches":41,"./identity":20,"./prop":22}],22:[function(_dereq_,module,exports){
 
 
     /**
@@ -1061,6 +1071,107 @@ var deepMatches = _dereq_('../object/deepMatches');
 
 
 },{}],23:[function(_dereq_,module,exports){
+var kindOf = _dereq_('./kindOf');
+var isPlainObject = _dereq_('./isPlainObject');
+var mixIn = _dereq_('../object/mixIn');
+
+    /**
+     * Clone native types.
+     */
+    function clone(val){
+        switch (kindOf(val)) {
+            case 'Object':
+                return cloneObject(val);
+            case 'Array':
+                return cloneArray(val);
+            case 'RegExp':
+                return cloneRegExp(val);
+            case 'Date':
+                return cloneDate(val);
+            default:
+                return val;
+        }
+    }
+
+    function cloneObject(source) {
+        if (isPlainObject(source)) {
+            return mixIn({}, source);
+        } else {
+            return source;
+        }
+    }
+
+    function cloneRegExp(r) {
+        var flags = '';
+        flags += r.multiline ? 'm' : '';
+        flags += r.global ? 'g' : '';
+        flags += r.ignorecase ? 'i' : '';
+        return new RegExp(r.source, flags);
+    }
+
+    function cloneDate(date) {
+        return new Date(+date);
+    }
+
+    function cloneArray(arr) {
+        return arr.slice();
+    }
+
+    module.exports = clone;
+
+
+
+},{"../object/mixIn":51,"./isPlainObject":33,"./kindOf":36}],24:[function(_dereq_,module,exports){
+var clone = _dereq_('./clone');
+var forOwn = _dereq_('../object/forOwn');
+var kindOf = _dereq_('./kindOf');
+var isPlainObject = _dereq_('./isPlainObject');
+
+    /**
+     * Recursively clone native types.
+     */
+    function deepClone(val, instanceClone) {
+        switch ( kindOf(val) ) {
+            case 'Object':
+                return cloneObject(val, instanceClone);
+            case 'Array':
+                return cloneArray(val, instanceClone);
+            default:
+                return clone(val);
+        }
+    }
+
+    function cloneObject(source, instanceClone) {
+        if (isPlainObject(source)) {
+            var out = {};
+            forOwn(source, function(val, key) {
+                this[key] = deepClone(val, instanceClone);
+            }, out);
+            return out;
+        } else if (instanceClone) {
+            return instanceClone(source);
+        } else {
+            return source;
+        }
+    }
+
+    function cloneArray(arr, instanceClone) {
+        var out = [],
+            i = -1,
+            n = arr.length,
+            val;
+        while (++i < n) {
+            out[i] = deepClone(arr[i], instanceClone);
+        }
+        return out;
+    }
+
+    module.exports = deepClone;
+
+
+
+
+},{"../object/forOwn":45,"./clone":23,"./isPlainObject":33,"./kindOf":36}],25:[function(_dereq_,module,exports){
 var isKind = _dereq_('./isKind');
     /**
      */
@@ -1070,7 +1181,7 @@ var isKind = _dereq_('./isKind');
     module.exports = isArray;
 
 
-},{"./isKind":28}],24:[function(_dereq_,module,exports){
+},{"./isKind":30}],26:[function(_dereq_,module,exports){
 var isKind = _dereq_('./isKind');
     /**
      */
@@ -1080,7 +1191,7 @@ var isKind = _dereq_('./isKind');
     module.exports = isBoolean;
 
 
-},{"./isKind":28}],25:[function(_dereq_,module,exports){
+},{"./isKind":30}],27:[function(_dereq_,module,exports){
 var isKind = _dereq_('./isKind');
     /**
      */
@@ -1090,7 +1201,7 @@ var isKind = _dereq_('./isKind');
     module.exports = isDate;
 
 
-},{"./isKind":28}],26:[function(_dereq_,module,exports){
+},{"./isKind":30}],28:[function(_dereq_,module,exports){
 var forOwn = _dereq_('../object/forOwn');
 var isArray = _dereq_('./isArray');
 
@@ -1116,7 +1227,7 @@ var isArray = _dereq_('./isArray');
 
 
 
-},{"../object/forOwn":43,"./isArray":23}],27:[function(_dereq_,module,exports){
+},{"../object/forOwn":45,"./isArray":25}],29:[function(_dereq_,module,exports){
 var isKind = _dereq_('./isKind');
     /**
      */
@@ -1126,7 +1237,7 @@ var isKind = _dereq_('./isKind');
     module.exports = isFunction;
 
 
-},{"./isKind":28}],28:[function(_dereq_,module,exports){
+},{"./isKind":30}],30:[function(_dereq_,module,exports){
 var kindOf = _dereq_('./kindOf');
     /**
      * Check if value is from a specific "kind".
@@ -1137,7 +1248,7 @@ var kindOf = _dereq_('./kindOf');
     module.exports = isKind;
 
 
-},{"./kindOf":34}],29:[function(_dereq_,module,exports){
+},{"./kindOf":36}],31:[function(_dereq_,module,exports){
 var isKind = _dereq_('./isKind');
     /**
      */
@@ -1147,7 +1258,7 @@ var isKind = _dereq_('./isKind');
     module.exports = isNumber;
 
 
-},{"./isKind":28}],30:[function(_dereq_,module,exports){
+},{"./isKind":30}],32:[function(_dereq_,module,exports){
 var isKind = _dereq_('./isKind');
     /**
      */
@@ -1157,7 +1268,7 @@ var isKind = _dereq_('./isKind');
     module.exports = isObject;
 
 
-},{"./isKind":28}],31:[function(_dereq_,module,exports){
+},{"./isKind":30}],33:[function(_dereq_,module,exports){
 
 
     /**
@@ -1172,7 +1283,7 @@ var isKind = _dereq_('./isKind');
 
 
 
-},{}],32:[function(_dereq_,module,exports){
+},{}],34:[function(_dereq_,module,exports){
 var isKind = _dereq_('./isKind');
     /**
      */
@@ -1182,7 +1293,7 @@ var isKind = _dereq_('./isKind');
     module.exports = isString;
 
 
-},{"./isKind":28}],33:[function(_dereq_,module,exports){
+},{"./isKind":30}],35:[function(_dereq_,module,exports){
 
     var UNDEF;
 
@@ -1194,7 +1305,7 @@ var isKind = _dereq_('./isKind');
     module.exports = isUndef;
 
 
-},{}],34:[function(_dereq_,module,exports){
+},{}],36:[function(_dereq_,module,exports){
 
 
     var _rKind = /^\[object (.*)\]$/,
@@ -1216,7 +1327,7 @@ var isKind = _dereq_('./isKind');
     module.exports = kindOf;
 
 
-},{}],35:[function(_dereq_,module,exports){
+},{}],37:[function(_dereq_,module,exports){
 var isArray = _dereq_('./isArray');
 
     /**
@@ -1238,7 +1349,7 @@ var isArray = _dereq_('./isArray');
 
 
 
-},{"./isArray":23}],36:[function(_dereq_,module,exports){
+},{"./isArray":25}],38:[function(_dereq_,module,exports){
 
 
     /**
@@ -1253,7 +1364,7 @@ var isArray = _dereq_('./isArray');
 
 
 
-},{}],37:[function(_dereq_,module,exports){
+},{}],39:[function(_dereq_,module,exports){
 
 
     /**
@@ -1272,7 +1383,7 @@ var isArray = _dereq_('./isArray');
 
 
 
-},{}],38:[function(_dereq_,module,exports){
+},{}],40:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var isPlainObject = _dereq_('../lang/isPlainObject');
 
@@ -1307,7 +1418,7 @@ var isPlainObject = _dereq_('../lang/isPlainObject');
 
 
 
-},{"../lang/isPlainObject":31,"./forOwn":43}],39:[function(_dereq_,module,exports){
+},{"../lang/isPlainObject":33,"./forOwn":45}],41:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var isArray = _dereq_('../lang/isArray');
 
@@ -1364,7 +1475,7 @@ var isArray = _dereq_('../lang/isArray');
 
 
 
-},{"../lang/isArray":23,"./forOwn":43}],40:[function(_dereq_,module,exports){
+},{"../lang/isArray":25,"./forOwn":45}],42:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var isPlainObject = _dereq_('../lang/isPlainObject');
 
@@ -1400,7 +1511,7 @@ var isPlainObject = _dereq_('../lang/isPlainObject');
 
 
 
-},{"../lang/isPlainObject":31,"./forOwn":43}],41:[function(_dereq_,module,exports){
+},{"../lang/isPlainObject":33,"./forOwn":45}],43:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var makeIterator = _dereq_('../function/makeIterator_');
 
@@ -1422,7 +1533,7 @@ var makeIterator = _dereq_('../function/makeIterator_');
     module.exports = filterValues;
 
 
-},{"../function/makeIterator_":21,"./forOwn":43}],42:[function(_dereq_,module,exports){
+},{"../function/makeIterator_":21,"./forOwn":45}],44:[function(_dereq_,module,exports){
 var hasOwn = _dereq_('./hasOwn');
 
     var _hasDontEnumBug,
@@ -1500,7 +1611,7 @@ var hasOwn = _dereq_('./hasOwn');
 
 
 
-},{"./hasOwn":45}],43:[function(_dereq_,module,exports){
+},{"./hasOwn":47}],45:[function(_dereq_,module,exports){
 var hasOwn = _dereq_('./hasOwn');
 var forIn = _dereq_('./forIn');
 
@@ -1521,7 +1632,7 @@ var forIn = _dereq_('./forIn');
 
 
 
-},{"./forIn":42,"./hasOwn":45}],44:[function(_dereq_,module,exports){
+},{"./forIn":44,"./hasOwn":47}],46:[function(_dereq_,module,exports){
 
 
     /**
@@ -1543,7 +1654,7 @@ var forIn = _dereq_('./forIn');
 
 
 
-},{}],45:[function(_dereq_,module,exports){
+},{}],47:[function(_dereq_,module,exports){
 
 
     /**
@@ -1557,7 +1668,7 @@ var forIn = _dereq_('./forIn');
 
 
 
-},{}],46:[function(_dereq_,module,exports){
+},{}],48:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 
     /**
@@ -1575,7 +1686,7 @@ var forOwn = _dereq_('./forOwn');
 
 
 
-},{"./forOwn":43}],47:[function(_dereq_,module,exports){
+},{"./forOwn":45}],49:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var makeIterator = _dereq_('../function/makeIterator_');
 
@@ -1595,7 +1706,79 @@ var makeIterator = _dereq_('../function/makeIterator_');
     module.exports = mapValues;
 
 
-},{"../function/makeIterator_":21,"./forOwn":43}],48:[function(_dereq_,module,exports){
+},{"../function/makeIterator_":21,"./forOwn":45}],50:[function(_dereq_,module,exports){
+var hasOwn = _dereq_('./hasOwn');
+var deepClone = _dereq_('../lang/deepClone');
+var isObject = _dereq_('../lang/isObject');
+
+    /**
+     * Deep merge objects.
+     */
+    function merge() {
+        var i = 1,
+            key, val, obj, target;
+
+        // make sure we don't modify source element and it's properties
+        // objects are passed by reference
+        target = deepClone( arguments[0] );
+
+        while (obj = arguments[i++]) {
+            for (key in obj) {
+                if ( ! hasOwn(obj, key) ) {
+                    continue;
+                }
+
+                val = obj[key];
+
+                if ( isObject(val) && isObject(target[key]) ){
+                    // inception, deep merge objects
+                    target[key] = merge(target[key], val);
+                } else {
+                    // make sure arrays, regexp, date, objects are cloned
+                    target[key] = deepClone(val);
+                }
+
+            }
+        }
+
+        return target;
+    }
+
+    module.exports = merge;
+
+
+
+},{"../lang/deepClone":24,"../lang/isObject":32,"./hasOwn":47}],51:[function(_dereq_,module,exports){
+var forOwn = _dereq_('./forOwn');
+
+    /**
+    * Combine properties from all the objects into first one.
+    * - This method affects target object in place, if you want to create a new Object pass an empty object as first param.
+    * @param {object} target    Target Object
+    * @param {...object} objects    Objects to be combined (0...n objects).
+    * @return {object} Target Object.
+    */
+    function mixIn(target, objects){
+        var i = 0,
+            n = arguments.length,
+            obj;
+        while(++i < n){
+            obj = arguments[i];
+            if (obj != null) {
+                forOwn(obj, copyProp, target);
+            }
+        }
+        return target;
+    }
+
+    function copyProp(val, key){
+        this[key] = val;
+    }
+
+    module.exports = mixIn;
+
+
+},{"./forOwn":45}],52:[function(_dereq_,module,exports){
 var slice = _dereq_('../array/slice');
 
     /**

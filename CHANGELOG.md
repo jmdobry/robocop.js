@@ -1,3 +1,8 @@
+##### 0.14.0 - 22 March 2014
+
+###### Breaking API changes
+- Improved API for setting/getting default values for a Schema
+
 ##### 0.13.2 - 20 March 2014
 
 ###### Backwards compatible bug fixes

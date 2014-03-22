@@ -595,7 +595,7 @@ describe('Schema', function () {
 				defaultNumber: {
 					type: 'number'
 				}
-			}).defaults({
+			}).setDefaults({
 					defaultString: 'defaultString',
 					defaultNumber: 5
 				});
@@ -618,7 +618,7 @@ describe('Schema', function () {
 				defaultNumber: {
 					type: 'number'
 				}
-			}).defaults({
+			}).setDefaults({
 					defaultString: 'defaultString',
 					defaultNumber: 5
 				});
@@ -659,7 +659,7 @@ describe('Schema', function () {
 						type: 'number'
 					}
 				}
-			}).defaults({
+			}).setDefaults({
 					defaultString: 'defaultString',
 					defaultNumber: 5,
 					nested: {
