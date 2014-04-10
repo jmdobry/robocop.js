@@ -1,3 +1,8 @@
+##### 0.14.1 - 09 April 2014
+
+###### Backwards compatible bug fixes
+- Fixed incorrect check
+
 ##### 0.14.0 - 22 March 2014
 
 ###### Breaking API changes
