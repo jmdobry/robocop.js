@@ -1,3 +1,8 @@
+##### 0.15.0 - 22 June 2014
+
+###### Backwards compatible API changes
+- #23 - Add method to strip fields not defined on the schema.
+
 ##### 0.14.1 - 09 April 2014
 
 ###### Backwards compatible bug fixes

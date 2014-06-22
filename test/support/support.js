@@ -2,41 +2,41 @@
 'use strict';
 
 var assert = require('chai').assert,
-	mocha = require('mocha'),
-	sinon = require('sinon');
+  mocha = require('mocha'),
+  sinon = require('sinon');
 
 var globals = module.exports = {
-	fail: function (msg) {
-		assert.equal('should not reach this!: ' + msg, 'failure');
-	},
-	TYPES_EXCEPT_STRING: [123, 123.123, null, undefined, {}, [], true, false, function () {
-	}],
-	TYPES_EXCEPT_STRING_OR_ARRAY: [123, 123.123, null, undefined, {}, true, false, function () {
-	}],
-	TYPES_EXCEPT_STRING_OR_NUMBER: [null, undefined, {}, [], true, false, function () {
-	}],
-	TYPES_EXCEPT_STRING_OR_ARRAY_OR_NUMBER: [null, undefined, {}, true, false, function () {
-	}],
-	TYPES_EXCEPT_NUMBER: ['string', null, undefined, {}, [], true, false, function () {
-	}],
-	TYPES_EXCEPT_OBJECT: ['string', 123, 123.123, null, undefined, true, false, function () {
-	}],
-	TYPES_EXCEPT_BOOLEAN: ['string', 123, 123.123, null, undefined, {}, [], function () {
-	}],
-	TYPES_EXCEPT_FUNCTION: ['string', 123, 123.123, null, undefined, {}, [], true, false],
-	CACHE_DEFAULTS: {
-		capacity: Number.MAX_VALUE,
-		maxAge: null,
-		deleteOnExpire: 'none',
-		onExpire: null,
-		cacheFlushInterval: null,
-		recycleFreq: 1000,
-		storageMode: 'none',
-		storageImpl: null,
-		verifyIntegrity: true
-	},
-	assert: assert,
-	sinon: sinon
+  fail: function (msg) {
+    assert.equal('should not reach this!: ' + msg, 'failure');
+  },
+  TYPES_EXCEPT_STRING: [123, 123.123, null, undefined, {}, [], true, false, function () {
+  }],
+  TYPES_EXCEPT_STRING_OR_ARRAY: [123, 123.123, null, undefined, {}, true, false, function () {
+  }],
+  TYPES_EXCEPT_STRING_OR_NUMBER: [null, undefined, {}, [], true, false, function () {
+  }],
+  TYPES_EXCEPT_STRING_OR_ARRAY_OR_NUMBER: [null, undefined, {}, true, false, function () {
+  }],
+  TYPES_EXCEPT_NUMBER: ['string', null, undefined, {}, [], true, false, function () {
+  }],
+  TYPES_EXCEPT_OBJECT: ['string', 123, 123.123, null, undefined, true, false, function () {
+  }],
+  TYPES_EXCEPT_BOOLEAN: ['string', 123, 123.123, null, undefined, {}, [], function () {
+  }],
+  TYPES_EXCEPT_FUNCTION: ['string', 123, 123.123, null, undefined, {}, [], true, false],
+  CACHE_DEFAULTS: {
+    capacity: Number.MAX_VALUE,
+    maxAge: null,
+    deleteOnExpire: 'none',
+    onExpire: null,
+    cacheFlushInterval: null,
+    recycleFreq: 1000,
+    storageMode: 'none',
+    storageImpl: null,
+    verifyIntegrity: true
+  },
+  assert: assert,
+  sinon: sinon
 };
 
 var test = new mocha();
@@ -44,7 +44,7 @@ var test = new mocha();
 var testGlobals = [];
 
 for (var key in globals) {
-	global[key] = globals[key];
-	testGlobals.push(globals[key]);
+  global[key] = globals[key];
+  testGlobals.push(globals[key]);
 }
 test.globals(testGlobals);

@@ -1,183 +1,183 @@
 /**
  * @author Jason Dobry <jason.dobry@gmail.com>
  * @file robocop.js
- * @version 0.14.1 - Homepage <http://jmdobry.github.io/robocop.js/>
- * @copyright (c) 2013 Jason Dobry <http://jmdobry.github.io/robocop.js>
+ * @version 0.15.0 - Homepage <http://jmdobry.github.io/robocop.js/>
+ * @copyright (c) 2013-2014 Jason Dobry <http://jmdobry.github.io/robocop.js>
  * @license MIT <https://github.com/jmdobry/robocop.js/blob/master/LICENSE>
  *
  * @overview Define and validate rules, datatypes and schemata in Node and in the browser.
  */
-!function(e){if("object"==typeof exports)module.exports=e();else if("function"==typeof define&&define.amd)define(e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.robocop=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
+!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var o;"undefined"!=typeof window?o=window:"undefined"!=typeof global?o=global:"undefined"!=typeof self&&(o=self),o.robocop=e()}}(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 'use strict';
 
 var utils = _dereq_('../support/utils');
 
 module.exports = {
-	string: function (x) {
-		if (utils.isString(x)) {
-			return null;
-		} else {
-			return {
-				rule: 'type',
-				actual: typeof x,
-				expected: 'string'
-			};
-		}
-	},
-	number: function (x) {
-		if (utils.isNumber(x)) {
-			return null;
-		} else {
-			return {
-				rule: 'type',
-				actual: typeof x,
-				expected: 'number'
-			};
-		}
-	},
-	integer: function (x) {
-		if (!utils.isNumber(x)) {
-			return {
-				rule: 'type',
-				actual: typeof x,
-				expected: 'integer'
-			};
-		} else if (Math.abs(x) - Math.abs(utils.toInt(x)) !== 0) {
-			return {
-				rule: 'type',
-				actual: 'real',
-				expected: 'integer'
-			};
-		} else {
-			return null;
-		}
-	},
-	float: function (x) {
-		if (utils.isNumber(x)) {
-			return null;
-		} else {
-			return {
-				rule: 'type',
-				actual: typeof x,
-				expected: 'float'
-			};
-		}
-	},
-	array: function (x) {
-		if (utils.isArray(x)) {
-			return null;
-		} else {
-			return {
-				rule: 'type',
-				actual: typeof x,
-				expected: 'array'
-			};
-		}
-	},
-	object: function (x) {
-		if (utils.isObject(x)) {
-			return null;
-		} else {
-			return {
-				rule: 'type',
-				actual: typeof x,
-				expected: 'object'
-			};
-		}
-	},
-	boolean: function (x) {
-		if (utils.isBoolean(x)) {
-			return null;
-		} else {
-			return {
-				rule: 'type',
-				actual: typeof x,
-				expected: 'boolean'
-			};
-		}
-	},
-	date: function (x) {
-		if (utils.isDate(x)) {
-			return null;
-		} else {
-			return {
-				rule: 'type',
-				actual: typeof x,
-				expected: 'date'
-			};
-		}
-	}
+  string: function (x) {
+    if (utils.isString(x)) {
+      return null;
+    } else {
+      return {
+        rule: 'type',
+        actual: typeof x,
+        expected: 'string'
+      };
+    }
+  },
+  number: function (x) {
+    if (utils.isNumber(x)) {
+      return null;
+    } else {
+      return {
+        rule: 'type',
+        actual: typeof x,
+        expected: 'number'
+      };
+    }
+  },
+  integer: function (x) {
+    if (!utils.isNumber(x)) {
+      return {
+        rule: 'type',
+        actual: typeof x,
+        expected: 'integer'
+      };
+    } else if (Math.abs(x) - Math.abs(utils.toInt(x)) !== 0) {
+      return {
+        rule: 'type',
+        actual: 'real',
+        expected: 'integer'
+      };
+    } else {
+      return null;
+    }
+  },
+  float: function (x) {
+    if (utils.isNumber(x)) {
+      return null;
+    } else {
+      return {
+        rule: 'type',
+        actual: typeof x,
+        expected: 'float'
+      };
+    }
+  },
+  array: function (x) {
+    if (utils.isArray(x)) {
+      return null;
+    } else {
+      return {
+        rule: 'type',
+        actual: typeof x,
+        expected: 'array'
+      };
+    }
+  },
+  object: function (x) {
+    if (utils.isObject(x)) {
+      return null;
+    } else {
+      return {
+        rule: 'type',
+        actual: typeof x,
+        expected: 'object'
+      };
+    }
+  },
+  boolean: function (x) {
+    if (utils.isBoolean(x)) {
+      return null;
+    } else {
+      return {
+        rule: 'type',
+        actual: typeof x,
+        expected: 'boolean'
+      };
+    }
+  },
+  date: function (x) {
+    if (utils.isDate(x)) {
+      return null;
+    } else {
+      return {
+        rule: 'type',
+        actual: typeof x,
+        expected: 'date'
+      };
+    }
+  }
 };
 
 },{"../support/utils":10}],2:[function(_dereq_,module,exports){
 'use strict';
 
 var utils = _dereq_('../support/utils'),
-	dataTypes = _dereq_('../dataType');
+  dataTypes = _dereq_('../dataType');
 
 module.exports = {
-	nullable: function (x, nullable) {
-		if ((x === null || x === undefined) && !nullable) {
-			return {
-				rule: 'nullable',
-				actual: 'x === ' + x + '',
-				expected: 'x !== null && x !== undefined'
-			};
-		} else {
-			return null;
-		}
-	},
-	max: function (x, max) {
-		if (utils.isNumber(x) && utils.isNumber(max) && x > max) {
-			return {
-				rule: 'max',
-				actual: '' + x + ' > ' + max,
-				expected: '' + x + ' <= ' + max
-			};
-		} else {
-			return null;
-		}
-	},
-	min: function (x, min) {
-		if (utils.isNumber(x) && utils.isNumber(min) && x < min) {
-			return {
-				rule: 'min',
-				actual: '' + x + ' < ' + min,
-				expected: '' + x + ' >= ' + min
-			};
-		} else {
-			return null;
-		}
-	},
-	maxLength: function (x, maxLength) {
-		if ((utils.isString(x) || utils.isArray(x)) && utils.isNumber(maxLength) && x.length > maxLength) {
-			return {
-				rule: 'maxLength',
-				actual: '' + x.length + ' > ' + maxLength,
-				expected: '' + x.length + ' <= ' + maxLength
-			};
-		} else {
-			return null;
-		}
-	},
-	minLength: function (x, minLength) {
-		if ((utils.isString(x) || utils.isArray(x)) && utils.isNumber(minLength) && x.length < minLength) {
-			return {
-				rule: 'minLength',
-				actual: '' + x.length + ' < ' + minLength,
-				expected: '' + x.length + ' >= ' + minLength
-			};
-		} else {
-			return null;
-		}
-	},
-	type: function (x, type, customType) {
-		if (customType) {
-			return customType(x);
-		} else {
-			return dataTypes[type] ? dataTypes[type](x) : null;
-		}
-	}
+  nullable: function (x, nullable) {
+    if ((x === null || x === undefined) && !nullable) {
+      return {
+        rule: 'nullable',
+        actual: 'x === ' + x + '',
+        expected: 'x !== null && x !== undefined'
+      };
+    } else {
+      return null;
+    }
+  },
+  max: function (x, max) {
+    if (utils.isNumber(x) && utils.isNumber(max) && x > max) {
+      return {
+        rule: 'max',
+        actual: '' + x + ' > ' + max,
+        expected: '' + x + ' <= ' + max
+      };
+    } else {
+      return null;
+    }
+  },
+  min: function (x, min) {
+    if (utils.isNumber(x) && utils.isNumber(min) && x < min) {
+      return {
+        rule: 'min',
+        actual: '' + x + ' < ' + min,
+        expected: '' + x + ' >= ' + min
+      };
+    } else {
+      return null;
+    }
+  },
+  maxLength: function (x, maxLength) {
+    if ((utils.isString(x) || utils.isArray(x)) && utils.isNumber(maxLength) && x.length > maxLength) {
+      return {
+        rule: 'maxLength',
+        actual: '' + x.length + ' > ' + maxLength,
+        expected: '' + x.length + ' <= ' + maxLength
+      };
+    } else {
+      return null;
+    }
+  },
+  minLength: function (x, minLength) {
+    if ((utils.isString(x) || utils.isArray(x)) && utils.isNumber(minLength) && x.length < minLength) {
+      return {
+        rule: 'minLength',
+        actual: '' + x.length + ' < ' + minLength,
+        expected: '' + x.length + ' >= ' + minLength
+      };
+    } else {
+      return null;
+    }
+  },
+  type: function (x, type, customType) {
+    if (customType) {
+      return customType(x);
+    } else {
+      return dataTypes[type] ? dataTypes[type](x) : null;
+    }
+  }
 };
 
 },{"../dataType":1,"../support/utils":10}],3:[function(_dereq_,module,exports){
@@ -205,36 +205,36 @@ var defaultDataTypes = _dereq_('../dataType');
 var dataTypes = {};
 
 module.exports = {
-	defineDataType: function (name, typeDefinition) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.defineDataType(name, typeDefinition): name: Must be a string!');
-		} else if (!utils.isFunction(typeDefinition)) {
-			throw new Error('robocop.defineDataType(name, typeDefinition): typeDefinition: Must be a function!');
-		} else if (dataTypes[name]) {
-			throw new Error('robocop.defineDataType(name, typeDefinition): name: Name already in use!');
-		}
-		dataTypes[name] = typeDefinition;
-	},
+  defineDataType: function (name, typeDefinition) {
+    if (!utils.isString(name)) {
+      throw new Error('robocop.defineDataType(name, typeDefinition): name: Must be a string!');
+    } else if (!utils.isFunction(typeDefinition)) {
+      throw new Error('robocop.defineDataType(name, typeDefinition): typeDefinition: Must be a function!');
+    } else if (dataTypes[name]) {
+      throw new Error('robocop.defineDataType(name, typeDefinition): name: Name already in use!');
+    }
+    dataTypes[name] = typeDefinition;
+  },
 
-	getDataType: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.getDataType(name): name: Must be a string!');
-		}
-		return dataTypes[name] || defaultDataTypes[name];
-	},
+  getDataType: function (name) {
+    if (!utils.isString(name)) {
+      throw new Error('robocop.getDataType(name): name: Must be a string!');
+    }
+    return dataTypes[name] || defaultDataTypes[name];
+  },
 
-	availableDataTypes: function () {
-		return utils.keys(dataTypes).concat(utils.keys(defaultDataTypes));
-	},
+  availableDataTypes: function () {
+    return utils.keys(dataTypes).concat(utils.keys(defaultDataTypes));
+  },
 
-	removeDataType: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.removeDataType(name): name: Must be a string!');
-		}
-		if (dataTypes[name]) {
-			delete dataTypes[name];
-		}
-	}
+  removeDataType: function (name) {
+    if (!utils.isString(name)) {
+      throw new Error('robocop.removeDataType(name): name: Must be a string!');
+    }
+    if (dataTypes[name]) {
+      delete dataTypes[name];
+    }
+  }
 };
 
 },{"../dataType":1,"../support/utils":10}],5:[function(_dereq_,module,exports){
@@ -243,7 +243,7 @@ module.exports = {
 var utils = _dereq_('../support/utils');
 
 var robocop = module.exports = {
-	Schema: _dereq_('../schema')
+  Schema: _dereq_('../schema')
 };
 
 utils.deepMixIn(robocop, _dereq_('./schema'));
@@ -260,86 +260,86 @@ var defaultRules = _dereq_('../defaultRules');
 var rules = _dereq_('../rules');
 
 module.exports = {
-	defineRule: function (name, ruleFunc, async) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.defineRule(name, ruleFunc[, async]): name: Must be a string!');
-		} else if (!utils.isFunction(ruleFunc)) {
-			throw new Error('robocop.defineRule(name, ruleFunc[, async]): ruleFunc: Must be a function!');
-		} else if (rules[name]) {
-			throw new Error('robocop.defineRule(name, ruleFunc[, async]): name: Name already in use!');
-		} else if (async && !utils.isBoolean(async)) {
-			throw new Error('robocop.defineRule(name, ruleFunc[, async]): async: Must be a boolean!');
-		}
-		rules[name] = ruleFunc;
-		if (async) {
-			rules[name].async = true;
-		}
-	},
+  defineRule: function (name, ruleFunc, async) {
+    if (!utils.isString(name)) {
+      throw new Error('robocop.defineRule(name, ruleFunc[, async]): name: Must be a string!');
+    } else if (!utils.isFunction(ruleFunc)) {
+      throw new Error('robocop.defineRule(name, ruleFunc[, async]): ruleFunc: Must be a function!');
+    } else if (rules[name]) {
+      throw new Error('robocop.defineRule(name, ruleFunc[, async]): name: Name already in use!');
+    } else if (async && !utils.isBoolean(async)) {
+      throw new Error('robocop.defineRule(name, ruleFunc[, async]): async: Must be a boolean!');
+    }
+    rules[name] = ruleFunc;
+    if (async) {
+      rules[name].async = true;
+    }
+  },
 
-	getRule: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.getRule(name): name: Must be a string!');
-		}
-		return rules[name] || defaultRules[name];
-	},
+  getRule: function (name) {
+    if (!utils.isString(name)) {
+      throw new Error('robocop.getRule(name): name: Must be a string!');
+    }
+    return rules[name] || defaultRules[name];
+  },
 
-	availableRules: function () {
-		return utils.keys(rules).concat(utils.keys(defaultRules));
-	},
+  availableRules: function () {
+    return utils.keys(rules).concat(utils.keys(defaultRules));
+  },
 
-	removeRule: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.removeRule(name): name: Must be a string!');
-		}
-		if (rules[name]) {
-			delete rules[name];
-		}
-	}
+  removeRule: function (name) {
+    if (!utils.isString(name)) {
+      throw new Error('robocop.removeRule(name): name: Must be a string!');
+    }
+    if (rules[name]) {
+      delete rules[name];
+    }
+  }
 };
 
 },{"../defaultRules":2,"../rules":8,"../support/utils":10}],7:[function(_dereq_,module,exports){
 'use strict';
 
 var utils = _dereq_('../support/utils'),
-	Schema = _dereq_('../schema');
+  Schema = _dereq_('../schema');
 
 var schemas = {};
 
 module.exports = {
-	defineSchema: function (name, schema) {
-		if (schemas[name]) {
-			throw new Error('robocop.defineSchema(name, schema): name: Name already in use!');
-		}
-		if (schema instanceof Schema) {
-			schemas[name] = schema;
-		} else {
-			if (!utils.isObject(schema)) {
-				throw new Error('robocop.defineSchema(name, schema): schema: Must be an object or an instance of Schema!');
-			}
-			schemas[name] = new Schema(name, schema);
-		}
-		return schemas[name];
-	},
+  defineSchema: function (name, schema) {
+    if (schemas[name]) {
+      throw new Error('robocop.defineSchema(name, schema): name: Name already in use!');
+    }
+    if (schema instanceof Schema) {
+      schemas[name] = schema;
+    } else {
+      if (!utils.isObject(schema)) {
+        throw new Error('robocop.defineSchema(name, schema): schema: Must be an object or an instance of Schema!');
+      }
+      schemas[name] = new Schema(name, schema);
+    }
+    return schemas[name];
+  },
 
-	getSchema: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.getSchema(name): name: Must be a string!');
-		}
-		return schemas[name];
-	},
+  getSchema: function (name) {
+    if (!utils.isString(name)) {
+      throw new Error('robocop.getSchema(name): name: Must be a string!');
+    }
+    return schemas[name];
+  },
 
-	availableSchemas: function () {
-		return utils.keys(schemas);
-	},
+  availableSchemas: function () {
+    return utils.keys(schemas);
+  },
 
-	removeSchema: function (name) {
-		if (!utils.isString(name)) {
-			throw new Error('robocop.removeSchema(name): name: Must be a string!');
-		}
-		if (schemas[name]) {
-			delete schemas[name];
-		}
-	}
+  removeSchema: function (name) {
+    if (!utils.isString(name)) {
+      throw new Error('robocop.removeSchema(name): name: Must be a string!');
+    }
+    if (schemas[name]) {
+      delete schemas[name];
+    }
+  }
 };
 
 },{"../schema":9,"../support/utils":10}],8:[function(_dereq_,module,exports){
@@ -352,285 +352,285 @@ module.exports = {};
 'use strict';
 
 var utils = _dereq_('../support/utils'),
-	defaultRules = _dereq_('../defaultRules'),
-	rules;
+  defaultRules = _dereq_('../defaultRules'),
+  rules;
 
 var _parallel = function (tasks, cb) {
-	var results = {},
-		completed = 0,
-		length = 0;
+  var results = {},
+    completed = 0,
+    length = 0;
 
-	utils.forOwn(tasks, function () {
-		length += 1;
-	});
+  utils.forOwn(tasks, function () {
+    length += 1;
+  });
 
 
-	utils.forOwn(tasks, function (task, key) {
-		task(function (err) {
-			var args = Array.prototype.slice.call(arguments, 1);
-			if (args.length <= 1) {
-				args = args[0];
-			}
-			results[key] = args;
-			done(err);
-		});
-	});
+  utils.forOwn(tasks, function (task, key) {
+    task(function (err) {
+      var args = Array.prototype.slice.call(arguments, 1);
+      if (args.length <= 1) {
+        args = args[0];
+      }
+      results[key] = args;
+      done(err);
+    });
+  });
 
-	function done(err) {
-		completed += 1;
-		if (err || completed >= length) {
-			cb(err, results);
-		}
-	}
+  function done(err) {
+    completed += 1;
+    if (err || completed >= length) {
+      cb(err, results);
+    }
+  }
 };
 
 function _sanitize(attrs, rules) {
-	rules = rules || [];
-	var keys = utils.keys(attrs),
-		noRules = utils.intersection(keys, rules).length === 0;
+  rules = rules || [];
+  var keys = utils.keys(attrs);
+  var noRules = utils.intersection(keys, rules).length === 0;
 
-	utils.forOwn(attrs, function (value, key) {
-		if (noRules && utils.isString(value)) {
-			attrs[key] = {
-				type: value
-			};
-		} else if (utils.isObject(value)) {
-			if (utils.contains(rules, key)) {
-				throw new Error('Schema(name, schema): schema: Rule configuration for rule "' + key + '" cannot be an object!');
-			} else {
-				_sanitize(value, rules);
-			}
-		}
-	});
+  utils.forOwn(attrs, function (value, key) {
+    if (noRules && utils.isString(value)) {
+      attrs[key] = {
+        type: value
+      };
+    } else if (utils.isObject(value)) {
+      if (utils.contains(rules, key)) {
+        throw new Error('Schema(name, schema): schema: Rule configuration for rule "' + key + '" cannot be an object!');
+      } else {
+        _sanitize(value, rules);
+      }
+    }
+  });
 }
 
 function validateSchema(schema) {
-	if (!utils.isObject(schema)) {
-		throw new Error('Schema(name, schema): schema: Must be an object!');
-	}
-	_sanitize(schema, _dereq_('../robocop/rule').availableRules());
+  if (!utils.isObject(schema)) {
+    throw new Error('Schema(name, schema): schema: Must be an object!');
+  }
+  _sanitize(schema, _dereq_('../robocop/rule').availableRules());
 }
 
 var Schema = module.exports = function Schema(name, schema) {
 
-	if (!utils.isString(name)) {
-		throw new Error('Schema(name, schema): name: Must be a string!');
-	}
-	this.name = name;
+  if (!utils.isString(name)) {
+    throw new Error('Schema(name, schema): name: Must be a string!');
+  }
+  this.name = name;
 
-	validateSchema(schema);
-	this.schema = schema;
-	rules = _dereq_('../rules');
+  validateSchema(schema);
+  this.schema = schema;
+  rules = _dereq_('../rules');
 };
 
 function _executeRulesSync(targetKey, options, errors, value, key) {
-	var _this = this,
-		nestedKey = targetKey + (targetKey.length ? '.' : '') + key;
+  var _this = this,
+    nestedKey = targetKey + (targetKey.length ? '.' : '') + key;
 
-	if (utils.isObject(value)) {
-		var err = _validateSync.apply(_this, [nestedKey, value, options]);
-		if (err) {
-			errors[key] = err;
-		}
-	} else {
-		var schemaRules = utils.get(_this.schema, nestedKey);
-		if (!utils.isObject(schemaRules)) {
-			return;
-		} else if (schemaRules.nullable === true) {
-			var nullable = rules.nullable || defaultRules.nullable,
-				nErr = nullable(value, true);
+  if (utils.isObject(value)) {
+    var err = _validateSync.apply(_this, [nestedKey, value, options]);
+    if (err) {
+      errors[key] = err;
+    }
+  } else {
+    var schemaRules = utils.get(_this.schema, nestedKey);
+    if (!utils.isObject(schemaRules)) {
+      return;
+    } else if (schemaRules.nullable === true) {
+      var nullable = rules.nullable || defaultRules.nullable,
+        nErr = nullable(value, true);
 
-			if (nErr === null) {
-				return;
-			}
-		}
-		utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
-			var rule = rules[ruleKey] || defaultRules[ruleKey];
-			if (!rule.async) {
-				var err = rule(value, ruleValue);
-				if (err) {
-					if (!errors[key]) {
-						errors[key] = {
-							errors: []
-						};
-					}
-					errors[key].errors.push(err);
-				}
-			}
-		});
-	}
+      if (nErr === null) {
+        return;
+      }
+    }
+    utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
+      var rule = rules[ruleKey] || defaultRules[ruleKey];
+      if (!rule.async) {
+        var err = rule(value, ruleValue);
+        if (err) {
+          if (!errors[key]) {
+            errors[key] = {
+              errors: []
+            };
+          }
+          errors[key].errors.push(err);
+        }
+      }
+    });
+  }
 }
 
 /**
  * @see Schema#validateSync
  */
 function _validateSync(targetKey, attrs, options) {
-	var errors = {},
-		_this = this;
+  var errors = {},
+    _this = this;
 
-	try {
-		// Validate present attributes
-		utils.forOwn(attrs, function (value, key) {
-			_executeRulesSync.call(_this, targetKey, options, errors, value, key);
-		});
-		// Validate missing attributes
-		if (!options.ignoreMissing) {
-			var schema = targetKey ? utils.get(_this.schema, targetKey) || {} : _this.schema,
-				missing = utils.difference(utils.keys(schema), utils.keys(attrs));
-			missing = utils.pick(this.schema, missing);
-			missing = utils.map(missing, function () {
-				return undefined;
-			});
-			utils.forOwn(missing, function (value, key) {
-				_executeRulesSync.call(_this, targetKey, options, errors, value, key);
-			});
-		}
-		if (!utils.isEmpty(errors)) {
-			return errors;
-		} else {
-			return null;
-		}
-	} catch (err) {
-		return err;
-	}
+  try {
+    // Validate present attributes
+    utils.forOwn(attrs, function (value, key) {
+      _executeRulesSync.call(_this, targetKey, options, errors, value, key);
+    });
+    // Validate missing attributes
+    if (!options.ignoreMissing) {
+      var schema = targetKey ? utils.get(_this.schema, targetKey) || {} : _this.schema,
+        missing = utils.difference(utils.keys(schema), utils.keys(attrs));
+      missing = utils.pick(this.schema, missing);
+      missing = utils.map(missing, function () {
+        return undefined;
+      });
+      utils.forOwn(missing, function (value, key) {
+        _executeRulesSync.call(_this, targetKey, options, errors, value, key);
+      });
+    }
+    if (!utils.isEmpty(errors)) {
+      return errors;
+    } else {
+      return null;
+    }
+  } catch (err) {
+    return err;
+  }
 }
 
 function _executeRules(options, value, key, prefix, errors, deepQueue, ruleQueue) {
-	var _this = this,
-		nestedKey = prefix + key;
+  var _this = this,
+    nestedKey = prefix + key;
 
-	if (utils.isObject(value)) {
-		// Recurse down into nested attributes
-		deepQueue[key] = (function (nK, val) {
-			return function (next) {
-				_validate.apply(_this, [nK, val, options, next]);
-			};
-		})(nestedKey, value);
-	} else {
-		var schemaRules = utils.get(_this.schema, nestedKey);
-		if (!utils.isObject(schemaRules)) {
-			return;
-		} else if (schemaRules.nullable === true) {
-			var nullable = rules.nullable || defaultRules.nullable,
-				nErr = nullable(value, true);
+  if (utils.isObject(value)) {
+    // Recurse down into nested attributes
+    deepQueue[key] = (function (nK, val) {
+      return function (next) {
+        _validate.apply(_this, [nK, val, options, next]);
+      };
+    })(nestedKey, value);
+  } else {
+    var schemaRules = utils.get(_this.schema, nestedKey);
+    if (!utils.isObject(schemaRules)) {
+      return;
+    } else if (schemaRules.nullable === true) {
+      var nullable = rules.nullable || defaultRules.nullable,
+        nErr = nullable(value, true);
 
-			if (nErr === null) {
-				return;
-			}
-		}
-		utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
-			var rule = rules[ruleKey] || defaultRules[ruleKey];
-			// Asynchronous rules get added to the queue
-			if (rule.async) {
-				ruleQueue[ruleKey] = (function (r, key, val, rVal) {
-					return function (next) {
-						r(val, rVal, function (err) {
-							next(null, { err: err, key: key });
-						});
-					};
-				})(rule, key, value, ruleValue);
-			} else {
-				// Get results of synchronous rules immediately
-				var err = rule(value, ruleValue);
-				if (err) {
-					if (!errors[key]) {
-						errors[key] = {
-							errors: []
-						};
-					}
-					errors[key].errors.push(err);
-				}
-			}
-		});
-	}
+      if (nErr === null) {
+        return;
+      }
+    }
+    utils.forOwn(schemaRules, function (ruleValue, ruleKey) {
+      var rule = rules[ruleKey] || defaultRules[ruleKey];
+      // Asynchronous rules get added to the queue
+      if (rule.async) {
+        ruleQueue[ruleKey] = (function (r, key, val, rVal) {
+          return function (next) {
+            r(val, rVal, function (err) {
+              next(null, { err: err, key: key });
+            });
+          };
+        })(rule, key, value, ruleValue);
+      } else {
+        // Get results of synchronous rules immediately
+        var err = rule(value, ruleValue);
+        if (err) {
+          if (!errors[key]) {
+            errors[key] = {
+              errors: []
+            };
+          }
+          errors[key].errors.push(err);
+        }
+      }
+    });
+  }
 }
 
 /**
  * @see Schema#validate
  */
 function _validate(targetKey, attrs, options, cb) {
-	var errors = {},
-		_this = this,
-		prefix = targetKey + (targetKey.length ? '.' : ''),
-		deepQueue = {},
-		ruleQueue = {},
-		first = options.first;
+  var errors = {},
+    _this = this,
+    prefix = targetKey + (targetKey.length ? '.' : ''),
+    deepQueue = {},
+    ruleQueue = {},
+    first = options.first;
 
-	delete options.first;
+  delete options.first;
 
-	utils.forOwn(attrs, function (value, key) {
-		_executeRules.call(_this, options, value, key, prefix, errors, deepQueue, ruleQueue);
-	});
+  utils.forOwn(attrs, function (value, key) {
+    _executeRules.call(_this, options, value, key, prefix, errors, deepQueue, ruleQueue);
+  });
 
-	// Validate missing attributes
-	if (!options.ignoreMissing) {
-		var schema = targetKey ? utils.get(_this.schema, targetKey) || {} : _this.schema,
-			missing = utils.difference(utils.keys(schema), utils.keys(attrs));
+  // Validate missing attributes
+  if (!options.ignoreMissing) {
+    var schema = targetKey ? utils.get(_this.schema, targetKey) || {} : _this.schema,
+      missing = utils.difference(utils.keys(schema), utils.keys(attrs));
 
-		missing = utils.pick(this.schema, missing);
-		missing = utils.map(missing, function () {
-			return undefined;
-		});
+    missing = utils.pick(this.schema, missing);
+    missing = utils.map(missing, function () {
+      return undefined;
+    });
 
-		utils.forOwn(missing, function (value, key) {
-			_executeRules.call(_this, options, value, key, prefix, errors, deepQueue, ruleQueue);
-		});
-	}
+    utils.forOwn(missing, function (value, key) {
+      _executeRules.call(_this, options, value, key, prefix, errors, deepQueue, ruleQueue);
+    });
+  }
 
-	var finalQueue = {};
+  var finalQueue = {};
 
-	if (!utils.isEmpty(deepQueue)) {
-		finalQueue.deepQueue = function (next) {
-			_parallel(deepQueue, next);
-		};
-	}
-	if (!utils.isEmpty(ruleQueue)) {
-		finalQueue.ruleQueue = function (next) {
-			_parallel(ruleQueue, next);
-		};
-	}
+  if (!utils.isEmpty(deepQueue)) {
+    finalQueue.deepQueue = function (next) {
+      _parallel(deepQueue, next);
+    };
+  }
+  if (!utils.isEmpty(ruleQueue)) {
+    finalQueue.ruleQueue = function (next) {
+      _parallel(ruleQueue, next);
+    };
+  }
 
-	if (!utils.isEmpty(finalQueue)) {
-		_parallel(finalQueue, function (err, results) {
+  if (!utils.isEmpty(finalQueue)) {
+    _parallel(finalQueue, function (err, results) {
 
-			// Merge results of recursion
-			if (results.deepQueue) {
-				results.deepQueue = utils.filter(results.deepQueue, function (x) {
-					return x !== undefined && x !== null;
-				});
-				utils.deepMixIn(errors, results.deepQueue);
-			}
+      // Merge results of recursion
+      if (results.deepQueue) {
+        results.deepQueue = utils.filter(results.deepQueue, function (x) {
+          return x !== undefined && x !== null;
+        });
+        utils.deepMixIn(errors, results.deepQueue);
+      }
 
-			// Merge results of asynchronous rules
-			if (results.ruleQueue) {
-				if (results.ruleQueue) {
-					results.ruleQueue = utils.filter(results.ruleQueue, function (x) {
-						return x.err !== undefined && x.err !== null;
-					});
-				}
-				utils.forOwn(results.ruleQueue, function (value) {
-					if (!errors[value.key]) {
-						errors[value.key] = {
-							errors: []
-						};
-					}
-					errors[value.key].errors.push(value.err);
-				});
-			}
+      // Merge results of asynchronous rules
+      if (results.ruleQueue) {
+        if (results.ruleQueue) {
+          results.ruleQueue = utils.filter(results.ruleQueue, function (x) {
+            return x.err !== undefined && x.err !== null;
+          });
+        }
+        utils.forOwn(results.ruleQueue, function (value) {
+          if (!errors[value.key]) {
+            errors[value.key] = {
+              errors: []
+            };
+          }
+          errors[value.key].errors.push(value.err);
+        });
+      }
 
-			if (!utils.isEmpty(errors)) {
-				first ? cb(errors) : cb(null, errors);
-			} else {
-				cb(null);
-			}
-		});
-	} else {
-		if (!utils.isEmpty(errors)) {
-			first ? cb(errors) : cb(null, errors);
-		} else {
-			cb(null);
-		}
-	}
+      if (!utils.isEmpty(errors)) {
+        first ? cb(errors) : cb(null, errors);
+      } else {
+        cb(null);
+      }
+    });
+  } else {
+    if (!utils.isEmpty(errors)) {
+      first ? cb(errors) : cb(null, errors);
+    } else {
+      cb(null);
+    }
+  }
 }
 
 /**
@@ -644,13 +644,13 @@ function _validate(targetKey, attrs, options, cb) {
  * @returns {object|null} Null if validation succeeds or an error object if validation fails.
  */
 Schema.prototype.validateSync = function (attrs, options) {
-	options = options ? (options === true ? { ignoreMissing: true } : options) : {};
-	if (!utils.isObject(attrs)) {
-		throw new Error('Schema#validateSync(attrs[, options]): attrs: Must be an object!');
-	} else if (!utils.isObject(options)) {
-		throw new Error('Schema#validateSync(attrs[, options]): options: Must be an object!');
-	}
-	return _validateSync.apply(this, ['', attrs, options]);
+  options = options ? (options === true ? { ignoreMissing: true } : options) : {};
+  if (!utils.isObject(attrs)) {
+    throw new Error('Schema#validateSync(attrs[, options]): attrs: Must be an object!');
+  } else if (!utils.isObject(options)) {
+    throw new Error('Schema#validateSync(attrs[, options]): options: Must be an object!');
+  }
+  return _validateSync.apply(this, ['', attrs, options]);
 };
 
 /**
@@ -665,20 +665,20 @@ Schema.prototype.validateSync = function (attrs, options) {
  * validation fails.
  */
 Schema.prototype.validate = function (attrs, options, cb) {
-	options = options ? (options === true ? { ignoreMissing: true } : options) : {};
-	if (utils.isFunction(options)) {
-		cb = options;
-		options = {};
-	}
-	if (!utils.isFunction(cb)) {
-		throw new Error('Schema#validate(attrs[, options], cb): cb: Must be a function!');
-	} else if (!utils.isObject(attrs)) {
-		return cb(new Error('Schema#validate(attrs[, options], cb): attrs: Must be an object!'));
-	} else if (!utils.isObject(options)) {
-		return cb(new Error('Schema#validate(attrs[, options], cb): options: Must be an object!'));
-	}
-	options.first = true;
-	_validate.apply(this, ['', attrs, options, cb]);
+  options = options ? (options === true ? { ignoreMissing: true } : options) : {};
+  if (utils.isFunction(options)) {
+    cb = options;
+    options = {};
+  }
+  if (!utils.isFunction(cb)) {
+    throw new Error('Schema#validate(attrs[, options], cb): cb: Must be a function!');
+  } else if (!utils.isObject(attrs)) {
+    return cb(new Error('Schema#validate(attrs[, options], cb): attrs: Must be an object!'));
+  } else if (!utils.isObject(options)) {
+    return cb(new Error('Schema#validate(attrs[, options], cb): options: Must be an object!'));
+  }
+  options.first = true;
+  _validate.apply(this, ['', attrs, options, cb]);
 };
 
 /**
@@ -689,7 +689,7 @@ Schema.prototype.validate = function (attrs, options, cb) {
  * @returns {object} The values coerced to their proper data types.
  */
 Schema.prototype.coerce = function () {
-	throw new Error('Unsupported Operation!');
+  throw new Error('Unsupported Operation!');
 };
 
 /**
@@ -701,15 +701,15 @@ Schema.prototype.coerce = function () {
  * @returns {object} The target with defaults merged in.
  */
 Schema.prototype.addDefaultsToTarget = function (target, overwrite) {
-	if (!utils.isObject(target)) {
-		throw new Error('Schema#addDefaultsToTarget(target[, overwrite]): target: Must be an object!');
-	} else if (!this.defaults) {
-		throw new Error('Schema#addDefaultsToTarget(target[, overwrite]): this.defaults: This Schema has no defaults set!');
-	} else if (overwrite) {
-		utils.deepMixIn(target, this.defaults);
-	} else {
-		utils.deepFillIn(target, this.defaults);
-	}
+  if (!utils.isObject(target)) {
+    throw new Error('Schema#addDefaultsToTarget(target[, overwrite]): target: Must be an object!');
+  } else if (!this.defaults) {
+    throw new Error('Schema#addDefaultsToTarget(target[, overwrite]): this.defaults: This Schema has no defaults set!');
+  } else if (overwrite) {
+    utils.deepMixIn(target, this.defaults);
+  } else {
+    utils.deepFillIn(target, this.defaults);
+  }
 };
 
 /**
@@ -719,12 +719,12 @@ Schema.prototype.addDefaultsToTarget = function (target, overwrite) {
  * @returns {Schema} Reference to this schema.
  */
 Schema.prototype.setDefaults = function (attrs) {
-	if (!utils.isObject(attrs)) {
-		throw new Error('Schema#defaults(attrs): attrs: Must be an object!');
-	} else {
-		this.defaults = utils.merge({}, attrs);
-	}
-	return this;
+  if (!utils.isObject(attrs)) {
+    throw new Error('Schema#defaults(attrs): attrs: Must be an object!');
+  } else {
+    this.defaults = utils.merge({}, attrs);
+  }
+  return this;
 };
 
 /**
@@ -733,41 +733,64 @@ Schema.prototype.setDefaults = function (attrs) {
  * @returns {object} The default values for this schema.
  */
 Schema.prototype.getDefaults = function () {
-	return utils.merge({}, this.defaults);
+  return utils.merge({}, this.defaults);
+};
+
+function stripNonSchemaAttrs(attrs, schemaLevel) {
+  utils.forOwn(attrs, function (value, key) {
+    if (schemaLevel[key]) {
+      if (utils.isObject(value) && utils.isObject(schemaLevel[key])) {
+        stripNonSchemaAttrs(value, schemaLevel[key]);
+      }
+    } else {
+      utils.unset(attrs, key);
+    }
+  });
+}
+
+/**
+ * @method Schema#stripNonSchemaAttrs
+ * @desc Strip fields not defined in this schema from the given attributes.
+ * @returns {object} The attributes from which to strip non-schema fields.
+ */
+Schema.prototype.stripNonSchemaAttrs = function (attrs) {
+  stripNonSchemaAttrs(attrs, this.schema);
+  return attrs;
 };
 
 },{"../defaultRules":2,"../robocop/rule":6,"../rules":8,"../support/utils":10}],10:[function(_dereq_,module,exports){
 module.exports = {
-	isString: _dereq_('mout/lang/isString'),
-	isBoolean: _dereq_('mout/lang/isBoolean'),
-	isNumber: _dereq_('mout/lang/isNumber'),
-	isObject: _dereq_('mout/lang/isObject'),
-	isDate: _dereq_('mout/lang/isDate'),
-	isFunction: _dereq_('mout/lang/isFunction'),
-	isUndefined: _dereq_('mout/lang/isUndefined'),
-	isArray: _dereq_('mout/lang/isArray'),
-	isEmpty: _dereq_('mout/lang/isEmpty'),
-	toString: _dereq_('mout/lang/toString'),
-	toNumber: _dereq_('mout/lang/toNumber'),
+  isString: _dereq_('mout/lang/isString'),
+  isBoolean: _dereq_('mout/lang/isBoolean'),
+  isNumber: _dereq_('mout/lang/isNumber'),
+  isObject: _dereq_('mout/lang/isObject'),
+  isDate: _dereq_('mout/lang/isDate'),
+  isFunction: _dereq_('mout/lang/isFunction'),
+  isUndefined: _dereq_('mout/lang/isUndefined'),
+  isArray: _dereq_('mout/lang/isArray'),
+  isEmpty: _dereq_('mout/lang/isEmpty'),
+  toString: _dereq_('mout/lang/toString'),
+  toNumber: _dereq_('mout/lang/toNumber'),
 
-	get: _dereq_('mout/object/get'),
-	deepMixIn: _dereq_('mout/object/deepMixIn'),
-	deepFillIn: _dereq_('mout/object/deepFillIn'),
-	forOwn: _dereq_('mout/object/forOwn'),
-	keys: _dereq_('mout/object/keys'),
-	pick: _dereq_('mout/object/pick'),
-	filter: _dereq_('mout/object/filter'),
-	map: _dereq_('mout/object/map'),
-	merge: _dereq_('mout/object/merge'),
+  get: _dereq_('mout/object/get'),
+  deepMixIn: _dereq_('mout/object/deepMixIn'),
+  deepFillIn: _dereq_('mout/object/deepFillIn'),
+  forOwn: _dereq_('mout/object/forOwn'),
+  keys: _dereq_('mout/object/keys'),
+  pick: _dereq_('mout/object/pick'),
+  filter: _dereq_('mout/object/filter'),
+  map: _dereq_('mout/object/map'),
+  merge: _dereq_('mout/object/merge'),
+  unset: _dereq_('mout/object/unset'),
 
-	contains: _dereq_('mout/array/contains'),
-	intersection: _dereq_('mout/array/intersection'),
-	difference: _dereq_('mout/array/difference'),
+  contains: _dereq_('mout/array/contains'),
+  intersection: _dereq_('mout/array/intersection'),
+  difference: _dereq_('mout/array/difference'),
 
-	toInt: _dereq_('mout/number/toInt')
+  toInt: _dereq_('mout/number/toInt')
 };
 
-},{"mout/array/contains":11,"mout/array/difference":12,"mout/array/intersection":16,"mout/lang/isArray":25,"mout/lang/isBoolean":26,"mout/lang/isDate":27,"mout/lang/isEmpty":28,"mout/lang/isFunction":29,"mout/lang/isNumber":31,"mout/lang/isObject":32,"mout/lang/isString":34,"mout/lang/isUndefined":35,"mout/lang/toNumber":37,"mout/lang/toString":38,"mout/number/toInt":39,"mout/object/deepFillIn":40,"mout/object/deepMixIn":42,"mout/object/filter":43,"mout/object/forOwn":45,"mout/object/get":46,"mout/object/keys":48,"mout/object/map":49,"mout/object/merge":50,"mout/object/pick":52}],11:[function(_dereq_,module,exports){
+},{"mout/array/contains":11,"mout/array/difference":12,"mout/array/intersection":16,"mout/lang/isArray":25,"mout/lang/isBoolean":26,"mout/lang/isDate":27,"mout/lang/isEmpty":28,"mout/lang/isFunction":29,"mout/lang/isNumber":31,"mout/lang/isObject":32,"mout/lang/isString":34,"mout/lang/isUndefined":35,"mout/lang/toNumber":37,"mout/lang/toString":38,"mout/number/toInt":39,"mout/object/deepFillIn":40,"mout/object/deepMixIn":42,"mout/object/filter":43,"mout/object/forOwn":45,"mout/object/get":46,"mout/object/keys":49,"mout/object/map":50,"mout/object/merge":51,"mout/object/pick":53,"mout/object/unset":54}],11:[function(_dereq_,module,exports){
 var indexOf = _dereq_('./indexOf');
 
     /**
@@ -924,16 +947,22 @@ var slice = _dereq_('./slice');
      * Create slice of source array or array-like object
      */
     function slice(arr, start, end){
+        var len = arr.length;
+
         if (start == null) {
             start = 0;
         } else if (start < 0) {
-            start = Math.max(arr.length + start, 0);
+            start = Math.max(len + start, 0);
+        } else {
+            start = Math.min(start, len);
         }
 
         if (end == null) {
-            end = arr.length;
+            end = len;
         } else if (end < 0) {
-            end = Math.max(arr.length + end, 0);
+            end = Math.max(len + end, 0);
+        } else {
+            end = Math.min(end, len);
         }
 
         var result = [];
@@ -1121,7 +1150,7 @@ var mixIn = _dereq_('../object/mixIn');
 
 
 
-},{"../object/mixIn":51,"./isPlainObject":33,"./kindOf":36}],24:[function(_dereq_,module,exports){
+},{"../object/mixIn":52,"./isPlainObject":33,"./kindOf":36}],24:[function(_dereq_,module,exports){
 var clone = _dereq_('./clone');
 var forOwn = _dereq_('../object/forOwn');
 var kindOf = _dereq_('./kindOf');
@@ -1611,7 +1640,7 @@ var hasOwn = _dereq_('./hasOwn');
 
 
 
-},{"./hasOwn":47}],45:[function(_dereq_,module,exports){
+},{"./hasOwn":48}],45:[function(_dereq_,module,exports){
 var hasOwn = _dereq_('./hasOwn');
 var forIn = _dereq_('./forIn');
 
@@ -1632,7 +1661,7 @@ var forIn = _dereq_('./forIn');
 
 
 
-},{"./forIn":44,"./hasOwn":47}],46:[function(_dereq_,module,exports){
+},{"./forIn":44,"./hasOwn":48}],46:[function(_dereq_,module,exports){
 
 
     /**
@@ -1655,6 +1684,23 @@ var forIn = _dereq_('./forIn');
 
 
 },{}],47:[function(_dereq_,module,exports){
+var get = _dereq_('./get');
+
+    var UNDEF;
+
+    /**
+     * Check if object has nested property.
+     */
+    function has(obj, prop){
+        return get(obj, prop) !== UNDEF;
+    }
+
+    module.exports = has;
+
+
+
+
+},{"./get":46}],48:[function(_dereq_,module,exports){
 
 
     /**
@@ -1668,7 +1714,7 @@ var forIn = _dereq_('./forIn');
 
 
 
-},{}],48:[function(_dereq_,module,exports){
+},{}],49:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 
     /**
@@ -1686,7 +1732,7 @@ var forOwn = _dereq_('./forOwn');
 
 
 
-},{"./forOwn":45}],49:[function(_dereq_,module,exports){
+},{"./forOwn":45}],50:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 var makeIterator = _dereq_('../function/makeIterator_');
 
@@ -1706,7 +1752,7 @@ var makeIterator = _dereq_('../function/makeIterator_');
     module.exports = mapValues;
 
 
-},{"../function/makeIterator_":21,"./forOwn":45}],50:[function(_dereq_,module,exports){
+},{"../function/makeIterator_":21,"./forOwn":45}],51:[function(_dereq_,module,exports){
 var hasOwn = _dereq_('./hasOwn');
 var deepClone = _dereq_('../lang/deepClone');
 var isObject = _dereq_('../lang/isObject');
@@ -1748,7 +1794,7 @@ var isObject = _dereq_('../lang/isObject');
 
 
 
-},{"../lang/deepClone":24,"../lang/isObject":32,"./hasOwn":47}],51:[function(_dereq_,module,exports){
+},{"../lang/deepClone":24,"../lang/isObject":32,"./hasOwn":48}],52:[function(_dereq_,module,exports){
 var forOwn = _dereq_('./forOwn');
 
     /**
@@ -1778,7 +1824,7 @@ var forOwn = _dereq_('./forOwn');
     module.exports = mixIn;
 
 
-},{"./forOwn":45}],52:[function(_dereq_,module,exports){
+},{"./forOwn":45}],53:[function(_dereq_,module,exports){
 var slice = _dereq_('../array/slice');
 
     /**
@@ -1798,6 +1844,31 @@ var slice = _dereq_('../array/slice');
 
 
 
-},{"../array/slice":17}]},{},[3])
+},{"../array/slice":17}],54:[function(_dereq_,module,exports){
+var has = _dereq_('./has');
+
+    /**
+     * Unset object property.
+     */
+    function unset(obj, prop){
+        if (has(obj, prop)) {
+            var parts = prop.split('.'),
+                last = parts.pop();
+            while (prop = parts.shift()) {
+                obj = obj[prop];
+            }
+            return (delete obj[last]);
+
+        } else {
+            // if property doesn't exist treat as deleted
+            return true;
+        }
+    }
+
+    module.exports = unset;
+
+
+
+},{"./has":47}]},{},[3])
 (3)
 });
