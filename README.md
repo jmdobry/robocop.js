@@ -1,3 +1,7 @@
+# This project is deprecated in favor of [js-data-schema](https://github.com/js-data/js-data-schema).
+
+-----
+
 ## robocop.js
 
 __Version:__ [![NPM version](https://badge.fury.io/js/robocop.js.png)](http://badge.fury.io/js/robocop.js)
